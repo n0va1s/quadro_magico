@@ -1,0 +1,38 @@
+{% extends 'leiaute.twig' %}
+{% block conteudo %}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <p>Bem-vindo papai, mamãe, vovô, vovó, titio, titia...</p><br />
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-preview">
+                    <h2 class="post-title">O quadro mágico</h2>
+                    <p class="post-meta">
+                        Para pais e mães<br />
+                        Que buscam desenvolver crianças, jovens e adolescentes confiantes e responsáveis<br />
+                        O Quadro Mágico<br />
+                        É como um quadro de tarefas<br />
+                        Diferente daqueles quadros brancos, de cortiça ou planilhas impressas no trabalho<br />
+                        Esse quadro está no mundo digital deles, possui uma metodologia de trabalho baseada em jogos e facilita comunicação estando você ao lado deles ou não.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block rodape %}
+<footer class="intro-header" style="background-image: url({{ asset('idealizadores.jpg', 'images') }})">
+    <div class="container">
+        <img src="{{ asset('idealizadores.jpg', 'images') }}">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading">
+                    <h1>Os sonhadores</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}
+

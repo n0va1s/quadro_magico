@@ -1,0 +1,28 @@
+{
+    "require": {
+        "silex/silex": "^2.0",
+        "monolog/monolog": "^1.22",
+        "twig/twig": "^2.2",
+        "symfony/security": "^3.2",
+        "symfony/twig-bridge": "^3.2",
+        "doctrine/dbal": "^2.5",
+        "doctrine/orm": "^2.5",
+        "gedmo/doctrine-extensions": "^2.4",
+        "symfony/debug": "^3.2",
+        "symfony/asset": "^3.3"
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }, 
+    "autoload": {
+    	"psr-4": {
+    		"n0va1s\\QuadroMagico\\":"src/n0va1s/QuadroMagico"
+    	}
+    },
+    "require-dev": {
+        "symfony/browser-kit": "^3.2",
+        "symfony/css-selector": "^3.2",
+        "phpunit/phpunit": "~5.0",
+        "phpunit/phpunit-selenium": "^3.0"
+    }
+}
