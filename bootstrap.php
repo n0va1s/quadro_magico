@@ -68,12 +68,13 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->register(new Silex\Provider\AssetServiceProvider(), array(
     'assets.version' => 'v1',
     'assets.named_packages' => array(
-        'css' => array('version' => 'css2', 'base_path' => '/css'),
-        'images' => array('base_path' => '/images')
+        'css' => array('base_path' => '/web/css'),
+        'img' => array('base_path' => '/web/img')
     ),
 ));
 
 $app->get('/', function () use ($app) {
     return $app['twig']->render('inicio.twig');
 })->bind('inicio');
+
 $app->mount('/quadro', new n0va1s\QuadroMagico\Controller\QuadroController($em));

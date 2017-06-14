@@ -1,12 +1,12 @@
 # O que é?
-Uma ferramenta simples e transformadora para pais, mães, filhos e filhas 
+Uma ferramenta simples e transformadora para pais, mães, filhos e filhas. Conheça (*em breve*) [quadromagico.com.br](http://quadromagico.com.br)
 
 # Pode me explicar mais?
-**Para** pais e mães
-**Que** buscam desenvolver crianças, jovens e adolescentes confiantes e responsáveis
-**O** Quadro Mágico
-**É** como um quadro de tarefas
-**Diferente** daqueles quadros brancos, de cortiça ou planilhas impressas no trabalho
+**Para** pais e mães__
+**Que** buscam desenvolver crianças, jovens e adolescentes confiantes e responsáveis__
+**O** Quadro Mágico__
+**É** como um quadro de tarefas__
+**Diferente** daqueles quadros brancos, de cortiça ou planilhas impressas no trabalho__
 **Esse** quadro está no mundo digital deles, possui uma metodologia de trabalho baseada em jogos e facilita comunicação estando você ao lado deles ou não. 
 
 # Quanto custa?
