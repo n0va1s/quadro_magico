@@ -67,9 +67,11 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app->register(new Silex\Provider\AssetServiceProvider(), array(
     'assets.version' => 'v1',
+    'assets.version_format' => '%s?version=%s',
     'assets.named_packages' => array(
-        'css' => array('base_path' => '/web/css'),
-        'img' => array('base_path' => '/web/img')
+        'css' => array('version' => 'css2', 'base_path' => '/css'),
+        'img' => array('base_path' => '/img'),
+        'js' => array('base_path' => '/js'),
     ),
 ));
 

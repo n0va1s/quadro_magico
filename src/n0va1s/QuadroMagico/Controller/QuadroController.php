@@ -26,6 +26,10 @@ class QuadroController implements ControllerProviderInterface
             return new \n0va1s\QuadroMagico\Service\QuadroService($this->em);
         };
         //aplicacao
+        $ctrl->get('/cadastro', function () use ($app) {
+            return $app['twig']->render('quadro.twig');
+        })->bind('indexQuadro');
+
         $ctrl->get('/crianca', function () use ($app) {
             return $app['twig']->render('crianca.twig');
         })->bind('indexCrianca');

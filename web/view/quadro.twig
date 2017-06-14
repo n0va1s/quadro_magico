@@ -1,0 +1,40 @@
+{% extends 'leiaute.twig' %}
+{% block conteudo %}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <form>
+                <p>
+                    Olá <b>Fulano</b>, vamos criar o quadro?<br />
+                    Qual o seu email para mandar o link do quadro mágico? <input type="email" name="emlResponsavel" required><br />
+                    Você quer criar o quadro para um <input type="radio" name="optGenero" value="M"> menino ou <input type="radio" name="optGenero" value="F"> menina que tem <input type="number" name="numIdade"> anos e se chama <input type="text" name="nomCrianca" required><br />
+                    A meta que vcs combinaram como recompensa para o período de <input type="date" name="datInicio" required> até <input type="date" name="datFim" required> foi <input type="text" name="desMeta">.
+                </p>
+                <center><input type="submit" value="Cadastrar as atividades"></center>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block rodape %}
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p class="copyright text-muted">Faça parte da nossa comunidade</p>
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="copyright text-muted">n0va1s 2016</p>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}

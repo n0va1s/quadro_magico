@@ -3,7 +3,7 @@
     <!-- Main Content -->
     <div class="container">
         <div class="row">
-            <p>Bem-vindo papai, mamãe, vovô, vovó, titio, titia...</p><br />
+            <p>Bem-vindo pai, mãe, avô, avó, tio, tia, padrinho, madrinha ...</p><br />
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-preview">
                     <h2 class="post-title">O quadro mágico</h2>
@@ -19,19 +19,19 @@
             </div>
         </div>
     </div>
-{% endblock %}
+    <div class="jumbotron" align="center">
+        <h2>Regras do Jogo</h2>
+        <p>Veja como criar as suas:</p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Dicas</a></p>
+    </div>
+ {% endblock %}
 
 {% block rodape %}
 <footer class="intro-header" style="background-image: url({{ asset('idealizadores.jpg', 'img') }})">
-    <div class="container">
-        <img src="{{ asset('/web/img/idealizadores.jpg') }}">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>Os idealizadores</h1>
-                </div>
-            </div>
-        </div>
+    <div>
+        <h2 style="color:white">Os idealizadores</h2>
+        <h3 style="color:white; text-align:left">João Paulo, pai do PJ, do KidFury,<br /> divorciado, escoteiro<br /> e analista de sistemas</h3>
+        <h3 style="color:white; text-align:right">Isabela, mãe da Lena,<br /> divorciada, dançarina<br /> e empreendedora social</h3>
     </div>
 </footer>
 {% endblock %}

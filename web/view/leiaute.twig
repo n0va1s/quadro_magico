@@ -46,8 +46,15 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
+                        <a href="{{ app.url_generator.generate('indexQuadro') }}">Crie seu quadro</a>
+                    </li>
+                    <li>
                         <a href="{{ app.url_generator.generate('indexCrianca') }}">3 - 5 anos</a>
                     </li>
+                    <li>
+                        <a href="{{ app.url_generator.generate('indexAdolescente') }}">11 - 15 anos</a>
+                    </li>
+
                     <li>
                         <a href="{{ app.url_generator.generate('indexJovem') }}">6 - 10 anos</a>
                     </li>
