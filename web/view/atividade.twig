@@ -1,0 +1,112 @@
+{% extends 'leiaute.twig' %}
+{% block conteudo %}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <form class="form-inline" name="frmAtividade" action="./salvar">
+                    <div class="form-group">
+                        <label for="nomAtividade">Atividade:</label>
+                        <input type="text" class="form-control" id="nomAtividade" placeholder="Escovar os dentes?" name="nomAtividade">
+                        <label for="tipAtividade">Propósito:</label>
+                        <select name="tipAtividade">
+                            <option value="">Selecione</option>
+                            <option value="H">Higiene</option>
+                            <option value="C">Comportamento</option>
+                            <option value="A">Autonomia</option>
+                        </select>
+                        <input type="submit" name="Salvar">
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if atividade is defined %}
+        <div class="row">
+            <p>Olá, <b>João Pedro</b>, vc está a <b>7</b> conquistas do seu objetivo de <b> ir ao clube no fim de semana</b></p><br />
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tarefa</th>
+                            <th>Valor</th>
+                            <th>Seg</th>
+                            <th>Ter</th>
+                            <th>Qua</th>
+                            <th>Qui</th>
+                            <th>Sex</th>
+                            <th>Sáb</th>
+                            <th>Dom</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th></span></th>
+                            <th></span></th>
+                            <th><span class="glyphicon glyphicon-heart"></span></th>
+                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td>Escovar os dentes após as refeições</td>
+                            <td>20</td>
+                            <td class="success">:-)</td>
+                            <td class="danger">:-(</td>
+                            <td class="info">:-|</td>
+                            <td class="info">:-|</td>
+                            <td class="info">:-|</td>
+                            <td class="info">:-|</td>
+                            <td class="info">:-|</td>
+                        </tr>
+                        <tr>
+                            <td>Bochechar o enxaguante</td>
+                            <td>5</td>
+                            <td class="success">:-)</td>
+                            <td class="danger">:-(</td>
+                            <td class="info">:-|</td>
+                            <td class="info">:-|</td>
+                            <td class="info">:-|</td>
+                            <td class="info">:-|</td>
+                            <td class="info">:-|</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block rodape %}
+<footer>
+    <div class="container">
+        <div class="row">
+            <p>Se vc tiver dúvida sobre atividade, veja nossa seção de <b>dicas</b></p><br />
+            {% if atividade is defined %}
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <span class="copyright text-muted">Diário de bordo</span>
+                <form>
+                    <textarea class="form-control">Anote aqui uma coisa boa para enviar para o responsável pelo quadro</textarea>
+                    <p align="center"><input type="submit" value="Enviar"></p>
+                </form>
+            </div>
+            {% else %}
+                <div class="post-preview">
+                        <p class="post-meta" align="center">Nenhuma atividade cadastrada</p>
+                    </div>
+                {% if quadro is defined %}
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p>Esse é o link do quadro:</p>
+                    <a href="quadromagico.com.br/quadro/{{ quadro.chave }}">Link para o quadro quadromagico.com.br/quadro/{{ quadro.chave }}</a>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</footer>
+{% endblock %}

@@ -153,6 +153,7 @@ input[type="radio"] {
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   height: auto;
+  width: 10px;
 }
 input[type="search"] {
   -webkit-box-sizing: content-box;

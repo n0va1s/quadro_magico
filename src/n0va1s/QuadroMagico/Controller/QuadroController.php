@@ -27,25 +27,8 @@ class QuadroController implements ControllerProviderInterface
         };
         //aplicacao
         $ctrl->get('/cadastro', function () use ($app) {
-            return $app['twig']->render('quadro.twig');
+            return $app['twig']->render('cadastro.twig');
         })->bind('indexQuadro');
-
-        $ctrl->get('/crianca', function () use ($app) {
-            return $app['twig']->render('crianca.twig');
-        })->bind('indexCrianca');
-
-        $ctrl->get('/jovem', function () use ($app) {
-            return $app['twig']->render('jovem.twig');
-        })->bind('indexJovem');
-
-        $ctrl->get('/adolescente', function () use ($app) {
-            return $app['twig']->render('adolescente.twig');
-        })->bind('indexAdolescente');
-
-        $ctrl->get('/app/listar', function ($id) use ($app) {
-            $resultado = $app['quadro_service']->findById($id);
-            return $app['twig']->render('adolescente.twig', ['atividades'=>$resultado]);
-        })->bind('listarAtividadeHtml');
 
         //api
         $ctrl->get('/api/listar', function () use ($app) {

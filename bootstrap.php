@@ -77,6 +77,22 @@ $app->register(new Silex\Provider\AssetServiceProvider(), array(
 
 $app->get('/', function () use ($app) {
     return $app['twig']->render('inicio.twig');
-})->bind('inicio');
+})->bind('index');
+
+$app->get('/login', function () use ($app) {
+    return $app['twig']->render('login.twig');
+})->bind('indexLogin');
+
+$app->get('/logout', function () use ($app) {
+    return $app['twig']->render('logout.twig');
+})->bind('indexLogout');
+
+$app->get('/dica', function () use ($app) {
+    return $app['twig']->render('dica.twig');
+})->bind('indexDica');
+
+$app->get('/contato', function () use ($app) {
+    return $app['twig']->render('contato.twig');
+})->bind('indexContato');
 
 $app->mount('/quadro', new n0va1s\QuadroMagico\Controller\QuadroController($em));
