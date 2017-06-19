@@ -10,92 +10,88 @@ use n0va1s\QuadroMagico\Service\AtividadeService;
 /**
  * @ORM\Entity
  * @ORM\hasLifeCycleCallbacks
- * @ORM\Table(name="Cliente")
+ * @ORM\Table(name="atividade")
  */
 class AtividadeEntity
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer", name="seq_cliente")
+     * @ORM\Column(type="integer", name="seq_atividade")
      * @ORM\GeneratedValue
      */
     private $id;
-    /**
-     * @ORM\Column(type="string", name="nom_cliente", length=100)
-     */
-    private $nome;
-    /**
-     * @ORM\Column(type="string", name="eml_cliente", length=100)
-     */
-    private $email;
-    /**
-     * @ORM\Column(type="string", name="url_foto", length=255)
-     */
-    private $foto;
-    /**
-     * @ORM\Column(type="datetime", name="dat_cadastro", nullable=true)
-     */
-    private $dataCriacao;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="QuadroEntity")
+     * @ORM\JoinColumn(name="seq_quadro", referencedColumnName="seq_quadro")
+     */
+    private $quadro;
+
+    /**
+     * @ORM\Column(type="string", length=100, name="des_atividade")
+     */
+    private $atividade;
+
+    /**
+     * @ORM\Column(type="string", length=255, name="val_atividade")
+     */
+    private $valor;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="dat_cadastro")
+     */
+    private $cadastro;
+
+    public function __construct()
+    {
+        $this->cadastro = new \Datetime();
+    }
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function setId($id)
+    private function _setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
-    public function getNome()
+    public function getAtividade()
     {
-        return $this->nome;
+        return $this->atividade;
     }
 
-    public function setNome($nome)
+    private function _setAtividade($atividade)
     {
-        if (!isset($nome)) {
-            throw new \InvalidArgumentException();
-        }
-        $this->nome = $nome;
+        $this->atividade = $atividade;
+
+        return $this;
     }
 
-    public function getEmail()
+    public function getValor()
     {
-        return $this->email;
+        return $this->valor;
     }
 
-    public function setEmail($email)
+    private function _setValor($valor)
     {
-        $emailValido = filter_var($email, FILTER_VALIDATE_EMAIL);
-        if (!$emailValido) {
-            throw new \InvalidArgumentException();
-        }
-        $this->email = $email;
+        $this->valor = $valor;
+
+        return $this;
     }
 
-    public function getFoto()
+    public function getCadastro()
     {
-        return $this->foto;
-    }
-    
-    public function setFoto($foto)
-    {
-        if (!($foto instanceof Symfony\Component\HttpFoundation\File\UploadedFile)) {
-            throw new \InvalidArgumentException();
-        }
-        $this->foto = ArquivoService::carregarImagem($foto);
+        return $this->cadastro;
     }
 
-    /** @ORM\PrePersist */
-    public function setDataCriacao()
+    private function _setCadastro($cadastro)
     {
-        $this->dataCriacao = new \DateTime();
-    }
+        $this->cadastro = $cadastro;
 
-    public function getDataCriacao()
-    {
-        return $this->dataCriacao;
+        return $this;
     }
 }

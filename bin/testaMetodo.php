@@ -3,7 +3,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/../bootstrap.php';
 
-$obj = new \JP\Sistema\Entity\ProdutoEntity();
+$obj = new \n0va1s\QuadroMagico\Entity\XXXEntity();
 try {
     $obj->setValor('ABC');
     var_dump($obj);
