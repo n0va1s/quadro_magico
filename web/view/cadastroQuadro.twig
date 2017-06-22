@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <form name="frmQuadro" action="quadro/gravar" novalidate>
+                <form name="frmQuadro" action="{{ path('quadroSalvar')}}" novalidate>
                     <h4>Crie o seu quadro</h4>
                     <label for="tipo" class="sr-only">Tipo de quadro</label>
                     <select name="tipo"  class="col-lg-4" autofocus>

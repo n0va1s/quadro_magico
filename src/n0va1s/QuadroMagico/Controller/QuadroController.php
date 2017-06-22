@@ -20,47 +20,67 @@ class QuadroController implements ControllerProviderInterface
 
     public function connect(Application $app)
     {
-        $ctrl = $app['controllers_factory'];
+        //if ($app['security.authorization_checker']->isGranted('ROLE_ADMIN')) {
 
-        $app['quadro_service'] = function () {
-            return new \n0va1s\QuadroMagico\Service\QuadroService($this->em);
-        };
-        //aplicacao
-        $ctrl->get('/cadastro', function () use ($app) {
-            return $app['twig']->render('cadastro.twig');
-        })->bind('indexQuadro');
+            $ctrl = $app['controllers_factory'];
 
-        //api
-        $ctrl->get('/api/listar', function () use ($app) {
-            $resultado = $app['quadro_service']->fetchall();
-            return $app->json($resultado);
-        })->bind('listarCategoriaJson');
+            $app['quadro_service'] = function () {
+                return new \n0va1s\QuadroMagico\Service\QuadroService($this->em);
+            };
+            //aplicacao
+            $ctrl->get('/', function () use ($app) {
+                return $app['twig']->render('cadastroQuadro.twig');
+            })->bind('indexQuadro');
 
-        $ctrl->get('/api/listar/{id}', function ($id) use ($app) {
-            $resultado = $app['quadro_service']->findById($id);
-            return $app->json($resultado);
-        })->bind('listarCategoriaIdJson')
-        ->assert('id', '\d+');
+            $ctrl->post('/quadro', function (Request $req) use ($app) {
+                //$dados = $req->request->all();
+                //$resultado = $app['quadro_service']->save($dados);
+                return $app['twig']->render('cadastroQuadro.twig');
+            })->bind('quadroSalvar');
 
-        $ctrl->post('/api/inserir', function (Request $req) use ($app) {
-            $dados = $req->request->all();
-            $resultado = $app['quadro_service']->save($dados);
-            return $app->json($resultado);
-        })->bind('inserirAtividade');
+            $ctrl->get('/atividade', function (Request $req) use ($app) {
+                return $app['twig']->render('cadastroAtividade.twig');
+            })->bind('indexAtividade');
 
-        $ctrl->put('/api/atualizar/{id}', function (Request $req) use ($app) {
-            $dados = $req->request->all();
-            $resultado = $app['quadro_service']->save($dados);
-            return $app->json($resultado);
-        })->bind('atualizarAtividade')
-        ->assert('id', '\d+');
+            $ctrl->post('/atividade', function (Request $req) use ($app) {
+                //$dados = $req->request->all();
+                //$resultado = $app['quadro_service']->save($dados);
+                return $app['twig']->render('cadastroAtividade.twig');
+            })->bind('atividadeSalvar');
 
-        $ctrl->delete('/api/apagar/{id}', function ($id) use ($app) {
-            $resultado = $app['quadro_service']->delete($id);
-            return $app->json($resultado);
-        })->bind('apagarAtividade')
-        ->assert('id', '\d+');
+            //api
+            $ctrl->get('/api/listar', function () use ($app) {
+                $resultado = $app['quadro_service']->fetchall();
+                return $app->json($resultado);
+            })->bind('listarCategoriaJson');
 
-        return $ctrl;
+            $ctrl->get('/api/listar/{id}', function ($id) use ($app) {
+                $resultado = $app['quadro_service']->findById($id);
+                return $app->json($resultado);
+            })->bind('listarCategoriaIdJson')
+            ->assert('id', '\d+');
+
+            $ctrl->post('/api/inserir', function (Request $req) use ($app) {
+                $dados = $req->request->all();
+                $resultado = $app['quadro_service']->save($dados);
+                return $app->json($resultado);
+            })->bind('inserirAtividade');
+
+            $ctrl->put('/api/atualizar/{id}', function (Request $req) use ($app) {
+                $dados = $req->request->all();
+                $resultado = $app['quadro_service']->save($dados);
+                return $app->json($resultado);
+            })->bind('atualizarAtividade')
+            ->assert('id', '\d+');
+
+            $ctrl->delete('/api/apagar/{id}', function ($id) use ($app) {
+                $resultado = $app['quadro_service']->delete($id);
+                return $app->json($resultado);
+            })->bind('apagarAtividade')
+            ->assert('id', '\d+');
+        /*} else {
+            return $app->abort(500, 'Faça login para usar essa opção');
+        }*/
+            return $ctrl;
     }
 }

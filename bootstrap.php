@@ -12,6 +12,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\ClassLoader;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 $cache = new Doctrine\Common\Cache\ArrayCache;
 $annotationReader = new Doctrine\Common\Annotations\AnnotationReader;
@@ -111,10 +112,15 @@ $app->get('/', function () use ($app) {
     return $app['twig']->render('inicio.twig');
 })->bind('index');
 
-$app->get('/login', function () use ($app) {
-    return $app['twig']->render('login.twig');
+//Login
+/*
+$app->get('/login', function (Request $req) use ($app) {
+    return $app['twig']->render('login.twig', array(
+        'error' => $app['security.last_error']($req),
+        'last_username' => $app['session']->get('_security.last_username'),
+    ));
 })->bind('indexLogin');
-
+*/
 $app->get('/dica', function () use ($app) {
     return $app['twig']->render('dica.twig');
 })->bind('indexDica');
@@ -123,26 +129,9 @@ $app->get('/contato', function () use ($app) {
     return $app['twig']->render('contato.twig');
 })->bind('indexContato');
 
-//Login
-$app->get('/login', function (Request $req) use ($app) {
-    return $app['twig']->render('login.twig', array(
-        'error' => $app['security.last_error']($req),
-        'last_username' => $app['session']->get('_security.last_username'),
-    ));
-})->bind('login');
-
-$app->get('/cadastro', function (Request $req) use ($app) {
-    //$user = $app['user_encoder'];
-    $user = new \Api\User\UserEntity();
-    if ($app['security.encoder_factory']->getEncoder($user)) {
-        $userProvider = new \Api\User\UserProvider($em);
-        $userProvider->setPasswordEncoder($app['security.encoder_factory']->getEncoder($user));
-        $userProvider->createAdminUser($username, 'admin');
-        return new Response("Administrador criado - {$username}", 200);
-    } else {
-         return $app->abort(500, 'Erro ao cadastrar o administrador');
-    }
-    
-})->bind('cadastro');
+$app->post('/contato', function (Request $req) use ($app) {
+    return Response('Enviar email', 200);
+})->bind('contatoEnviar');
 
 $app->mount('/quadro', new n0va1s\QuadroMagico\Controller\QuadroController($em));
+$app->mount('/responsavel', new n0va1s\QuadroMagico\Controller\ResponsavelController($em));

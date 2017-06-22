@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <form name="frmContato" action="contato/gravar" novalidate>
+            <form name="frmContato" action="{{ path('contatoEnviar')}}" novalidate>
                 <h4>Quer falar com a gente?</h4>
                 <label for="nome" class="sr-only">Nome</label>
                 <input type="text" class="col-lg-4" placeholder="Nome" id="nome" required data-validation-required-message="Por favor informe seu nome" autofocus>
@@ -18,7 +18,7 @@
                 </div>-->
                 <br />
                 <center>
-                    <button class="btn btn-primary" type="submit">Envie</button>
+                    <button class="btn btn-primary" type="submit">Enviar</button>
                 <center>
             </form>
         </div>

@@ -19,8 +19,8 @@ class QuadroEntity
     private $id;
     
     /**
-     * @ORM\ManyToOne(targetEntity="UserEntity")
-     * @ORM\JoinColumn(name="seq_responsavel", referencedColumnName="seq_responsavel")
+     * @ORM\ManyToOne(targetEntity="ResponsavelEntity")
+     * @ORM\JoinColumn(name="seq_usuario", referencedColumnName="seq_usuario")
      */
     private $responsavel;
 

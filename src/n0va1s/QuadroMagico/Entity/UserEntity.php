@@ -8,26 +8,21 @@ use Symfony\Component\Security\Core\Role\Role;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="responsavel")
+ * @ORM\Table(name="usuario")
  */
 class UserEntity implements UserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer", name="seq_responsavel")
+     * @ORM\Column(type="integer", name="seq_usuario")
      * @ORM\GeneratedValue
      */
     public $id;
 
     /**
-     * @ORM\Column(type="string", length=100, name="eml_responsavel")
+     * @ORM\Column(type="string", length=100, name="eml_usuario")
      */
     public $username;
-
-    /**
-     * @ORM\Column(type="string", length=100, name="nom_responsavel")
-     */
-    public $name;
 
     /**
      * @ORM\Column(type="string", length=100, name="val_senha")
@@ -40,19 +35,9 @@ class UserEntity implements UserInterface
     public $plainPassword;
 
     /**
-     * @ORM\Column(type="string", length=100, name="tip_papel")
+     * @ORM\Column(type="string", length=100, name="tip_perfil")
      */
     public $roles = array('ROLE_USER');
-
-    /**
-     * @ORM\Column(type="string", length=1, name="tip_genero")
-     */
-    public $gender;
-
-    /**
-     * @ORM\Column(type="string", length=1, name="tip_parentesco")
-     */
-    public $kinship;
 
     /**
      * @ORM\Column(type="datetime", name="dat_cadastro")
@@ -84,13 +69,21 @@ class UserEntity implements UserInterface
         return $this->username;
     }
 
-    public function __setUsername($username)
+    public function setUsername($username)
     {
         $emailValido = filter_var($username, FILTER_VALIDATE_EMAIL);
         if (!$emailValido) {
             throw new \InvalidArgumentException();
         }
         $this->username = $username;
+    }
+
+    public function setPassword($password)
+    {
+        if (empty($password)) {
+            throw new \InvalidArgumentException();
+        }
+        $this->password = $password;
     }
 
     public function eraseCredentials()
