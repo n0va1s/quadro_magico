@@ -3,39 +3,37 @@
 namespace n0va1s\QuadroMagico\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Role\Role;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="responsavel")
+ * @ORM\Table(name="perfil")
  */
-class ResponsavelEntity
+class PerfilEntity
 {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="UserEntity")
-     * @ORM\JoinColumn(name="seq_usuario", referencedColumnName="seq_usuario")
+     * @ORM\Column(type="integer", name="seq_perfil")
+     * @ORM\GeneratedValue
      */
-    public $usuario;
+    private $usuario;
 
     /**
      * @ORM\Column(type="string", length=100, name="nom_responsavel")
      */
-    public $nome;
+    private $nome;
 
     /**
      * @ORM\Column(type="string", length=1, name="ind_genero")
      */
-    public $genero;
+    private $genero;
 
     /**
      * @ORM\Column(type="string", length=1, name="ind_parentesco")
      */
-    public $parentesco;
+    private $parentesco;
 
     /**
-     * @ORM\Column(type="string", length=2, name="sig__uf_responsavel")
+     * @ORM\Column(type="string", length=2, name="sig_uf_responsavel")
      */
     private $uf;
 
@@ -47,22 +45,11 @@ class ResponsavelEntity
     /**
      * @ORM\Column(type="datetime", name="dat_cadastro")
      */
-    public $cadastro;
+    private $cadastro;
 
     public function __construct()
     {
         $this->cadastro = new \Datetime();
-    }
-
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
-        return $this;
     }
 
     public function getNome()
@@ -103,7 +90,7 @@ class ResponsavelEntity
         return $this->uf;
     }
 
-    private function setUf($uf)
+    public function setUf($uf)
     {
         $this->uf = $uf;
         return $this;
@@ -114,7 +101,7 @@ class ResponsavelEntity
         return $this->expectativa;
     }
 
-    private function setExpectativa($expectativa)
+    public function setExpectativa($expectativa)
     {
         $this->expectativa = $expectativa;
         return $this;

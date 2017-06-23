@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <form name="frmQuadro" action="{{ path('quadroSalvar')}}" novalidate>
+                <form name="frmQuadro" action="{{ path('quadroSalvar')}}" method="POST">
                     <h4>Crie o seu quadro</h4>
                     <label for="tipo" class="sr-only">Tipo de quadro</label>
                     <select name="tipo"  class="col-lg-4" autofocus>
@@ -17,16 +17,22 @@
                         <option value="M">um menino</option>
                         <option value="F">uma menina</option>
                     </select>
-                    <input type="number" class="col-lg-4" placeholder="Com XX anos" id="idade" required data-validation-required-message="Quantos anos ele ou ela tem?">
+                    <input type="number" name="idade" class="col-lg-4" placeholder="Com XX anos" required data-validation-required-message="Quantos anos ele ou ela tem?">
                     <label for="nome" class="sr-only">Nome</label>
-                    <input type="text" name="nome" class="form-control" placeholder="Chamado (a)" required data-validation-required-message="Qual o nome dele ou dela?">
+                    <input type="text" name="crianca" class="form-control" placeholder="Chamado (a)" required data-validation-required-message="Qual o nome dele ou dela?">
                     <label for="nome" class="sr-only">Recompensa</label>
                     <input type="text" name="recompensa" class="form-control" placeholder="Quer quer" required data-validation-required-message="Qual a recompensa combinada?">
                     <br />
                     <center>
                         <button class="btn btn-primary" type="submit">Criar</button>
                     <center>
+                    <input type="hidden" name="id" value="{% if id is defined %} {{ id }} {% endif %}">
                 </form>
+                {% if mensagem is defined %}
+                <div class="alert alert-success">
+                    {{ mensagem }}
+                </div>
+                {% endif %}
             </div>
         </div>
         <div class="row">

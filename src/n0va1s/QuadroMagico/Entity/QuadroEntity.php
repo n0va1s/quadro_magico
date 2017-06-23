@@ -19,10 +19,10 @@ class QuadroEntity
     private $id;
     
     /**
-     * @ORM\ManyToOne(targetEntity="ResponsavelEntity")
+     * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="boards")
      * @ORM\JoinColumn(name="seq_usuario", referencedColumnName="seq_usuario")
      */
-    private $responsavel;
+    private $usuario;
 
     /**
      * @ORM\Column(type="string", length=1, name="tip_quadro")
@@ -48,6 +48,12 @@ class QuadroEntity
      * @ORM\Column(type="string", length=255, name="des_recompensa")
      */
     private $recompensa;
+
+    /**
+     * @ORM\Column(type="integer", name="val_mesada")
+    */
+    private $mesada;
+    
     /**
      * @ORM\Column(type="datetime", name="dat_cadastro")
      */
@@ -63,10 +69,9 @@ class QuadroEntity
         return $this->id;
     }
 
-    private function _setId($id)
+    public function setId($id)
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -75,10 +80,9 @@ class QuadroEntity
         return $this->tipo;
     }
 
-    private function _setTipo($tipo)
+    public function setTipo($tipo)
     {
         $this->tipo = $tipo;
-
         return $this;
     }
 
@@ -87,10 +91,9 @@ class QuadroEntity
         return $this->genero;
     }
 
-    private function _setGenero($genero)
+    public function setGenero($genero)
     {
         $this->genero = $genero;
-
         return $this;
     }
 
@@ -99,10 +102,9 @@ class QuadroEntity
         return $this->idade;
     }
 
-    private function _setIdade($idade)
+    public function setIdade($idade)
     {
         $this->idade = $idade;
-
         return $this;
     }
 
@@ -111,10 +113,9 @@ class QuadroEntity
         return $this->crianca;
     }
 
-    private function _setCrianca($crianca)
+    public function setCrianca($crianca)
     {
         $this->crianca = $crianca;
-
         return $this;
     }
 
@@ -123,10 +124,20 @@ class QuadroEntity
         return $this->recompensa;
     }
 
-    private function _setRecompensa($recompensa)
+    public function setRecompensa($recompensa)
     {
         $this->recompensa = $recompensa;
+        return $this;
+    }
 
+    public function getMesada()
+    {
+        return $this->mesada;
+    }
+
+    public function setMesada($mesada)
+    {
+        $this->mesada = $mesada;
         return $this;
     }
 
@@ -135,10 +146,9 @@ class QuadroEntity
         return $this->cadastro;
     }
 
-    private function _setCadastro($cadastro)
+    public function setCadastro($cadastro)
     {
         $this->cadastro = $cadastro;
-
         return $this;
     }
 }

@@ -3,6 +3,7 @@
 namespace n0va1s\QuadroMagico\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Role\Role;
 
@@ -20,7 +21,7 @@ class UserEntity implements UserInterface
     public $id;
 
     /**
-     * @ORM\Column(type="string", length=100, name="eml_usuario")
+     * @ORM\Column(type="string", length=100, name="eml_usuario", unique=true)
      */
     public $username;
 
@@ -29,9 +30,7 @@ class UserEntity implements UserInterface
      */
     public $password;
 
-    /**
-     * @ORM\Column(type="string", length=100, name="des_senha")
-     */
+    //A senha aberta nao sera persistida
     public $plainPassword;
 
     /**
@@ -43,10 +42,22 @@ class UserEntity implements UserInterface
      * @ORM\Column(type="datetime", name="dat_cadastro")
      */
     public $createdAt;
+    
+    /**
+    * @ORM\OneToOne(targetEntity="PerfilEntity")
+    * @ORM\JoinColumn(name="seq_perfil", referencedColumnName="seq_perfil", nullable=false)
+    */
+    private $profile = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity="QuadroEntity", mappedBy="usuario")
+     */
+    private $boards;
 
     public function __construct()
     {
         $this->createdAt = new \Datetime();
+         $this->boards = new ArrayCollection();
     }
 
     public function getRoles()
@@ -69,6 +80,16 @@ class UserEntity implements UserInterface
         return $this->username;
     }
 
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    public function getCreateAt()
+    {
+        return $this->createdAt;
+    }
+
     public function setUsername($username)
     {
         $emailValido = filter_var($username, FILTER_VALIDATE_EMAIL);
@@ -84,6 +105,12 @@ class UserEntity implements UserInterface
             throw new \InvalidArgumentException();
         }
         $this->password = $password;
+    }
+
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+        return $this;
     }
 
     public function eraseCredentials()

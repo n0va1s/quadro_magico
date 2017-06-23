@@ -32,14 +32,20 @@ class ResponsavelController implements ControllerProviderInterface
                 return $app['twig']->render('cadastroResponsavel.twig');
             })->bind('indexResponsavel');
 
-            $ctrl->post('/responsavel', function (Request $req) use ($app) {
+            $ctrl->post('/salvar', function (Request $req) use ($app) {
                 $dados = $req->request->all();
                 $resultado = $app['responsavel_service']->save($dados);
-                return $app->json($resultado);
+                if (!isset($resultado['id'])) {
+                    $primeiroNome = explode(" ", $resultado['nome']);
+                    $msgGenero = ($resultado['genero'] === 'F') ? 'cadastrada':'cadastrado';
+                    $mensagem = "$primeiroNome[0], vc foi $msgGenero!";
+                } else {
+                    $mensagem = 'Estou tendo dificuldades... o cadastro não deu certo :(';
+                }
+                return $app['twig']->render('cadastroResponsavel.twig', array('mensagem'=>$mensagem));
             })->bind('responsavelSalvar');
 
-            $ctrl->delete('/responsavel/{id}', function ($id) use ($app) {
-                $dados = $req->request->all();
+            $ctrl->delete('/excluir/{id}', function ($id) use ($app) {
                 $resultado = $app['responsavel_service']->delete($id);
                 return $app->json($resultado);
             })->bind('responsavelExcluir');

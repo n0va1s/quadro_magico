@@ -4,16 +4,16 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <form name="frmQuadro" action="{{ path('responsavelSalvar')}}" method="POST" novalidate>
+                <form name="frmQuadro" action="{{ path('responsavelSalvar')}}" method="POST">
                     <h4>Informações do responsável</h4>
                     <label for="nome" class="sr-only">Nome</label>
-                    <input type="text" class="col-lg-6" placeholder="Nome" id="nome" autofocus required data-validation-required-message="Qual o seu nome?">
+                    <input type="text" name="nome" class="col-lg-6" placeholder="Nome" autofocus required data-validation-required-message="Qual o seu nome?">
                     <label for="email" class="sr-only">Email</label>
                     <input type="email" name="email" class="col-lg-6" placeholder="Email" required data-validation-required-message="Qual o seu email?">
                     <label for="senha" class="sr-only">Senha</label>
-                    <input type="password" class="col-lg-4" placeholder="Senha" id="senha" required data-validation-required-message="Informe uma senha">
-                    <label for="senha" class="sr-only">Confirmação</label>
-                    <input type="password" class="col-lg-4" placeholder="Confirmação" id="confirmacao" required data-validation-required-message="Informe uma senha">
+                    <input type="password" name="senha" class="col-lg-4" placeholder="Senha" required data-validation-required-message="Informe uma senha">
+                    <label for="confirmacao" class="sr-only">Confirmação</label>
+                    <input type="password" name="confirmacao" class="col-lg-4" placeholder="Confirmação" required data-validation-required-message="Informe uma senha">
                     <label for="UF" class="sr-only">UF</label>
                     <input type="text" name="uf" class="col-lg-4" placeholder="UF" required data-validation-required-message="Onde vc mora?">
                     <label for="genero" class="sr-only">Gênero</label>

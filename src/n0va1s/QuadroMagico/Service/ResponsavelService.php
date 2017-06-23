@@ -6,7 +6,7 @@ use \Doctrine\ORM\EntityManager;
 use \Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use n0va1s\QuadroMagico\Entity\UserEntity;
-use n0va1s\QuadroMagico\Entity\ResponsavelEntity;
+use n0va1s\QuadroMagico\Entity\PerfilEntity;
 
 class ResponsavelService
 {
@@ -19,26 +19,27 @@ class ResponsavelService
 
     public function save(array $dados)
     {
-        if (!isset($dados['id'])) {
+        if (empty($dados['id'])) {
             $usuario = new UserEntity();
             $usuario->setUsername($dados['email']);
             $usuario->setPassword($dados['senha']);
             $this->em->persist($usuario);
-            $responsavel = new ResponsavelEntity();
-            $responsavel->setNome($dados['nome']);
-            $responsavel->setGenero($dados['genero']);
-            $responsavel->setParentesco($dados['parentesco']);
-            $responsavel->setUf($dados['uf']);
-            $responsavel->setExpectativa($dados['expectativa']);
-            $this->em->persist($responsavel);
-            $responsavel->setUsuario($usuario);
-
+            $perfil = new PerfilEntity();
+            $perfil->setNome($dados['nome']);
+            $perfil->setGenero($dados['genero']);
+            $perfil->setParentesco($dados['parentesco']);
+            $perfil->setUf($dados['uf']);
+            $perfil->setExpectativa($dados['expectativa']);
+            $this->em->persist($perfil);
+            //Associa o perfil ao usuario
+            $usuario->setProfile($perfil);
+            
         } else {
             //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
             $usuario = $this->em->getReference('\n0va1s\QuadroMagico\Entity\UserEntity', $dados['id']);
             $usuario->setUsername($dados['email']);
             $usuario->setPassword($dados['senha']);
-            $responsavel = $this->em->getReference('\n0va1s\QuadroMagico\Entity\ResponsavelEntity', $dados['id']);
+            $responsavel = $this->em->getReference('\n0va1s\QuadroMagico\Entity\PerfilEntity', $dados['id']);
             $responsavel->setNome($dados['nome']);
             $responsavel->setGenero($dados['genero']);
             $responsavel->setParentesco($dados['parentesco']);
@@ -51,6 +52,8 @@ class ResponsavelService
 
     public function delete(int $id)
     {
+        $perfil = $this->em->getReference('\n0va1s\QuadroMagico\Entity\PerfilEntity', $id);
+        $this->em->remove($perfil);
         $usuario = $this->em->getReference('\n0va1s\QuadroMagico\Entity\UserEntity', $id);
         $this->em->remove($usuario);
         $this->em->flush();
@@ -60,35 +63,38 @@ class ResponsavelService
     public function fetchall()
     {
         //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
-        $clientes = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\ClienteEntity c')
+        $usuarios = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\UserEntity c')
                          ->getArrayResult();
-        return $clientes;
+        return $usuarios;
     }
 
     public function fetchLimit(int $qtd)
     {
-        $clientes = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\ClienteEntity c')
+        $usuarios = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\UserEntity c')
                    ->setMaxResults($qtd)
                    ->getArrayResult();
-        return $clientes;
+        return $usuarios;
     }
 
     public function findById(int $id)
     {
-        $cliente = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\ClienteEntity c where c.id = :id')
+        $usuario = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\UserEntity c where c.id = :id')
                    ->setParameter('id', $id)
                    ->getSingleResult(Query::HYDRATE_ARRAY);
-        return $cliente;
+        return $usuario;
     }
 
-    public function toArray(ClienteEntity $cliente)
+    public function toArray(UserEntity $usuario)
     {
+        $perfil = $usuario->getProfile();
         return  array(
-            'id' => $cliente->getId(),
-            'nome' => $cliente->getNome() ,
-            'email' => $cliente->getEmail(),
-            'foto' => $cliente->getFoto(),
-            'dataCriacao' => $cliente->getDataCriacao(),
+            'email' => $usuario->getUsername() ,
+            'nome' => $perfil->getNome(),
+            'genero' => $perfil->getGenero(),
+            'parentesco' => $perfil->getParentesco(),
+            'uf'  => $perfil->getUf(),
+            'expectativa' => $perfil->getExpectativa(),
+            'criacao' => $usuario->getCreateAt(),
             );
     }
 }

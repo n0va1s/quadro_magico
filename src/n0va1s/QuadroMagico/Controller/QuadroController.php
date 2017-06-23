@@ -32,10 +32,10 @@ class QuadroController implements ControllerProviderInterface
                 return $app['twig']->render('cadastroQuadro.twig');
             })->bind('indexQuadro');
 
-            $ctrl->post('/quadro', function (Request $req) use ($app) {
-                //$dados = $req->request->all();
-                //$resultado = $app['quadro_service']->save($dados);
-                return $app['twig']->render('cadastroQuadro.twig');
+            $ctrl->post('/salvar', function (Request $req) use ($app) {
+                $dados = $req->request->all();
+                $resultado = $app['quadro_service']->save($dados);
+                return $app['twig']->render('cadastroQuadro.twig', array('quadro'=>$resultado));
             })->bind('quadroSalvar');
 
             $ctrl->get('/atividade', function (Request $req) use ($app) {
