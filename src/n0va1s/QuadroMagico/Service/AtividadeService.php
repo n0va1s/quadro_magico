@@ -19,7 +19,6 @@ class AtividadeService
     public function save(array $dados)
     {
         $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $dados['quadro']);
-
         if (empty($dados['id'])) {
             $atividade = new AtividadeEntity();
             $atividade->setAtividade($dados['atividade']);
@@ -47,34 +46,12 @@ class AtividadeService
         return true;
     }
 
-    public function fetchAll()
+    public function findByQuadro(int $id)
     {
-        //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
-        $atividades = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\AtividadeEntity c')
+        $atividades = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\AtividadeEntity c where c.quadro = :id')
+                           ->setParameter('id', $id)
                            ->getArrayResult();
-        if (!isset($atividades)) {
-            throw new Exception("Não encontrei quadros");
-        }
         return $atividades;
-    }
-
-    public function fetchLimit(int $qtd)
-    {
-        $atividades = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\AtividadeEntity c')
-                   ->setMaxResults($qtd)
-                   ->getArrayResult();
-        return $atividades;
-    }
-
-    public function findById(int $id)
-    {
-        $atividade = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\AtividadeEntity c where c.id = :id')
-                          ->setParameter('id', $id)
-                          ->getArrayResult();
-        if (!isset($atividade)) {
-            throw new Exception("Não encontrei ese quadro");
-        }
-        return $atividade;
     }
 
     public function toArray(AtividadeEntity $atividade)

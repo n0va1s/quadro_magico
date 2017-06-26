@@ -3,29 +3,6 @@
     <!-- Main Content -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <form name="frmAtividade" action="{{ path('atividadeSalvar')}}" method="POST">
-                    <h4>Atividades do quadro {% if quadro is defined %}de {{quadro.tipo == 'C' ? "comportamento" : "mesada"}} para {{ quadro.crianca }} {% endif %}</h4>
-                    <label for="atividade" class="sr-only">Atividade</label>
-                    <input type="text" name="atividade" class="col-lg-6" placeholder="Escovar os dentes" autofocus required data-validation-required-message="Qual a atividade?">
-                    <label for="valor" class="sr-only">Valor</label>
-                    <input type="text" name="valor" class="col-lg-2" placeholder="Pontos?" required data-validation-required-message="Quanto vale a atividade">
-                    <label for="proposito" class="sr-only">Propósito</label>
-                    <select name="proposito" class="col-lg-4">
-                        <option value="">Propósito</option>
-                        <option value="E">Escola</option>
-                        <option value="H">Higiene</option>
-                        <option value="C">Comportamento</option>
-                        <option value="A">Autonomia</option>
-                        <option value="D">Casa</option>
-                        <option value="F">Exercício</option>
-                    </select>
-                    <div>&nbsp;</div>
-                    <center><button class="btn btn-primary" type="submit">Cadastrar</button><center>
-                </form>
-            </div>
-        </div>
-        <div class="row">
             {% if atividades is defined %}
             <div class="table-responsive">
                 <table class="table">
@@ -40,13 +17,12 @@
                             <th>Sex</th>
                             <th>Sáb</th>
                             <th>Dom</th>
-                            <th>Excluir</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
+                            <th></span></th>
+                            <th></span></th>
                             <!--<th><span class="glyphicon glyphicon-heart"></span></th>-->
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
@@ -55,14 +31,13 @@
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th>&nbsp;</span></th>
                         </tr>
                     </tfoot>
                     <tbody>
                         {% for atividade in atividades %}
-                        <tr align="center">
-                            <td align="left">{{ atividade.atividade}}</td>
-                            <td align="left">{{ atividade.valor}}</td>
+                        <tr>
+                            <td>{{ atividade.atividade}}</td>
+                            <td>{{ atividade.valor}}</td>
                             <td class="info" name="seg_{{ atividade.id}}"></td>
                             <td class="info" name="ter_{{ atividade.id}}"></td>
                             <td class="info" name="qua_{{ atividade.id}}"></td>
@@ -70,7 +45,6 @@
                             <td class="info" name="sex_{{ atividade.id}}"></td>
                             <td class="info" name="sab_{{ atividade.id}}"></td>
                             <td class="info" name="dom_{{ atividade.id}}"></td>
-                            <td class="info" name="exc_{{ atividade.id}}"><a href="{{ path('atividadeExcluir',{id:atividade.id})}}"><span class="glyphicon glyphicon-remove"></span></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -90,7 +64,7 @@
 <footer>
     <div class="container">
         <div class="row" align="center">
-            <p>Quer dicas de atividades? Veja nossa seção de <b><a href="{{ path('indexDica')}}">dicas</a></b></p>
+            <p>Em breve vc vai poder enviar mensagem para quem criou o quadro :)</p>
         </div>
     </div>
 </footer>

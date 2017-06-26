@@ -20,10 +20,6 @@ class QuadroService
 
     public function save(array $dados)
     {
-        //$responsavel = new UserEntity();
-        //$responsavel->id = 1; //TODO: recuperar da sessao
-        //$responsavel->username = 'jp.pessoal@gmail.com'; //TODO: recuperar da sessao
-
         if (empty($dados['id'])) {
             $quadro = new QuadroEntity();
             $quadro->setResponsavel($dados['email']);
@@ -79,10 +75,21 @@ class QuadroService
         $quadro = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c where c.id = :id')
                           ->setParameter('id', $id)
                           ->getArrayResult();
-        if (!isset($quadro)) {
-            throw new Exception("Não encontrei ese quadro");
+        if (count($quadro) == 0) {
+            $quadro = ['mensagem'=>'Nenhum quadro cadastrado com este identificador'];
         }
         return $quadro;
+    }
+
+    public function findByEmail($email)
+    {
+        $quadros = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c where c.responsavel = :email')
+                          ->setParameter('email', $email)
+                          ->getArrayResult();
+        if (count($quadros) == 0) {
+            $quadros = ['mensagem'=>'Nenhum quadro cadastrado com este email'];
+        }
+        return $quadros;
     }
 
     public function toArray(QuadroEntity $quadro)

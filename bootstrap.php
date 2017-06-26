@@ -112,6 +112,15 @@ $app->get('/', function () use ($app) {
     return $app['twig']->render('inicio.twig');
 })->bind('index');
 
+$app->register(new Silex\Provider\SwiftmailerServiceProvider());
+$app['swiftmailer.options'] = array(
+    'host' => 'host',
+    'port' => '25',
+    'username' => 'username',
+    'password' => 'password',
+    'encryption' => null,
+    'auth_mode' => null
+);
 //Login
 /*
 $app->get('/login', function (Request $req) use ($app) {
@@ -129,8 +138,14 @@ $app->get('/contato', function () use ($app) {
     return $app['twig']->render('contato.twig');
 })->bind('indexContato');
 
-$app->post('/contato', function (Request $req) use ($app) {
-    return Response('Enviar email', 200);
+$app->post('/contato/enviar', function (Request $req) use ($app) {
+    $app->mail(\Swift_Message::newInstance()
+        ->setSubject('[QuadroMagico] Contato')
+        ->setFrom(array($req->get('email')))
+        ->setTo(array('joaopaulonovais@gmail.com'))
+        ->setBody($req->get('menssagem')));
+
+    return new Response('Mensagem enviada. Obrigado!', 201);
 })->bind('contatoEnviar');
 
 $app->mount('/quadro', new n0va1s\QuadroMagico\Controller\QuadroController($em));

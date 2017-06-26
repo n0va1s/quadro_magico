@@ -34,27 +34,5 @@
                 </form>
             </div>
         </div>
-        <!--
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                {% if quadros is defined %}
-                    {% for quadro in quadros %}
-                    <div class="post-preview">
-                        <a href="quadromagico.com.br/quadro/{{ quadro.chave }}">Link para o quadro quadromagico.com.br/quadro/{{ quadro.chave }}</a>
-                        <p class="post-meta">Um quadro de: {{ quadro.tipo }}</p>
-                        <p class="post-meta">Para: {{ quadro.crianca }}</a></p>
-                    </div>
-                    <a href="{{ app.url_generator.generate('cadastrarAtividade') }}"><button>Atividade</button></a>
-                    <hr>
-                    {% endfor %}
-                {% else %}
-                    <div class="post-preview">
-                        <br />
-                        <p class="post-meta" align="center">Nenhum quadro cadastrado</p>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    -->
     </div>
 {% endblock %}
