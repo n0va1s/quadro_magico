@@ -6,6 +6,9 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <form name="frmQuadro" action="{{ path('quadroSalvar')}}" method="POST">
                     <h4>Crie o seu quadro</h4>
+                    <label for="email" class="sr-only">Email</label>
+                    <input type="email" name="email" class="col-lg-12" placeholder="Informe seu email" required 
+                    data-validation-required-message="Qual o seu email?">
                     <label for="tipo" class="sr-only">Tipo de quadro</label>
                     <select name="tipo"  class="col-lg-4" autofocus>
                         <option value="" selected>Um quadro de</option>
@@ -17,27 +20,24 @@
                         <option value="M">um menino</option>
                         <option value="F">uma menina</option>
                     </select>
+                    <label for="idade" class="sr-only">Idade</label>
                     <input type="number" name="idade" class="col-lg-4" placeholder="Com XX anos" required data-validation-required-message="Quantos anos ele ou ela tem?">
                     <label for="nome" class="sr-only">Nome</label>
-                    <input type="text" name="crianca" class="form-control" placeholder="Chamado (a)" required data-validation-required-message="Qual o nome dele ou dela?">
+                    <input type="text" name="crianca" class="col-lg-12" placeholder="Chamado (a)" required data-validation-required-message="Qual o nome dele ou dela?">
                     <label for="nome" class="sr-only">Recompensa</label>
-                    <input type="text" name="recompensa" class="form-control" placeholder="Quer quer" required data-validation-required-message="Qual a recompensa combinada?">
-                    <br />
+                    <input type="text" name="recompensa" class="col-lg-12" placeholder="A recompensa combinada ao fim da semana é" required data-validation-required-message="Qual a recompensa combinada?">
+                    <div>&nbsp;</div>
                     <center>
                         <button class="btn btn-primary" type="submit">Criar</button>
                     <center>
                     <input type="hidden" name="id" value="{% if id is defined %} {{ id }} {% endif %}">
                 </form>
-                {% if mensagem is defined %}
-                <div class="alert alert-success">
-                    {{ mensagem }}
-                </div>
-                {% endif %}
             </div>
         </div>
+        <!--
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                {% if quadro is defined %}
+                {% if quadros is defined %}
                     {% for quadro in quadros %}
                     <div class="post-preview">
                         <a href="quadromagico.com.br/quadro/{{ quadro.chave }}">Link para o quadro quadromagico.com.br/quadro/{{ quadro.chave }}</a>
@@ -55,5 +55,6 @@
                 {% endif %}
             </div>
         </div>
+    -->
     </div>
 {% endblock %}

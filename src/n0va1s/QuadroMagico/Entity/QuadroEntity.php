@@ -19,10 +19,9 @@ class QuadroEntity
     private $id;
     
     /**
-     * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="boards")
-     * @ORM\JoinColumn(name="seq_usuario", referencedColumnName="seq_usuario")
+     * @ORM\Column(type="string", length=100, name="eml_responsavel")
      */
-    private $usuario;
+    private $responsavel;
 
     /**
      * @ORM\Column(type="string", length=1, name="tip_quadro")
@@ -50,7 +49,7 @@ class QuadroEntity
     private $recompensa;
 
     /**
-     * @ORM\Column(type="integer", name="val_mesada")
+     * @ORM\Column(type="decimal", precision=10, scale=2, name="val_mesada", nullable=true)
     */
     private $mesada;
     
@@ -59,9 +58,15 @@ class QuadroEntity
      */
     private $cadastro;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AtividadeEntity", mappedBy="atividade")
+     */
+    private $atividades;
+
     public function __construct()
     {
         $this->cadastro = new \Datetime();
+        $this->atividades = new ArrayCollection();
     }
 
     public function getId()
@@ -141,14 +146,14 @@ class QuadroEntity
         return $this;
     }
 
-    public function getCadastro()
+    public function getResponsavel()
     {
-        return $this->cadastro;
+        return $this->responsavel;
     }
 
-    public function setCadastro($cadastro)
+    public function setResponsavel($responsavel)
     {
-        $this->cadastro = $cadastro;
+        $this->responsavel = $responsavel;
         return $this;
     }
 }

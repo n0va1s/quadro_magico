@@ -4,9 +4,8 @@ namespace n0va1s\QuadroMagico\Service;
 
 use \Doctrine\ORM\EntityManager;
 use \Doctrine\ORM\Query;
-use n0va1s\QuadroMagico\Entity\ClienteEntity;
-use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Component\HttpFoundation\File\UploadedFile as File;
+use \Doctrine\ORM\Tools\Pagination\Paginator;
+use n0va1s\QuadroMagico\Entity\AtividadeEntity;
 
 class AtividadeService
 {
@@ -17,67 +16,71 @@ class AtividadeService
         $this->em = $em;
     }
 
-    public function save(array $dados, File $file)
+    public function save(array $dados)
     {
-        if (isset($dados['seqCliente'])) {
-            $cliente = new ClienteEntity();
-            $cliente->setNome($dados['nomCliente']);
-            $cliente->setEmail($dados['emlCliente']);
-            $cliente->setFoto($file);
-            $cliente->setDataCriacao();
-            $this->em->persist($cliente);
+        if (empty($dados['id'])) {
+            $atividade = new AtividadeEntity();
+            $atividade->setAtividade($dados['atividade']);
+            $atividade->setValor($dados['valor']);
+            $atividade->setProposito($dados['proposito']);
+            $this->em->persist($atividade);
+            $quadro->add($atividade);
         } else {
             //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
-            $cliente = $this->em->getReference('\n0va1s\QuadroMagico\Entity\ClienteEntity', $dados['seqCliente']);
-            $cliente->setNome($dados['nomCliente']);
-            $cliente->setEmail($dados['emlCliente']);
-            $cliente->setFoto($file);
-            $cliente->setDataCriacao();
+            $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['id']);
+            $atividade->setAtividade($dados['atividade']);
+            $atividade->setValor($dados['valor']);
+            $atividade->setProposito($dados['proposito']);
         }
         $this->em->flush();
-        return $this->toArray($cliente);
+        return $this->toArray($atividade);
     }
 
     public function delete(int $id)
     {
-        $cliente = $this->em->getReference('\n0va1s\QuadroMagico\Entity\ClienteEntity', $id);
-        $this->em->remove($cliente);
+        $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $id);
+        $this->em->remove($atividade);
         $this->em->flush();
         return true;
     }
 
-    public function fetchall()
+    public function fetchAll()
     {
         //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
-        $clientes = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\ClienteEntity c')
-                         ->getArrayResult();
-        return $clientes;
+        $atividades = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\AtividadeEntity c')
+                           ->getArrayResult();
+        if (!isset($atividades)) {
+            throw new Exception("Não encontrei quadros");
+        }
+        return $atividades;
     }
 
     public function fetchLimit(int $qtd)
     {
-        $clientes = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\ClienteEntity c')
+        $atividades = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\AtividadeEntity c')
                    ->setMaxResults($qtd)
                    ->getArrayResult();
-        return $clientes;
+        return $atividades;
     }
 
     public function findById(int $id)
     {
-        $cliente = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\ClienteEntity c where c.id = :id')
-                   ->setParameter('id', $id)
-                   ->getSingleResult(Query::HYDRATE_ARRAY);
-        return $cliente;
+        $atividade = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\AtividadeEntity c where c.id = :id')
+                          ->setParameter('id', $id)
+                          ->getArrayResult();
+        if (!isset($atividade)) {
+            throw new Exception("Não encontrei ese quadro");
+        }
+        return $atividade;
     }
 
-    public function toArray(ClienteEntity $cliente)
+    public function toArray(AtividadeEntity $atividade)
     {
         return  array(
-            'id' => $cliente->getId(),
-            'nome' => $cliente->getNome() ,
-            'email' => $cliente->getEmail(),
-            'foto' => $cliente->getFoto(),
-            'dataCriacao' => $cliente->getDataCriacao(),
-            );
+            'id' => $atividade->getId(),
+            'atividade' => $atividade->getAtividade(),
+            'valor' => $atividade->getValor(),
+            'proposito' => $atividade->getProposito()
+        );
     }
 }

@@ -6,7 +6,8 @@ use \Doctrine\ORM\EntityManager;
 use \Doctrine\ORM\Query;
 use \Doctrine\ORM\Tools\Pagination\Paginator;
 use n0va1s\QuadroMagico\Entity\QuadroEntity;
-use n0va1s\QuadroMagico\Entity\UserEntity;
+
+//use n0va1s\QuadroMagico\Entity\UserEntity;
 
 class QuadroService
 {
@@ -19,22 +20,23 @@ class QuadroService
 
     public function save(array $dados)
     {
-        $responsavel = new UserEntity();
-        $responsavel->id = 1; //TODO: recuperar da sessao
+        //$responsavel = new UserEntity();
+        //$responsavel->id = 1; //TODO: recuperar da sessao
+        //$responsavel->username = 'jp.pessoal@gmail.com'; //TODO: recuperar da sessao
 
         if (empty($dados['id'])) {
             $quadro = new QuadroEntity();
+            $quadro->setResponsavel($dados['email']);
             $quadro->setTipo($dados['tipo']);
             $quadro->setGenero($dados['genero']);
             $quadro->setIdade($dados['idade']);
             $quadro->setCrianca($dados['crianca']);
             $quadro->setRecompensa($dados['recompensa']);
             $this->em->persist($quadro);
-            $responsavel->add($quadro);
         } else {
             //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
             $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $dados['id']);
-            $quadro->setResponsavel($responsavel);
+            $quadro->setResponsavel($dados['email']);
             $quadro->setTipo($dados['tipo']);
             $quadro->setGenero($dados['genero']);
             $quadro->setIdade($dados['idade']);
@@ -53,7 +55,7 @@ class QuadroService
         return true;
     }
 
-    public function fetchall()
+    public function fetchAll()
     {
         //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
         $quadros = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c')
@@ -67,11 +69,8 @@ class QuadroService
     public function fetchLimit(int $qtd)
     {
         $quadros = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c')
-                           ->setMaxResults($qtd)
-                           ->getArrayResult();
-        if (!isset($quadros)) {
-            throw new Exception("RNão encontrei quadros");
-        }
+                   ->setMaxResults($qtd)
+                   ->getArrayResult();
         return $quadros;
     }
 
@@ -88,9 +87,8 @@ class QuadroService
 
     public function toArray(QuadroEntity $quadro)
     {
-        $responsavel = $quadro->getResponsavel();
         return  array(
-            'responsavel' => $responsavel->getUsername(),
+            'id' => $quadro->getId(),
             'tipo' => $quadro->getTipo(),
             'genero' => $quadro->getGenero(),
             'idade' => $quadro->getIdade(),

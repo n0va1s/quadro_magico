@@ -4,25 +4,31 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <form class="form-inline" name="frmAtividade" action="{{ path('atividadeSalvar')}}">
-                    <div class="form-group">
-                        <label for="nomAtividade">Atividade:</label>
-                        <input type="text" class="form-control" id="nomAtividade" placeholder="Escovar os dentes?" name="nomAtividade">
-                        <label for="tipAtividade">Propósito:</label>
-                        <select name="tipAtividade">
-                            <option value="">Selecione</option>
-                            <option value="H">Higiene</option>
-                            <option value="C">Comportamento</option>
-                            <option value="A">Autonomia</option>
-                        </select>
-                        <input type="submit" name="Salvar">
-                    </div>
+                <form name="frmAtividade" action="{{ path('atividadeSalvar')}}" method="POST">
+                    <h4>As atividades do quadro {% if quadro is defined %}de {{quadro.tipo == 'C' ? "comportamento" : "mesada"}} para {{ quadro.crianca }} {% endif %}</h4>
+                    <label for="atividade" class="sr-only">Atividade</label>
+                    <input type="text" name="atividade" class="col-lg-6" placeholder="Escovar os dentes" autofocus required data-validation-required-message="Qual a atividade?">
+                    <label for="valor" class="sr-only">Valor</label>
+                    <input type="text" name="valor" class="col-lg-2" placeholder="Pontos?" required data-validation-required-message="Quanto vale a atividade">
+                    <label for="proposito" class="sr-only">Propósito</label>
+                    <select name="proposito" class="col-lg-4">
+                        <option value="">Propósito</option>
+                        <option value="H">Melhorar higiene</option>
+                        <option value="C">Trabalhar comportamento</option>
+                        <option value="A">Maior autonomia</option>
+                        <option value="D">Habilidade doméstica</option>
+                        <option value="F">Atividade física</option>
+                    </select>
+                    <div>&nbsp;</div>
+                    <center>
+                        <button class="btn btn-primary" type="submit">Cadastrar</button>
+                    <center>
+                    <input type="hidden" name="id" value="{% if atividade is defined %} {{ atividade.id }} {% endif %}">
                 </form>
             </div>
         </div>
-        {% if atividade is defined %}
         <div class="row">
-            <p>Olá, <b>João Pedro</b>, vc está a <b>7</b> conquistas do seu objetivo de <b> ir ao clube no fim de semana</b></p><br />
+            {% if atividades is defined %}
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -52,60 +58,38 @@
                         </tr>
                     </tfoot>
                     <tbody>
+                        {% for atividade in atividades %}
                         <tr>
-                            <td>Escovar os dentes após as refeições</td>
-                            <td>20</td>
-                            <td class="success">:-)</td>
-                            <td class="danger">:-(</td>
-                            <td class="info">:-|</td>
-                            <td class="info">:-|</td>
-                            <td class="info">:-|</td>
-                            <td class="info">:-|</td>
-                            <td class="info">:-|</td>
+                            <td>{{ atividade.descricao}}</td>
+                            <td>{{ atividade.valor}}</td>
+                            <td class="info" name="seg_{{ atividade.id}}"></td>
+                            <td class="info" name="ter_{{ atividade.id}}"></td>
+                            <td class="info" name="qua_{{ atividade.id}}"></td>
+                            <td class="info" name="qui_{{ atividade.id}}"></td>
+                            <td class="info" name="sex_{{ atividade.id}}"></td>
+                            <td class="info" name="sab_{{ atividade.id}}"></td>
+                            <td class="info" name="dom_{{ atividade.id}}"></td>
                         </tr>
-                        <tr>
-                            <td>Bochechar o enxaguante</td>
-                            <td>5</td>
-                            <td class="success">:-)</td>
-                            <td class="danger">:-(</td>
-                            <td class="info">:-|</td>
-                            <td class="info">:-|</td>
-                            <td class="info">:-|</td>
-                            <td class="info">:-|</td>
-                            <td class="info">:-|</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
+            {% else %}
+            <div class="post-preview">
+                <br />
+                <p class="post-meta" align="center">Nenhuma atividade cadastrada</p>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
 {% endblock %}
 
 {% block rodape %}
 <footer>
     <div class="container">
-        <div class="row">
-            <p>Se vc tiver dúvida sobre atividade, veja nossa seção de <b>dicas</b></p><br />
-            {% if atividade is defined %}
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <span class="copyright text-muted">Diário de bordo</span>
-                <form>
-                    <textarea class="form-control">Anote aqui uma coisa boa para enviar para o responsável pelo quadro</textarea>
-                    <p align="center"><input type="submit" value="Enviar"></p>
-                </form>
-            </div>
-            {% else %}
-                <div class="post-preview">
-                        <p class="post-meta" align="center">Nenhuma atividade cadastrada</p>
-                    </div>
-                {% if quadro is defined %}
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <p>Esse é o link do quadro:</p>
-                    <a href="quadromagico.com.br/quadro/{{ quadro.chave }}">Link para o quadro quadromagico.com.br/quadro/{{ quadro.chave }}</a>
-                </div>
-                {% endif %}
-            {% endif %}
+        <div class="row" align="center">
+            <p>Quer dicas de atividades? Veja nossa seção de <b><a href="{{ path('indexDica')}}">dicas</a></b></p>
+            <p>O link para o quadro é <b><a href="quadromagico.com.br/quadro/{{ quadro.crianca }}">quadromagico.com.br/quadro/{{ quadro.crianca }}</a></b></p>
         </div>
     </div>
 </footer>

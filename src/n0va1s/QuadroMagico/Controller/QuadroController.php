@@ -27,6 +27,10 @@ class QuadroController implements ControllerProviderInterface
             $app['quadro_service'] = function () {
                 return new \n0va1s\QuadroMagico\Service\QuadroService($this->em);
             };
+
+            $app['atividade_service'] = function () {
+                return new \n0va1s\QuadroMagico\Service\AtividadeService($this->em);
+            };
             //aplicacao
             $ctrl->get('/', function () use ($app) {
                 return $app['twig']->render('cadastroQuadro.twig');
@@ -34,18 +38,19 @@ class QuadroController implements ControllerProviderInterface
 
             $ctrl->post('/salvar', function (Request $req) use ($app) {
                 $dados = $req->request->all();
-                $resultado = $app['quadro_service']->save($dados);
-                return $app['twig']->render('cadastroQuadro.twig', array('quadro'=>$resultado));
+                $quadro = $app['quadro_service']->save($dados);
+                return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro));
             })->bind('quadroSalvar');
 
             $ctrl->get('/atividade', function (Request $req) use ($app) {
                 return $app['twig']->render('cadastroAtividade.twig');
             })->bind('indexAtividade');
 
-            $ctrl->post('/atividade', function (Request $req) use ($app) {
-                //$dados = $req->request->all();
-                //$resultado = $app['quadro_service']->save($dados);
-                return $app['twig']->render('cadastroAtividade.twig');
+            $ctrl->post('/atividade/salvar', function (Request $req) use ($app) {
+                $dados = $req->request->all();
+                $resultado = $app['atividade_service']->save($dados);
+                $atividades = $app['atividade_service']->fetchall();
+                return $app['twig']->render('cadastroAtividade.twig', array('atividades'=>$atividades));
             })->bind('atividadeSalvar');
 
             //api
