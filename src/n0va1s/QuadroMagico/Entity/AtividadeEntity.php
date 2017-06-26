@@ -4,7 +4,6 @@ namespace n0va1s\QuadroMagico\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use n0va1s\QuadroMagico\Service\AtividadeService;
 
 /**
  * @ORM\Entity
@@ -23,7 +22,7 @@ class AtividadeEntity
     /**
      * @ORM\Column(type="string", length=100, name="des_atividade")
      */
-    private $tarefa;
+    private $atividade;
 
     /**
      * @ORM\Column(type="string", length=255, name="val_atividade")
@@ -44,7 +43,7 @@ class AtividadeEntity
      * @ORM\ManyToOne(targetEntity="QuadroEntity", inversedBy="atividades")
      * @ORM\JoinColumn(name="seq_quadro", referencedColumnName="seq_quadro")
      */
-    private $atividade;
+    private $quadro;
 
     public function __construct()
     {
@@ -74,7 +73,12 @@ class AtividadeEntity
     public function setAtividade($atividade)
     {
         $this->atividade = $atividade;
+        return $this;
+    }
 
+    public function setQuadro($quadro)
+    {
+        $this->quadro = $quadro;
         return $this;
     }
 
@@ -88,16 +92,21 @@ class AtividadeEntity
         return $this->proposito;
     }
 
+    public function getValor()
+    {
+        return $this->valor;
+    }
+
     public function getAtividade()
     {
         return $this->atividade;
     }
 
-    public function getValor()
+    public function getQuadro()
     {
-        return $this->valor;
+        return $this->quadro;
     }
-    
+
     public function getCadastro()
     {
         return $this->cadastro;

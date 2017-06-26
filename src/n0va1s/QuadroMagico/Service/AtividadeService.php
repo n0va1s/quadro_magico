@@ -18,13 +18,16 @@ class AtividadeService
 
     public function save(array $dados)
     {
+        $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $dados['quadro']);
+
         if (empty($dados['id'])) {
             $atividade = new AtividadeEntity();
             $atividade->setAtividade($dados['atividade']);
             $atividade->setValor($dados['valor']);
             $atividade->setProposito($dados['proposito']);
             $this->em->persist($atividade);
-            $quadro->add($atividade);
+            //Uma atividade pertence a um quadro
+            $atividade->setQuadro($quadro);
         } else {
             //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
             $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['id']);

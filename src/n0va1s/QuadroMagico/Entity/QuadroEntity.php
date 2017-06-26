@@ -4,6 +4,7 @@ namespace n0va1s\QuadroMagico\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use n0va1s\QuadroMagico\Entity\AtividadeEntity;
 
 /**
  * @ORM\Entity
@@ -156,4 +157,11 @@ class QuadroEntity
         $this->responsavel = $responsavel;
         return $this;
     }
+    /*
+    public function addAtividade(AtividadeEntity $atividade)
+    {
+        $this->atividades->add($atividade);
+        return $this;
+    }
+    */
 }

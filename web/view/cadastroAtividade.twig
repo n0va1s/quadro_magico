@@ -24,6 +24,7 @@
                         <button class="btn btn-primary" type="submit">Cadastrar</button>
                     <center>
                     <input type="hidden" name="id" value="{% if atividade is defined %} {{ atividade.id }} {% endif %}">
+                    <input type="hidden" name="quadro" value="{% if quadro is defined %} {{ quadro.id }} {% endif %}">
                 </form>
             </div>
         </div>
@@ -60,7 +61,7 @@
                     <tbody>
                         {% for atividade in atividades %}
                         <tr>
-                            <td>{{ atividade.descricao}}</td>
+                            <td>{{ atividade.atividade}}</td>
                             <td>{{ atividade.valor}}</td>
                             <td class="info" name="seg_{{ atividade.id}}"></td>
                             <td class="info" name="ter_{{ atividade.id}}"></td>
@@ -89,7 +90,6 @@
     <div class="container">
         <div class="row" align="center">
             <p>Quer dicas de atividades? Veja nossa seção de <b><a href="{{ path('indexDica')}}">dicas</a></b></p>
-            <p>O link para o quadro é <b><a href="quadromagico.com.br/quadro/{{ quadro.crianca }}">quadromagico.com.br/quadro/{{ quadro.crianca }}</a></b></p>
         </div>
     </div>
 </footer>
