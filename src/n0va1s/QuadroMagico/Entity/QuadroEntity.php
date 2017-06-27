@@ -60,6 +60,11 @@ class QuadroEntity
     private $cadastro;
 
     /**
+     * @ORM\Column(type="string", length=40, name="cod_quadro")
+     */
+    private $codigo;
+
+    /**
      * @ORM\OneToMany(targetEntity="AtividadeEntity", mappedBy="atividade")
      */
     private $atividades;
@@ -68,6 +73,7 @@ class QuadroEntity
     {
         $this->cadastro = new \Datetime();
         $this->atividades = new ArrayCollection();
+        $this->codigo = sha1(rand()); //gera um codigo unico com 33 caracteres
     }
 
     public function getId()
@@ -164,4 +170,9 @@ class QuadroEntity
         return $this;
     }
     */
+
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
 }

@@ -41,7 +41,7 @@ class AtividadeEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="QuadroEntity", inversedBy="atividades")
-     * @ORM\JoinColumn(name="seq_quadro", referencedColumnName="seq_quadro")
+     * @ORM\JoinColumn(name="seq_quadro", referencedColumnName="seq_quadro", onDelete="CASCADE")
      */
     private $quadro;
 

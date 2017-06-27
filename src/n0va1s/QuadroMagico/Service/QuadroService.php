@@ -74,11 +74,22 @@ class QuadroService
     {
         $quadro = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c where c.id = :id')
                           ->setParameter('id', $id)
-                          ->getArrayResult();
+                          ->getSingleResult();
         if (count($quadro) == 0) {
             $quadro = ['mensagem'=>'Nenhum quadro cadastrado com este identificador'];
         }
-        return $quadro;
+        return $this->toArray($quadro);
+    }
+
+    public function findByCodigo($codigo)
+    {
+        $quadro = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c where c.codigo = :codigo')
+                          ->setParameter('codigo', $codigo)
+                          ->getSingleResult();
+        if (count($quadro) == 0) {
+            $quadro = ['mensagem'=>'Nenhum quadro cadastrado com este identificador'];
+        }
+        return $this->toArray($quadro);
     }
 
     public function findByEmail($email)

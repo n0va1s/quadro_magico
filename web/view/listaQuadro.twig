@@ -25,8 +25,9 @@
                     {% else %}
                         {% for quadro in quadros %}
                         <div class="post-preview">
-                            <a href= {{app.url_generator.generate('quadroExibir', {'id':quadro.id})}}>Quadro de <b>{{quadro.tipo == 'C' ? "comportamento" : "mesada"}}</b> para <b>{{ quadro.crianca }}</b></a>
-                            <a href="{{ path('quadroExcluir',{id:quadro.id})}}"><span class="glyphicon glyphicon-remove"></span></a>
+                            <span>Quadro de <b>{{quadro.tipo == 'C' ? "comportamento" : "mesada"}}</b> para <b>{{ quadro.crianca }}</b></span><br />
+                            <a class="post-meta" href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}>quadromagico.com.br{{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}</a>
+                            <a href="{{ path('quadroExcluir',{codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a>
                         </div>
                         {% endfor %}
                     {% endif %}

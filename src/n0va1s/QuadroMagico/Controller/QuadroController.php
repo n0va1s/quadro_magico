@@ -53,15 +53,15 @@ class QuadroController implements ControllerProviderInterface
             return $app['twig']->render('listaQuadro.twig', array('quadros'=>$quadros));
         })->bind('quadroListar');
 
-        $ctrl->get('/exibir/{id}', function ($id) use ($app) {
-            $quadro = $app['quadro_service']->findById($id);
+        $ctrl->get('/exibir/{codigo}', function ($codigo) use ($app) {
+            $quadro = $app['quadro_service']->findByCodigo($codigo);
             $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
             return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$app['session']->get('quadro'), 'atividades'=>$atividades));
-        })->bind('quadroExibir')
-        ->assert('id', '\d+');
+        })->bind('quadroExibir');
 
-        $ctrl->get('/excluir/{id}', function ($id) use ($app) {
-            $excluiu = $app['quadro_service']->delete($id);
+        $ctrl->get('/excluir/{codigo}', function ($codigo) use ($app) {
+            $quadro = $app['quadro_service']->findByCodigo($codigo);
+            $excluiu = $app['quadro_service']->delete($quadro['id']);
             if ($excluiu) {
                 $quadros = $app['quadro_service']->findByEmail($app['session']->get('email'));
                 return $app['twig']->render('listaQuadro.twig', array('quadros'=>$quadros));
