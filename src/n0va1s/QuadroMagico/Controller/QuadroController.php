@@ -81,11 +81,12 @@ class QuadroController implements ControllerProviderInterface
 
         $ctrl->post('/atividade/salvar', function (Request $req) use ($app) {
             $dados = $req->request->all();
+            $imagem = $req->files->get('imagem');
             //Recupera os dados do quadro da sessao
             $quadro = $app['session']->get('quadro');
             //Adiciona o id do quadro nos dados da atividade
             $dados['quadro'] = $quadro['id'];
-            $resultado = $app['atividade_service']->save($dados);
+            $resultado = $app['atividade_service']->save($dados, $imagem);
             $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
         })->bind('atividadeSalvar');

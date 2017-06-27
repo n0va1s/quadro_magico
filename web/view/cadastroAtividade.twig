@@ -4,14 +4,15 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <form name="frmAtividade" action="{{ path('atividadeSalvar')}}" method="POST">
+                <form name="frmAtividade" action="{{ path('atividadeSalvar')}}" method="POST" enctype='multipart/form-data'>
                     <h4>Atividades do quadro {% if quadro is defined %}de {{quadro.tipo == 'C' ? "comportamento" : "mesada"}} para {{ quadro.crianca }} {% endif %}</h4>
                     <label for="atividade" class="sr-only">Atividade</label>
-                    <input type="text" name="atividade" class="col-lg-6" placeholder="Escovar os dentes" autofocus required data-validation-required-message="Qual a atividade?">
+                    <input type="text" name="atividade" class="col-lg-9" placeholder="Escovar os dentes" autofocus required 
+                    data-validation-required-message="Qual a atividade?">
                     <label for="valor" class="sr-only">Valor</label>
-                    <input type="text" name="valor" class="col-lg-2" placeholder="Pontos?" required data-validation-required-message="Quanto vale a atividade">
+                    <input type="text" name="valor" class="col-lg-3" placeholder="Pontos?">
                     <label for="proposito" class="sr-only">Propósito</label>
-                    <select name="proposito" class="col-lg-4">
+                    <select name="proposito" class="col-lg-4" required>
                         <option value="">Propósito</option>
                         <option value="E">Escola</option>
                         <option value="H">Higiene</option>
@@ -20,6 +21,8 @@
                         <option value="D">Casa</option>
                         <option value="F">Exercício</option>
                     </select>
+                    <label for="imagem" class="sr-only">Imagem</label>
+                    <input type="file" name="imagem" id="imagem" class="col-lg-8">
                     <div>&nbsp;</div>
                     <center><button class="btn btn-primary" type="submit">Cadastrar</button><center>
                 </form>

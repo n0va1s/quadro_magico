@@ -6,6 +6,7 @@ use \Doctrine\ORM\EntityManager;
 use \Doctrine\ORM\Query;
 use \Doctrine\ORM\Tools\Pagination\Paginator;
 use n0va1s\QuadroMagico\Entity\AtividadeEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
 class AtividadeService
 {
@@ -16,7 +17,7 @@ class AtividadeService
         $this->em = $em;
     }
 
-    public function save(array $dados)
+    public function save(array $dados, File $imagem)
     {
         $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $dados['quadro']);
         if (empty($dados['id'])) {
@@ -24,6 +25,7 @@ class AtividadeService
             $atividade->setAtividade($dados['atividade']);
             $atividade->setValor($dados['valor']);
             $atividade->setProposito($dados['proposito']);
+            $atividade->setImagem($imagem);
             $this->em->persist($atividade);
             //Uma atividade pertence a um quadro
             $atividade->setQuadro($quadro);
@@ -33,6 +35,7 @@ class AtividadeService
             $atividade->setAtividade($dados['atividade']);
             $atividade->setValor($dados['valor']);
             $atividade->setProposito($dados['proposito']);
+            $atividade->setImagem($imagem);
         }
         $this->em->flush();
         return $this->toArray($atividade);

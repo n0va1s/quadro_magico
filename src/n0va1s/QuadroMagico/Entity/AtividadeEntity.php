@@ -4,6 +4,7 @@ namespace n0va1s\QuadroMagico\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use n0va1s\QuadroMagico\Service\ArquivoService;
 
 /**
  * @ORM\Entity
@@ -25,7 +26,7 @@ class AtividadeEntity
     private $atividade;
 
     /**
-     * @ORM\Column(type="string", length=255, name="val_atividade")
+     * @ORM\Column(type="string", length=255, name="val_atividade", nullable=true)
      */
     private $valor;
 
@@ -33,6 +34,11 @@ class AtividadeEntity
      * @ORM\Column(type="string", length=1, name="ind_proposito")
      */
     private $proposito;
+
+    /**
+     * @ORM\Column(type="string", length=100, name="url_imagem")
+     */
+    private $imagem;
 
     /**
      * @ORM\Column(type="datetime", name="dat_cadastro")
@@ -50,24 +56,20 @@ class AtividadeEntity
         $this->cadastro = new \Datetime();
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function setId($id)
     {
         $this->id = $id;
-
         return $this;
     }
 
-    public function setProposito($proposito)
+    public function getAtividade()
     {
-        $this->proposito = $proposito;
-        return $this;
-    }
-
-    public function setValor($valor)
-    {
-        $this->valor = $valor;
-
-        return $this;
+        return $this->atividade;
     }
 
     public function setAtividade($atividade)
@@ -76,15 +78,15 @@ class AtividadeEntity
         return $this;
     }
 
-    public function setQuadro($quadro)
+    public function getValor()
     {
-        $this->quadro = $quadro;
-        return $this;
+        return $this->valor;
     }
 
-    public function getId()
+    public function setValor($valor)
     {
-        return $this->id;
+        $this->valor = $valor;
+        return $this;
     }
 
     public function getProposito()
@@ -92,14 +94,33 @@ class AtividadeEntity
         return $this->proposito;
     }
 
-    public function getValor()
+    public function setProposito($proposito)
     {
-        return $this->valor;
+        $this->proposito = $proposito;
+        return $this;
     }
 
-    public function getAtividade()
+    public function getImagem()
     {
-        return $this->atividade;
+        return $this->imagem;
+    }
+
+    public function setImagem($imagem)
+    {
+        
+        $this->imagem = ArquivoService::carregarImagem($imagem);
+        return $this;
+    }
+
+    public function getCadastro()
+    {
+        return $this->cadastro;
+    }
+
+    public function setCadastro($cadastro)
+    {
+        $this->cadastro = $cadastro;
+        return $this;
     }
 
     public function getQuadro()
@@ -107,8 +128,9 @@ class AtividadeEntity
         return $this->quadro;
     }
 
-    public function getCadastro()
+    public function setQuadro($quadro)
     {
-        return $this->cadastro;
+        $this->quadro = $quadro;
+        return $this;
     }
 }
