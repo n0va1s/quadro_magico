@@ -45,10 +45,20 @@ class ArquivoService
             //Renomeia o arquivo por questao de seguranca e para não haver duplicidade
             $newFileName = round(microtime(true));
             $arquivo->move($filePath, $newFileName.".".$fileType);
-            return $newFileName;
+            return $newFileName.".".$fileType;
         } else {
             echo "Erro. O arquivo não gravou.";
             return false;
+        }
+    }
+
+    public static function recuperarImagem($imagem)
+    {
+        $path = __DIR__.'/../../../../data/img/'.$imagem;
+        if (is_file($path)) {
+var_dump($path);            
+            return $path;
+            //return new BinaryFileResponse($path);
         }
     }
 }

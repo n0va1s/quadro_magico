@@ -102,7 +102,7 @@ class AtividadeEntity
 
     public function getImagem()
     {
-        return $this->imagem;
+        return ArquivoService::recuperarImagem($this->imagem);
     }
 
     public function setImagem($imagem)

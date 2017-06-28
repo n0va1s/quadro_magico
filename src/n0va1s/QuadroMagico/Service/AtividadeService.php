@@ -38,6 +38,8 @@ class AtividadeService
             $atividade->setImagem($imagem);
         }
         $this->em->flush();
+        var_dump($this->toArray($atividade));
+        exit;
         return $this->toArray($atividade);
     }
 
@@ -63,7 +65,8 @@ class AtividadeService
             'id' => $atividade->getId(),
             'atividade' => $atividade->getAtividade(),
             'valor' => $atividade->getValor(),
-            'proposito' => $atividade->getProposito()
+            'proposito' => $atividade->getProposito(),
+            'imagem' => $atividade->getImagem()
         );
     }
 }
