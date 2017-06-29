@@ -38,8 +38,6 @@ class AtividadeService
             $atividade->setImagem($imagem);
         }
         $this->em->flush();
-        var_dump($this->toArray($atividade));
-        exit;
         return $this->toArray($atividade);
     }
 

@@ -51,9 +51,15 @@ class AtividadeEntity
      */
     private $quadro;
 
+    /**
+     * @ORM\OneToMany(targetEntity="MarcacaoEntity", mappedBy="atividade")
+     */
+    private $marcacoes;
+
     public function __construct()
     {
         $this->cadastro = new \Datetime();
+        $this->marcacoes = new ArrayCollection();
     }
 
     public function getId()

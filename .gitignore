@@ -1,6 +1,6 @@
 composer.phar
 /vendor/
-/data/
+/web/file
 /test/log/
 *.~
 *.lock

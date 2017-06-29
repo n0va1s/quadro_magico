@@ -27,7 +27,7 @@
                         <div class="post-preview">
                             <span>Quadro de <b>{{quadro.tipo == 'C' ? "comportamento" : "mesada"}}</b> para <b>{{ quadro.crianca }}</b></span><br />
                             <a class="post-meta" href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}>quadromagico.com.br{{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}</a>
-                            <a href="{{ path('quadroExcluir',{codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a>
+                            <a href="{{ path('quadroExcluir',{'codigo':quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a>
                         </div>
                         {% endfor %}
                     {% endif %}

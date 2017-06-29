@@ -74,6 +74,7 @@ $app->register(new Silex\Provider\AssetServiceProvider(), array(
         'css' => array('version' => 'css2', 'base_path' => '/css'),
         'img' => array('base_path' => '/img'),
         'js' => array('base_path' => '/js'),
+        'file' => array('base_path' => '/file'),
     ),
 ));
 

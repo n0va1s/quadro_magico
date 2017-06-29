@@ -9,6 +9,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>&nbsp;</th>
                             <th>Tarefa</th>
                             <th>Valor</th>
                             <th>Seg</th>
@@ -22,9 +23,9 @@
                     </thead>
                     <tfoot>
                         <tr>
-                            <th></span></th>
-                            <th></span></th>
-                            <!--<th><span class="glyphicon glyphicon-heart"></span></th>-->
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
@@ -37,6 +38,7 @@
                     <tbody>
                         {% for atividade in atividades %}
                         <tr>
+                            <td><img src="{{ asset(atividade.imagem, 'file') }}" width="75" height="75"></td>
                             <td>{{ atividade.atividade}}</td>
                             <td>{{ atividade.valor}}</td>
                             <td class="info" name="seg_{{ atividade.id}}"></td>

@@ -10,7 +10,7 @@
                     <input type="text" name="atividade" class="col-lg-9" placeholder="Escovar os dentes" autofocus required 
                     data-validation-required-message="Qual a atividade?">
                     <label for="valor" class="sr-only">Valor</label>
-                    <input type="text" name="valor" class="col-lg-3" placeholder="Pontos?">
+                    <input type="number" name="valor" class="col-lg-3" placeholder="Pontos?">
                     <label for="proposito" class="sr-only">Propósito</label>
                     <select name="proposito" class="col-lg-4" required>
                         <option value="">Propósito</option>
@@ -34,6 +34,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>&nbsp;</th>
                             <th>Tarefa</th>
                             <th>Valor</th>
                             <th>Seg</th>
@@ -50,7 +51,7 @@
                         <tr>
                             <th>&nbsp;</th>
                             <th>&nbsp;</th>
-                            <!--<th><span class="glyphicon glyphicon-heart"></span></th>-->
+                            <th>&nbsp;</th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
@@ -58,12 +59,13 @@
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th>&nbsp;</span></th>
+                            <th>&nbsp;</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         {% for atividade in atividades %}
                         <tr align="center">
+                            <td><img src="{{ asset(atividade.imagem, 'file') }}" width="75" height="75"></td>
                             <td align="left">{{ atividade.atividade}}</td>
                             <td align="left">{{ atividade.valor}}</td>
                             <td class="info" name="seg_{{ atividade.id}}"></td>

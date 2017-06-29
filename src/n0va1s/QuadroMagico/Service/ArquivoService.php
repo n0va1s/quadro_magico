@@ -16,7 +16,7 @@ class ArquivoService
       private 'pathName' (SplFileInfo) => string '/tmp/phpAoWe9U' (length=14)
       private 'fileName' (SplFileInfo) => string 'phpAoWe9U' (length=9)
     */
-        $filePath = __DIR__.'/../../../../data/img/';
+        $filePath = __DIR__.'/../../../../web/file/';
         $fileName = $arquivo->getClientOriginalName();
         $fileType = $arquivo->getClientOriginalExtension();
         $fileMime = $arquivo->getClientMimeType();
@@ -54,9 +54,8 @@ class ArquivoService
 
     public static function recuperarImagem($imagem)
     {
-        $path = __DIR__.'/../../../../data/img/'.$imagem;
+        $path = __DIR__.'/../../../../web/file/'.$imagem;
         if (is_file($path)) {
-var_dump($path);            
             return $path;
             //return new BinaryFileResponse($path);
         }
