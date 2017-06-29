@@ -56,7 +56,7 @@ class QuadroController implements ControllerProviderInterface
         $ctrl->get('/exibir/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
             $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
-            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$app['session']->get('quadro'), 'atividades'=>$atividades));
+            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
         })->bind('quadroExibir');
 
         $ctrl->get('/excluir/{codigo}', function ($codigo) use ($app) {
