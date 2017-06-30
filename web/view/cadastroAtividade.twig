@@ -65,7 +65,7 @@
                     <tbody>
                         {% for atividade in atividades %}
                         <tr align="center">
-                            <td><img src="{{ asset(atividade.imagem, 'file') }}" width="75" height="75"></td>
+                            <td><img src="{{ asset(atividade.imagem, 'file') }}" width="100" height="100"></td>
                             <td align="left">{{ atividade.atividade}}</td>
                             <td align="left">{{ atividade.valor}}</td>
                             <td class="info" name="seg_{{ atividade.id}}"></td>
