@@ -98,6 +98,13 @@ class QuadroController implements ControllerProviderInterface
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
         })->bind('atividadeExcluir')
         ->assert('id', '\d+');
+
+        $ctrl->post('/atividade/marcar', function (Request $req) use ($app) {
+            $dados = $req->request->all();
+            $resultado = $app['atividade_service']->mark($dados);
+            return $resultado;
+        })->bind('atividadeMarcar');
+
         return $ctrl;
     }
 }

@@ -6,6 +6,7 @@ use \Doctrine\ORM\EntityManager;
 use \Doctrine\ORM\Query;
 use \Doctrine\ORM\Tools\Pagination\Paginator;
 use n0va1s\QuadroMagico\Entity\AtividadeEntity;
+use n0va1s\QuadroMagico\Entity\MarcacaoEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
 class AtividadeService
@@ -17,7 +18,7 @@ class AtividadeService
         $this->em = $em;
     }
 
-    public function save(array $dados, File $imagem)
+    public function save(array $dados, File $imagem = null)
     {
         $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $dados['quadro']);
         if (empty($dados['id'])) {
@@ -25,7 +26,9 @@ class AtividadeService
             $atividade->setAtividade($dados['atividade']);
             $atividade->setValor($dados['valor']);
             $atividade->setProposito($dados['proposito']);
-            $atividade->setImagem($imagem);
+            if (!empty($imagem)) {
+                $atividade->setImagem($imagem);
+            }
             $this->em->persist($atividade);
             //Uma atividade pertence a um quadro
             $atividade->setQuadro($quadro);
@@ -35,10 +38,48 @@ class AtividadeService
             $atividade->setAtividade($dados['atividade']);
             $atividade->setValor($dados['valor']);
             $atividade->setProposito($dados['proposito']);
-            $atividade->setImagem($imagem);
+            if (!empty($imagem)) {
+                $atividade->setImagem($imagem);
+            }
         }
         $this->em->flush();
         return $this->toArray($atividade);
+    }
+
+    public function mark(array $dados)
+    {
+        $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['atividade']);
+        var_dump($atividade->getId());
+        exit;
+        $marcacao = new MarcacaoEntity();
+        switch ($dados['dia']) {
+            case 'seg':
+                $marcacao->setSegunda($dados['valor']);
+                break;
+            case 'ter':
+                $marcacao->setTerca($dados['valor']);
+                break;
+            case 'qua':
+                $marcacao->setQuarta($dados['valor']);
+                break;
+            case 'qui':
+                $marcacao->setQuinta($dados['valor']);
+                break;
+            case 'sex':
+                $marcacao->setSexta($dados['valor']);
+                break;
+            case 'sab':
+                $marcacao->setSabado($dados['valor']);
+                break;
+            case 'dom':
+                $marcacao->setDomingo($dados['valor']);
+                break;
+        }
+        $this->em->persist($marcacao);
+        //Uma atividade pertence a um quadro
+        $marcacao->setAtividade($atividade);
+        $this->em->flush();
+        return true;
     }
 
     public function delete(int $id)

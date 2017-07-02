@@ -36,7 +36,7 @@ class AtividadeEntity
     private $proposito;
 
     /**
-     * @ORM\Column(type="string", length=100, name="url_imagem")
+     * @ORM\Column(type="string", length=100, name="url_imagem", nullable=true)
      */
     private $imagem;
 
