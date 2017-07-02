@@ -48,36 +48,63 @@ class AtividadeService
 
     public function mark(array $dados)
     {
-        $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['atividade']);
-        var_dump($atividade->getId());
-        exit;
-        $marcacao = new MarcacaoEntity();
-        switch ($dados['dia']) {
-            case 'seg':
-                $marcacao->setSegunda($dados['valor']);
-                break;
-            case 'ter':
-                $marcacao->setTerca($dados['valor']);
-                break;
-            case 'qua':
-                $marcacao->setQuarta($dados['valor']);
-                break;
-            case 'qui':
-                $marcacao->setQuinta($dados['valor']);
-                break;
-            case 'sex':
-                $marcacao->setSexta($dados['valor']);
-                break;
-            case 'sab':
-                $marcacao->setSabado($dados['valor']);
-                break;
-            case 'dom':
-                $marcacao->setDomingo($dados['valor']);
-                break;
+        //Verifica se ja existe uma marcacao para a atividade x dia
+        $id = $this->findByMark($dados['atividade'], $dados['dia']);
+        if ($id == 0) { //nao possui marcacao
+            $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['atividade']);
+            $marcacao = new MarcacaoEntity();
+            switch ($dados['dia']) {
+                case 'seg':
+                    $marcacao->setSegunda($dados['valor']);
+                    break;
+                case 'ter':
+                    $marcacao->setTerca($dados['valor']);
+                    break;
+                case 'qua':
+                    $marcacao->setQuarta($dados['valor']);
+                    break;
+                case 'qui':
+                    $marcacao->setQuinta($dados['valor']);
+                    break;
+                case 'sex':
+                    $marcacao->setSexta($dados['valor']);
+                    break;
+                case 'sab':
+                    $marcacao->setSabado($dados['valor']);
+                    break;
+                case 'dom':
+                    $marcacao->setDomingo($dados['valor']);
+                    break;
+            }
+            $this->em->persist($marcacao);
+            //Uma marcacao pertence a uma atividade
+            $marcacao->setAtividade($atividade);
+        } else { // possui marcacao
+            $marcacao = $this->em->getReference('\n0va1s\QuadroMagico\Entity\MarcacaoEntity', $id);
+            switch ($dados['dia']) {
+                case 'seg':
+                    $marcacao->setSegunda($dados['valor']);
+                    break;
+                case 'ter':
+                    $marcacao->setTerca($dados['valor']);
+                    break;
+                case 'qua':
+                    $marcacao->setQuarta($dados['valor']);
+                    break;
+                case 'qui':
+                    $marcacao->setQuinta($dados['valor']);
+                    break;
+                case 'sex':
+                    $marcacao->setSexta($dados['valor']);
+                    break;
+                case 'sab':
+                    $marcacao->setSabado($dados['valor']);
+                    break;
+                case 'dom':
+                    $marcacao->setDomingo($dados['valor']);
+                    break;
+            }
         }
-        $this->em->persist($marcacao);
-        //Uma atividade pertence a um quadro
-        $marcacao->setAtividade($atividade);
         $this->em->flush();
         return true;
     }
@@ -96,6 +123,67 @@ class AtividadeService
                            ->setParameter('id', $id)
                            ->getArrayResult();
         return $atividades;
+    }
+
+    public function findByMark(int $atividade, $dia)
+    {
+        //Tem alguma marcacao para a atividade x dia
+        switch ($dia) {
+            case 'seg':
+                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.segunda = :sim or c.segunda = :nao)')
+                ->setParameter(':atividade', $atividade)
+                ->setParameter(':sim', 'S')
+                ->setParameter(':nao', 'N')
+                ->getOneOrNullResult();
+                break;
+            case 'ter':
+                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.terca = :sim or c.terca = :nao)')
+                ->setParameter(':atividade', $atividade)
+                ->setParameter(':sim', 'S')
+                ->setParameter(':nao', 'N')
+                ->getOneOrNullResult();
+                break;
+            case 'qua':
+                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.quarta = :sim or c.quarta = :nao)')
+                ->setParameter(':atividade', $atividade)
+                ->setParameter(':sim', 'S')
+                ->setParameter(':nao', 'N')
+                ->getOneOrNullResult();
+                break;
+            case 'qui':
+                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.quinta = :sim or c.quinta = :nao)')
+                ->setParameter(':atividade', $atividade)
+                ->setParameter(':sim', 'S')
+                ->setParameter(':nao', 'N')
+                ->getOneOrNullResult();
+                break;
+            case 'sex':
+                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.sexta = :sim or c.sexta = :nao)')
+                ->setParameter(':atividade', $atividade)
+                ->setParameter(':sim', 'S')
+                ->setParameter(':nao', 'N')
+                ->getOneOrNullResult();
+                break;
+            case 'sab':
+                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.sabado = :sim or c.sabado = :nao)')
+                ->setParameter(':atividade', $atividade)
+                ->setParameter(':sim', 'S')
+                ->setParameter(':nao', 'N')
+                ->getOneOrNullResult();
+                break;
+            case 'dom':
+                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.domingo = :sim or c.domingo = :nao)')
+                ->setParameter(':atividade', $atividade)
+                ->setParameter(':sim', 'S')
+                ->setParameter(':nao', 'N')
+                ->getOneOrNullResult();
+                break;
+        }
+        if ($marcacao) {
+            return $marcacao->getId();
+        } else {
+            return 0;
+        }
     }
 
     public function toArray(AtividadeEntity $atividade)
