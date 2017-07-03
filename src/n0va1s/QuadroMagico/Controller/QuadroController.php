@@ -102,7 +102,7 @@ class QuadroController implements ControllerProviderInterface
         $ctrl->post('/atividade/marcar', function (Request $req) use ($app) {
             $dados = $req->request->all();
             $resultado = $app['atividade_service']->mark($dados);
-            return $resultado;
+            return $app->json($resultado);
         })->bind('atividadeMarcar');
 
         return $ctrl;

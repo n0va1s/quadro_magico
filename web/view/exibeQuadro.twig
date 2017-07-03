@@ -45,13 +45,64 @@
                             {% endif %}
                             <td>{{ atividade.atividade}}</td>
                             <td>{{ atividade.valor}}</td>
-                            <td class="info" name="seg_{{ atividade.id}}"><span></span></td>
-                            <td class="info" name="ter_{{ atividade.id}}"><span></span></td>
-                            <td class="info" name="qua_{{ atividade.id}}"><span></span></td>
-                            <td class="info" name="qui_{{ atividade.id}}"><span></span></td>
-                            <td class="info" name="sex_{{ atividade.id}}"><span></span></td>
-                            <td class="info" name="sab_{{ atividade.id}}"><span></span></td>
-                            <td class="info" name="dom_{{ atividade.id}}"><span></span></td>
+                            {% for marcacao in atividade['marcacoes'] %}
+                            <!-- Segunda -->
+                            {% if marcacao.segunda == 'S' %}    
+                            <td class="success" name="seg_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                            {% elseif marcacao.segunda == 'N' %}    
+                            <td class="danger" name="seg_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                            {% else %}
+                            <td class="info" name="seg_{{ atividade.id}}"><span>&nbsp;</span></td>
+                            {% endif %}
+                            <!-- Terca -->
+                            {% if marcacao.terca == 'S' %}    
+                            <td class="success" name="ter_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                            {% elseif marcacao.terca == 'N' %}    
+                            <td class="danger" name="ter_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                            {% else %}
+                            <td class="info" name="ter_{{ atividade.id}}"><span>&nbsp;</span></td>
+                            {% endif %}
+                            <!-- Quarta -->
+                            {% if marcacao.quarta == 'S' %}    
+                            <td class="success" name="qua_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                            {% elseif marcacao.quarta == 'N' %}    
+                            <td class="danger" name="qua_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                            {% else %}
+                            <td class="info" name="qua_{{ atividade.id}}"><span>&nbsp;</span></td>
+                            {% endif %}
+                            <!-- Quinta -->
+                            {% if marcacao.quinta == 'S' %}    
+                            <td class="success" name="qui_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                            {% elseif marcacao.quinta == 'N' %}    
+                            <td class="danger" name="qui_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                            {% else %}
+                            <td class="info" name="qui_{{ atividade.id}}"><span>&nbsp;</span></td>
+                            {% endif %}
+                            <!-- Sexta -->
+                            {% if marcacao.sexta == 'S' %}    
+                            <td class="success" name="sex_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                            {% elseif marcacao.sexta == 'N' %}    
+                            <td class="danger" name="sex_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                            {% else %}
+                            <td class="info" name="sex_{{ atividade.id}}"><span>&nbsp;</span></td>
+                            {% endif %}
+                            <!-- Sabado -->
+                            {% if marcacao.sabado == 'S' %}    
+                            <td class="success" name="sab_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                            {% elseif marcacao.sabado == 'N' %}    
+                            <td class="danger" name="sab_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                            {% else %}
+                            <td class="info" name="sab_{{ atividade.id}}"><span>&nbsp;</span></td>
+                            {% endif %}
+                            <!-- Domingo -->
+                            {% if marcacao.domingo == 'S' %}    
+                            <td class="success" name="dom_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                            {% elseif marcacao.domingo == 'N' %}    
+                            <td class="danger" name="dom_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                            {% else %}
+                            <td class="info" name="dom_{{ atividade.id}}"><span>&nbsp;</span></td>
+                            {% endif %}
+                            {% endfor %}
                         </tr>
                         {% endfor %}
                     </tbody>

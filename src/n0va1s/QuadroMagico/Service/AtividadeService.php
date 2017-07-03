@@ -48,9 +48,9 @@ class AtividadeService
 
     public function mark(array $dados)
     {
-        //Verifica se ja existe uma marcacao para a atividade x dia
-        $id = $this->findByMark($dados['atividade'], $dados['dia']);
-        if ($id == 0) { //nao possui marcacao
+        //Verifica se ja existe uma marcacao para a atividade e retorna o ID
+        $id = $this->findByMarcacao($dados['atividade']);
+        if (is_null($id)) { //nao possui marcacao
             $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['atividade']);
             $marcacao = new MarcacaoEntity();
             switch ($dados['dia']) {
@@ -119,13 +119,25 @@ class AtividadeService
 
     public function findByQuadro(int $id)
     {
-        $atividades = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\AtividadeEntity c where c.quadro = :id')
+        $atividades = $this->em->createQuery('select a, m from \n0va1s\QuadroMagico\Entity\AtividadeEntity a join a.marcacoes m where a.quadro = :id')
                            ->setParameter('id', $id)
                            ->getArrayResult();
         return $atividades;
     }
 
-    public function findByMark(int $atividade, $dia)
+    public function findByMarcacao(int $atividade)
+    {
+        $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :id')
+                           ->setParameter('id', $atividade)
+                           ->getOneOrNullResult();
+        if ($marcacao) {
+            return $marcacao->getId();
+        } else {
+            return $marcacao;
+        }
+    }
+
+    public function findByMarcacaoDia(int $atividade, $dia)
     {
         //Tem alguma marcacao para a atividade x dia
         switch ($dia) {
