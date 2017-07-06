@@ -10,7 +10,7 @@
                     <input type="text" name="atividade" class="col-lg-9" placeholder="Escovar os dentes" autofocus required 
                     data-validation-required-message="Qual a atividade?">
                     <label for="valor" class="sr-only">Valor</label>
-                    <input type="number" name="valor" class="col-lg-3" placeholder="Pontos?">
+                    <input type="number" name="valor" class="col-lg-3" placeholder="Pontos ou $?">
                     <label for="proposito" class="sr-only">Propósito</label>
                     <select name="proposito" class="col-lg-4" required>
                         <option value="">Propósito</option>
@@ -20,6 +20,8 @@
                         <option value="A">Autonomia</option>
                         <option value="D">Casa</option>
                         <option value="F">Exercício</option>
+                        <option value="R">Refeição</option>
+                        <option value="I">Espiritualidade</option>
                     </select>
                     <label for="imagem" class="sr-only">Imagem</label>
                     <input type="file" name="imagem" id="imagem" class="col-lg-8">
@@ -35,51 +37,33 @@
                     <thead>
                         <tr>
                             <th>&nbsp;</th>
+                            <th>Propósito</th>
                             <th>Tarefa</th>
                             <th>Valor</th>
-                            <th>Seg</th>
-                            <th>Ter</th>
-                            <th>Qua</th>
-                            <th>Qui</th>
-                            <th>Sex</th>
-                            <th>Sáb</th>
-                            <th>Dom</th>
                             <th>Excluir</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th>&nbsp;</th>
-                        </tr>
-                    </tfoot>
                     <tbody>
                         {% for atividade in atividades %}
                         <tr align="center">
                             {% if atividade.imagem is not null %}
                             <td><img src="{{ asset(atividade.imagem, 'file') }}" width="100" height="100"></td>
                             {% else %}
-                            <td width="100" height="100"></td>
+                            <td width="100" height="100">&nbsp;</td>
                             {% endif %}
-                            <td align="left">{{ atividade.atividade}}</td>
-                            <td align="left">{{ atividade.valor}}</td>
-                            <td class="info" name="seg_{{ atividade.id}}"></td>
-                            <td class="info" name="ter_{{ atividade.id}}"></td>
-                            <td class="info" name="qua_{{ atividade.id}}"></td>
-                            <td class="info" name="qui_{{ atividade.id}}"></td>
-                            <td class="info" name="sex_{{ atividade.id}}"></td>
-                            <td class="info" name="sab_{{ atividade.id}}"></td>
-                            <td class="info" name="dom_{{ atividade.id}}"></td>
-                            <td class="info" name="exc_{{ atividade.id}}"><a href="{{ path('atividadeExcluir',{id:atividade.id})}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                            {% if atividade.proposito == 'E' %} {% set proposito = 'Escola' %}
+                            {% elseif atividade.proposito == 'H' %} {% set proposito = 'Higiene' %}
+                            {% elseif atividade.proposito == 'C' %} {% set proposito = 'Comportamento' %}
+                            {% elseif atividade.proposito == 'A' %} {% set proposito = 'Autonomia' %}
+                            {% elseif atividade.proposito == 'D' %} {% set proposito = 'Casa' %}
+                            {% elseif atividade.proposito == 'F' %} {% set proposito = 'Exercício' %}
+                            {% elseif atividade.proposito == 'R' %} {% set proposito = 'Refeição' %}
+                            {% elseif atividade.proposito == 'I' %} {% set proposito = 'Espiritualidade' %}
+                            {% endif %}
+                            <td align="center">{{ proposito }}</td>
+                            <td align="left">{{ atividade.atividade }}</td>
+                            <td align="center">{{ atividade.valor }}</td>
+                            <td align="center"><a href="{{ path('atividadeExcluir',{id:atividade.id})}}"><span class="glyphicon glyphicon-remove">&nbsp;</span></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>

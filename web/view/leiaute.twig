@@ -49,10 +49,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="{{ app.url_generator.generate('quadroCadastro') }}">Quero criar um quadro</a>
+                        <a href="{{ app.url_generator.generate('indexQuadro') }}">Quero criar um quadro</a>
                     </li>
                     <li>
-                        <a href="{{ app.url_generator.generate('quadroConsulta') }}">Meus quadros</a>
+                        <a href="{{ app.url_generator.generate('quadroConsultar') }}">Meus quadros</a>
                     </li>
                     <li>
                         <a href="{{ app.url_generator.generate('indexDica') }}">Dicas</a>
@@ -74,7 +74,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h1>Quadro Mágico</h1>
+                        <h1>Um desejo por semana</h1>
                         <hr class="small">
                         <span class="subheading">Organize a rotina e de quebra crie filhos responsáveis, confiantes e felizes</span>
                     </div>
@@ -117,18 +117,17 @@
     <!--<script src="/vendor/jquery/jquery.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
-  <!-- JavaScript do quadro -->
-    <script type="text/javascript" src="{{ asset('quadro.js', 'js') }}"></script>
-
+    
     <!-- Bootstrap Core JavaScript -->
     <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- Contact Form JavaScript -->
     <script src="/js/jqBootstrapValidation.js"></script>
-    <script src="/js/contact_me.js"></script>
- 
+
     <!-- Theme JavaScript -->
     <script src="/js/clean-blog.min.js"></script>
 
+    <!-- JavaScript do quadro -->
+    <script type="text/javascript" src="{{ asset('quadro.js', 'js') }}"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 $(document).ready(function() {
-    $("td").click(function(event) {
+    $(".info,.success,.danger").click(function(event) {
         event.preventDefault();
-        var celula = $(this).attr('name').split("_");
+        var celula = $(this).attr('id').split("_");
         var estilo = $(this).attr('class');
         var valor;
         //Trocar o estilo e a imagem da celula clicada

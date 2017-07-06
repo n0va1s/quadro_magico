@@ -24,10 +24,29 @@
                         </div>
                     {% else %}
                         {% for quadro in quadros %}
-                        <div class="post-preview">
-                            <span>Quadro de <b>{{quadro.tipo == 'C' ? "comportamento" : "mesada"}}</b> para <b>{{ quadro.crianca }}</b></span><br />
-                            <a class="post-meta" href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}>quadromagico.com.br{{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}</a>
-                            <a href="{{ path('quadroExcluir',{'codigo':quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a>
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Quadro</th>
+                                            <th>Filho(a)</th>
+                                            <th>Link</th>
+                                            <th>Atividades</th>
+                                            <th>Excluir</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span>{{quadro.tipo == 'T' ? "Tarefa" : "mesada"}}</span></td>
+                                            <td><span>{{ quadro.crianca }}</span></td>
+                                            <td><a href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-link"></span></a></td>
+                                            <td><a href="{{ path('atividadeCadastrar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-check"></span></a></td>
+                                            <td><a href="{{ path('quadroExcluir',{'codigo':quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         {% endfor %}
                     {% endif %}

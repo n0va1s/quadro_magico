@@ -119,7 +119,7 @@ class AtividadeService
 
     public function findByQuadro(int $id)
     {
-        $atividades = $this->em->createQuery('select a, m from \n0va1s\QuadroMagico\Entity\AtividadeEntity a join a.marcacoes m where a.quadro = :id')
+        $atividades = $this->em->createQuery('select a, m from \n0va1s\QuadroMagico\Entity\AtividadeEntity a left join a.marcacoes m where a.quadro = :id')
                            ->setParameter('id', $id)
                            ->getArrayResult();
         return $atividades;
@@ -196,6 +196,30 @@ class AtividadeService
         } else {
             return 0;
         }
+    }
+
+    public function loadExamples(int $quadro)
+    {
+        $dados = array('quadro'=>$quadro,'atividade'=>'Acordar sozinho e arrumar a cama','valor'=>1,'proposito'=>'A');
+        $this->save($dados);
+        $dados = array('quadro'=>$quadro,'atividade'=>'Escovar os dentes, usar fio dental e enxaguante bucal','valor'=>1,'proposito'=>'H');
+        $this->save($dados);
+        $dados = array('quadro'=>$quadro,'atividade'=>'Preparar seu café da manhã','valor'=>1,'proposito'=>'A');
+        $this->save($dados);
+        $dados = array('quadro'=>$quadro,'atividade'=>'Estudar ou fazer a tarefa','valor'=>1,'proposito'=>'E');
+        $this->save($dados);
+        $dados = array('quadro'=>$quadro,'atividade'=>'Ler um livro ou gibi','valor'=>1,'proposito'=>'E');
+        $this->save($dados);
+        $dados = array('quadro'=>$quadro,'atividade'=>'Comer ao menos 4 coisas diferentes','valor'=>1,'proposito'=>'R');
+        $this->save($dados);
+        $dados = array('quadro'=>$quadro,'atividade'=>'Fazer a oração antes das refeições ou antes de dormir','valor'=>1,'proposito'=>'I');
+        $this->save($dados);
+        $dados = array('quadro'=>$quadro,'atividade'=>'Fazer uma tarefa doméstica','valor'=>1,'proposito'=>'A');
+        $this->save($dados);
+        $dados = array('quadro'=>$quadro,'atividade'=>'Não brigar, responder ou falar palavrão','valor'=>1,'proposito'=>'C');
+        $this->save($dados);
+        $dados = array('quadro'=>$quadro,'atividade'=>'Não deixar suas coisas espalhadas pela casa','valor'=>1,'proposito'=>'A');
+        $this->save($dados);
     }
 
     public function toArray(AtividadeEntity $atividade)

@@ -30,21 +30,22 @@ class QuadroController implements ControllerProviderInterface
 
         $ctrl->get('/', function () use ($app) {
             return $app['twig']->render('cadastroQuadro.twig');
-        })->bind('quadroCadastro');
+        })->bind('indexQuadro');
 
         $ctrl->post('/salvar', function (Request $req) use ($app) {
             $dados = $req->request->all();
             $quadro = $app['quadro_service']->save($dados);
             //Para recuperar o id do quadro no cadastro de atividades
             $app['session']->set('quadro', $quadro);
-            //return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro));
+            //Carregar atividades de exemplo
+            $atividades = $app['atividade_service']->loadExamples($quadro['id']);
             //Redireciona para o cadastro de atividades
             return $app->redirect('./atividade'); //TODO:retirar a URL fixa
         })->bind('quadroSalvar');
 
-        $ctrl->get('/consulta', function () use ($app) {
+        $ctrl->get('/consultar', function () use ($app) {
             return $app['twig']->render('listaQuadro.twig');
-        })->bind('quadroConsulta');
+        })->bind('quadroConsultar');
 
         $ctrl->post('/listar', function (Request $req) use ($app) {
             $dados = $req->request->all();
@@ -76,8 +77,19 @@ class QuadroController implements ControllerProviderInterface
         };
 
         $ctrl->get('/atividade', function () use ($app) {
-            return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$app['session']->get('quadro')));
+            //Pesquisar as atividades do quadro
+            $atividades = $app['atividade_service']->findByQuadro($app['session']->get('quadro')['id']);
+            return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$app['session']->get('quadro'), 'atividades'=>$atividades));
         })->bind('indexAtividade');
+
+        $ctrl->get('/atividade/cadastrar/{codigo}', function ($codigo) use ($app) {
+            $quadro = $app['quadro_service']->findByCodigo($codigo);
+            //Pesquisar as atividades do quadro
+            $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
+            //Enviar o quadro para sessao para ser salvo junto com a atividade
+            $app['session']->set('quadro', $quadro);
+            return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
+        })->bind('atividadeCadastrar');
 
         $ctrl->post('/atividade/salvar', function (Request $req) use ($app) {
             $dados = $req->request->all();
@@ -86,7 +98,9 @@ class QuadroController implements ControllerProviderInterface
             $quadro = $app['session']->get('quadro');
             //Adiciona o id do quadro nos dados da atividade
             $dados['quadro'] = $quadro['id'];
+            //Salvar a atividade
             $resultado = $app['atividade_service']->save($dados, $imagem);
+            //Pesquisar as atividades do quadro
             $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
         })->bind('atividadeSalvar');

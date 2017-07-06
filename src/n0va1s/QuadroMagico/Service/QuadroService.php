@@ -111,7 +111,8 @@ class QuadroService
             'genero' => $quadro->getGenero(),
             'idade' => $quadro->getIdade(),
             'crianca' => $quadro->getCrianca(),
-            'recompensa' => $quadro->getRecompensa()
+            'recompensa' => $quadro->getRecompensa(),
+            'codigo' => $quadro->getCodigo()
         );
     }
 }
