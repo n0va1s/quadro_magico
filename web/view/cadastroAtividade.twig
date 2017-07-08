@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <form name="frmAtividade" action="{{ path('atividadeSalvar')}}" method="POST" enctype='multipart/form-data'>
-                    <h4>Atividades do quadro {% if quadro is defined %}de {{quadro.tipo == 'C' ? "comportamento" : "mesada"}} para {{ quadro.crianca }} {% endif %}</h4>
+                    <h4>Atividades do quadro {% if quadro is defined %}de {{quadro.tipo == 'T' ? "tarefa" : "mesada"}} para {{ quadro.crianca }} {% endif %}</h4>
                     <label for="atividade" class="sr-only">Atividade</label>
                     <input type="text" name="atividade" class="col-lg-9" placeholder="Escovar os dentes" autofocus required 
                     data-validation-required-message="Qual a atividade?">

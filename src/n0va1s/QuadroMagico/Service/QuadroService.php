@@ -107,6 +107,7 @@ class QuadroService
     {
         return  array(
             'id' => $quadro->getId(),
+            'email' => $quadro->getResponsavel(),
             'tipo' => $quadro->getTipo(),
             'genero' => $quadro->getGenero(),
             'idade' => $quadro->getIdade(),

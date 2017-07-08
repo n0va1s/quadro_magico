@@ -45,15 +45,10 @@ class QuadroEntity
     private $crianca;
 
     /**
-     * @ORM\Column(type="string", length=255, name="des_recompensa")
+     * @ORM\Column(type="string", length=255, name="des_recompensa", nullable=true)
      */
     private $recompensa;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, name="val_mesada", nullable=true)
-    */
-    private $mesada;
-    
     /**
      * @ORM\Column(type="datetime", name="dat_cadastro")
      */

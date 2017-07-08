@@ -60,6 +60,20 @@ class QuadroController implements ControllerProviderInterface
             return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
         })->bind('quadroExibir');
 
+        $ctrl->get('/duplicar/{codigo}', function ($codigo) use ($app) {
+            //Dados do quadro a ser duplicado
+            $dados = $app['quadro_service']->findByCodigo($codigo);
+            //ID do quadro que sera duplicado
+
+            $id = $dados['id'];
+            //Remove o id para incluir um quadro novo
+            unset($dados['id']);
+            $quadro = $app['quadro_service']->save($dados);
+            //Duplica as atividades do quadro anterior no novo
+            $atividades = $app['atividade_service']->loadActivities($id, $quadro['id']);
+            return $app['twig']->render('cadastroQuadro.twig', array('quadro'=>$quadro));
+        })->bind('quadroDuplicar');
+
         $ctrl->get('/excluir/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
             $excluiu = $app['quadro_service']->delete($quadro['id']);

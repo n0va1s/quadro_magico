@@ -23,7 +23,6 @@
                         <br /><p class="post-meta" align="center">{{quadros.mensagem}}</p>
                         </div>
                     {% else %}
-                        {% for quadro in quadros %}
                         <div class="row">
                             <div class="table-responsive">
                                 <table class="table">
@@ -31,24 +30,27 @@
                                         <tr>
                                             <th>Quadro</th>
                                             <th>Filho(a)</th>
-                                            <th>Link</th>
-                                            <th>Atividades</th>
-                                            <th>Excluir</th>
+                                            <th><center>Endereço</center></th>
+                                            <th><center>Atividades</center></th>
+                                             <th><center>Novo</center></th>
+                                            <th><center>Excluir</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for quadro in quadros %}
                                         <tr>
                                             <td><span>{{quadro.tipo == 'T' ? "Tarefa" : "mesada"}}</span></td>
                                             <td><span>{{ quadro.crianca }}</span></td>
-                                            <td><a href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-link"></span></a></td>
-                                            <td><a href="{{ path('atividadeCadastrar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-check"></span></a></td>
-                                            <td><a href="{{ path('quadroExcluir',{'codigo':quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                            <td><center><a href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-link"></span></a></center></td>
+                                            <td><center><a href="{{ path('atividadeCadastrar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-check"></span></a></center></td>
+                                            <td><center><a href="{{ path('quadroDuplicar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-plus"></span></a></center></td>
+                                            <td><center><a href="{{ path('quadroExcluir',{'codigo':quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a></center></td>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        {% endfor %}
+                        </div>                        
                     {% endif %}
                 {% endif %}
             </div>

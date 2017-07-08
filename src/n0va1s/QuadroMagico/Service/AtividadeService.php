@@ -200,26 +200,38 @@ class AtividadeService
 
     public function loadExamples(int $quadro)
     {
-        $dados = array('quadro'=>$quadro,'atividade'=>'Acordar sozinho e arrumar a cama','valor'=>1,'proposito'=>'A');
-        $this->save($dados);
-        $dados = array('quadro'=>$quadro,'atividade'=>'Escovar os dentes, usar fio dental e enxaguante bucal','valor'=>1,'proposito'=>'H');
-        $this->save($dados);
-        $dados = array('quadro'=>$quadro,'atividade'=>'Preparar seu café da manhã','valor'=>1,'proposito'=>'A');
-        $this->save($dados);
-        $dados = array('quadro'=>$quadro,'atividade'=>'Estudar ou fazer a tarefa','valor'=>1,'proposito'=>'E');
-        $this->save($dados);
-        $dados = array('quadro'=>$quadro,'atividade'=>'Ler um livro ou gibi','valor'=>1,'proposito'=>'E');
-        $this->save($dados);
-        $dados = array('quadro'=>$quadro,'atividade'=>'Comer ao menos 4 coisas diferentes','valor'=>1,'proposito'=>'R');
-        $this->save($dados);
-        $dados = array('quadro'=>$quadro,'atividade'=>'Fazer a oração antes das refeições ou antes de dormir','valor'=>1,'proposito'=>'I');
-        $this->save($dados);
-        $dados = array('quadro'=>$quadro,'atividade'=>'Fazer uma tarefa doméstica','valor'=>1,'proposito'=>'A');
-        $this->save($dados);
-        $dados = array('quadro'=>$quadro,'atividade'=>'Não brigar, responder ou falar palavrão','valor'=>1,'proposito'=>'C');
-        $this->save($dados);
-        $dados = array('quadro'=>$quadro,'atividade'=>'Não deixar suas coisas espalhadas pela casa','valor'=>1,'proposito'=>'A');
-        $this->save($dados);
+        $dados[] = array('atividade'=>'Acordar sozinho e arrumar a cama','valor'=>1,'proposito'=>'A');
+        $dados[] = array('atividade'=>'Escovar os dentes, usar fio dental e enxaguante bucal','valor'=>1,'proposito'=>'H');
+        $dados[] = array('atividade'=>'Preparar seu café da manhã','valor'=>1,'proposito'=>'A');
+        $dados[] = array('atividade'=>'Estudar ou fazer a tarefa','valor'=>1,'proposito'=>'E');
+        $dados[] = array('atividade'=>'Ler um livro ou gibi','valor'=>1,'proposito'=>'E');
+        $dados[] = array('atividade'=>'Comer ao menos 4 coisas diferentes','valor'=>1,'proposito'=>'R');
+        $dados[] = array('atividade'=>'Fazer a oração antes das refeições ou antes de dormir','valor'=>1,'proposito'=>'I');
+        $dados[] = array('atividade'=>'Fazer uma tarefa doméstica','valor'=>1,'proposito'=>'D');
+        $dados[] = array('atividade'=>'Não brigar, responder ou falar palavrão','valor'=>1,'proposito'=>'C');
+        $dados[] = array('atividade'=>'Não deixar suas coisas espalhadas pela casa','valor'=>1,'proposito'=>'A');
+        foreach ($dados as $atividade) {
+            $atividade['quadro'] = $quadro;
+            $this->save($atividade);
+        }
+        return true;
+    }
+
+    public function loadActivities(int $quadroOLD, int $quadroNEW)
+    {
+        $atividades = $this->findByQuadro($quadroOLD);
+
+        foreach ($atividades as $atividade) {
+            //Adicionar o id do novo quadro para ser relacionado a atividade copiada do quadro anterior
+            $atividade['quadro'] = $quadroNEW;
+            //Remover o id para que entre na inclusao e nao na alteracao
+            unset($atividade['id']);
+            //Remover informacoes desnecessaria a duplicacao
+            unset($atividade['cadastro']);
+            unset($atividade['marcacoes']);
+            $this->save($atividade);
+        }
+        return true;
     }
 
     public function toArray(AtividadeEntity $atividade)
