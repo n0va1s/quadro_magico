@@ -122,32 +122,6 @@ $app['swiftmailer.options'] = array(
     'encryption' => null,
     'auth_mode' => null
 );
-//Login
-/*
-$app->get('/login', function (Request $req) use ($app) {
-    return $app['twig']->render('login.twig', array(
-        'error' => $app['security.last_error']($req),
-        'last_username' => $app['session']->get('_security.last_username'),
-    ));
-})->bind('indexLogin');
-*/
-$app->get('/dica', function () use ($app) {
-    return $app['twig']->render('dica.twig');
-})->bind('indexDica');
-
-$app->get('/contato', function () use ($app) {
-    return $app['twig']->render('contato.twig');
-})->bind('indexContato');
-
-$app->post('/contato/enviar', function (Request $req) use ($app) {
-    $app->mail(\Swift_Message::newInstance()
-        ->setSubject('[QuadroMagico] Contato')
-        ->setFrom(array($req->get('email')))
-        ->setTo(array('joaopaulonovais@gmail.com'))
-        ->setBody($req->get('menssagem')));
-
-    return new Response('Mensagem enviada. Obrigado!', 201);
-})->bind('contatoEnviar');
-
+$app->mount('/site', new n0va1s\QuadroMagico\Controller\SiteController($em));
 $app->mount('/quadro', new n0va1s\QuadroMagico\Controller\QuadroController($em));
 $app->mount('/responsavel', new n0va1s\QuadroMagico\Controller\ResponsavelController($em));

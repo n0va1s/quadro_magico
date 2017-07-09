@@ -28,6 +28,10 @@ class QuadroController implements ControllerProviderInterface
             return new QuadroService($this->em);
         };
 
+        $app['email_service'] = function () {
+            return new EmailService($this->em);
+        };
+
         $ctrl->get('/', function () use ($app) {
             return $app['twig']->render('cadastroQuadro.twig');
         })->bind('indexQuadro');
@@ -39,6 +43,9 @@ class QuadroController implements ControllerProviderInterface
             $app['session']->set('quadro', $quadro);
             //Carregar atividades de exemplo
             $atividades = $app['atividade_service']->loadExamples($quadro['id']);
+            //Envia os dados do quadro para o responsavel
+            $tipo = $dados['tipo'] = 'T'? 'tarefa' : 'mesada';
+            $app['email_service']->sendWelcome($tipo, $dados['crianca'], $dados['codigo']);
             //Redireciona para o cadastro de atividades
             return $app->redirect('./atividade'); //TODO:retirar a URL fixa
         })->bind('quadroSalvar');
