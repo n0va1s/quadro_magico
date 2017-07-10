@@ -28,10 +28,6 @@ class QuadroController implements ControllerProviderInterface
             return new QuadroService($this->em);
         };
 
-        $app['email_service'] = function () {
-            return new EmailService($this->em);
-        };
-
         $ctrl->get('/', function () use ($app) {
             return $app['twig']->render('cadastroQuadro.twig');
         })->bind('indexQuadro');
@@ -45,7 +41,13 @@ class QuadroController implements ControllerProviderInterface
             $atividades = $app['atividade_service']->loadExamples($quadro['id']);
             //Envia os dados do quadro para o responsavel
             $tipo = $dados['tipo'] = 'T'? 'tarefa' : 'mesada';
-            $app['email_service']->sendWelcome($tipo, $dados['crianca'], $dados['codigo']);
+            $crianca = $dados['crianca'];
+            $codigo = $dados['codigo'];
+            $mail = (new \Swift_Message('[UmDesejoPorSemana] O quadro de '.$tipo.' para '.$crianca))
+                ->setFrom('contato@umdesejoporsemana.com', 'Um Desejo Por Semana')
+                ->setTo($dados['responsavel'])
+                ->setBody("O quadro de $tipo para $crianca está disponível no endereço <br /> <a href='umdesejoporsemana.com/quadro/exibir/'$codigo", 'text/html');
+            $app['mailer']->send($mail);
             //Redireciona para o cadastro de atividades
             return $app->redirect('./atividade'); //TODO:retirar a URL fixa
         })->bind('quadroSalvar');
@@ -64,7 +66,9 @@ class QuadroController implements ControllerProviderInterface
         $ctrl->get('/exibir/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
             $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
-            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
+            $specialGifts = $app['atividade_service']->loadSpecialGift($quadro['id']);
+            $valueDays = $app['atividade_service']->sumValueDay($quadro['id']);
+            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'atividades'=>$atividades, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays));
         })->bind('quadroExibir');
 
         $ctrl->get('/duplicar/{codigo}', function ($codigo) use ($app) {

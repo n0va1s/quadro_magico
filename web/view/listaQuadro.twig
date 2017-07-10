@@ -39,7 +39,7 @@
                                     <tbody>
                                         {% for quadro in quadros %}
                                         <tr>
-                                            <td><span>{{quadro.tipo == 'T' ? "Tarefa" : "mesada"}}</span></td>
+                                            <td><span>{{quadro.tipo == 'T' ? "Tarefa" : "Mesada"}}</span></td>
                                             <td><span>{{ quadro.crianca }}</span></td>
                                             <td><center><a href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-link"></span></a></center></td>
                                             <td><center><a href="{{ path('atividadeCadastrar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-check"></span></a></center></td>

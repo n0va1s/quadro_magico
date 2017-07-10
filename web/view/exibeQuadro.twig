@@ -3,7 +3,11 @@
     <!-- Main Content -->
     <div class="container">
         <div class="row">
-            <p>Oi <b>{{quadro.crianca}}</b>, vamos ganhar um pedido especial? Complete todas as atividades do dia e ganhe um coração.</p>
+            {% if quadro.tipo == 'T' %}
+            <p>Oi <b>{{quadro.crianca}}</b>, faltam XX pontos para alcançar um desejo por semana!</p>
+            {% else %}
+            <p>Oi <b>{{quadro.crianca}}</b>, vc já conquistou XX reais de mesada!</p>
+            {% endif %}
             {% if atividades is defined %}
             <div class="table-responsive">
                 <table class="table">
@@ -11,7 +15,9 @@
                         <tr>
                             <th>&nbsp;</th>
                             <th>Tarefa</th>
+                            {% if quadro.tipo == 'M' %}
                             <th>Valor</th>
+                            {% endif %}
                             <th>Seg</th>
                             <th>Ter</th>
                             <th>Qua</th>
@@ -22,18 +28,60 @@
                         </tr>
                     </thead>
                     <tfoot>
+                        {% if quadro.tipo == 'T' %}
                         <tr>
                             <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            <th>Pedido especial</th>
+                            {% if pedidoEspecial['segunda'] == true %}
+                                <th><span class="glyphicon glyphicon-heart"></span></th>
+                            {% else %}
+                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            {% endif %}
+                            {% if pedidoEspecial['terca'] == true %}
+                                <th><span class="glyphicon glyphicon-heart"></span></th>
+                            {% else %}
+                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            {% endif %}
+                            {% if pedidoEspecial['quarta'] == true %}
+                                <th><span class="glyphicon glyphicon-heart"></span></th>
+                            {% else %}
+                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            {% endif %}
+                            {% if pedidoEspecial['quinta'] == true %}
+                                <th><span class="glyphicon glyphicon-heart"></span></th>
+                            {% else %}
+                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            {% endif %}
+                            {% if pedidoEspecial['sexta'] == true %}
+                                <th><span class="glyphicon glyphicon-heart"></span></th>
+                            {% else %}
+                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            {% endif %}
+                            {% if pedidoEspecial['sabado'] == true %}
+                                <th><span class="glyphicon glyphicon-heart"></span></th>
+                            {% else %}
+                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            {% endif %}
+                            {% if pedidoEspecial['domingo'] == true %}
+                                <th><span class="glyphicon glyphicon-heart"></span></th>
+                            {% else %}
+                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
+                            {% endif %}
                         </tr>
+                        {% else %}
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Mesada</th>
+                            <th>&nbsp;</th>
+                            <th>R$ {{ valorDia['segunda'] }}</th>
+                            <th>R$ {{ valorDia['terca'] }}</th>
+                            <th>R$ {{ valorDia['quarta'] }}</th>
+                            <th>R$ {{ valorDia['quinta'] }}</th>
+                            <th>R$ {{ valorDia['sexta'] }}</th>
+                            <th>R$ {{ valorDia['sabado'] }}</th>
+                            <th>R$ {{ valorDia['domingo'] }}</th>
+                        </tr>
+                        {% endif %}
                     </tfoot>
                     <tbody>
                         {% for atividade in atividades %}
@@ -44,7 +92,9 @@
                             <td width="100" height="100"></td>
                             {% endif %}
                             <td>{{ atividade.atividade}}</td>
+                            {% if quadro.tipo == 'M' %}
                             <td>{{ atividade.valor}}</td>
+                            {% endif %}
                             {% if atividade['marcacoes'] is empty %}
                                 <td class="info" id="seg_{{ atividade.id}}"><span></span></td>
                                 <td class="info" id="ter_{{ atividade.id}}"><span></span></td>
@@ -56,7 +106,7 @@
                             {% else %}
                                 {% for marcacao in atividade['marcacoes'] %}
                                     <!-- Segunda -->
-                                    {% if marcacao.segunda == 'S' %}    
+                                    {% if marcacao.segunda == 'S' %}
                                         <td class="success" id="seg_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
                                     {% elseif marcacao.segunda == 'N' %}    
                                         <td class="danger" id="seg_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
@@ -69,7 +119,7 @@
                                     {% elseif marcacao.terca == 'N' %}    
                                         <td class="danger" id="ter_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
                                     {% else %}
-                                        <td class="info" id="terca_{{ atividade.id}}"><span></span></td>
+                                        <td class="info" id="ter_{{ atividade.id}}"><span></span></td>
                                     {% endif %}
                                     <!-- Quarta -->
                                     {% if marcacao.quarta == 'S' %}    
@@ -132,7 +182,7 @@
 <footer>
     <div class="container">
         <div class="row" align="center">
-            <p>Vc faz parte de uma comunidade com muitas outras crianças, jovens e adolescentes</p>
+            <p>Vc faz parte de uma comunidade com muitas outras crianças, jovens e adolescentes no Brasil e no mundo</p>
         </div>
     </div>
 </footer>

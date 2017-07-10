@@ -137,75 +137,15 @@ class AtividadeService
         }
     }
 
-    public function findByMarcacaoDia(int $atividade, $dia)
-    {
-        //Tem alguma marcacao para a atividade x dia
-        switch ($dia) {
-            case 'seg':
-                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.segunda = :sim or c.segunda = :nao)')
-                ->setParameter(':atividade', $atividade)
-                ->setParameter(':sim', 'S')
-                ->setParameter(':nao', 'N')
-                ->getOneOrNullResult();
-                break;
-            case 'ter':
-                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.terca = :sim or c.terca = :nao)')
-                ->setParameter(':atividade', $atividade)
-                ->setParameter(':sim', 'S')
-                ->setParameter(':nao', 'N')
-                ->getOneOrNullResult();
-                break;
-            case 'qua':
-                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.quarta = :sim or c.quarta = :nao)')
-                ->setParameter(':atividade', $atividade)
-                ->setParameter(':sim', 'S')
-                ->setParameter(':nao', 'N')
-                ->getOneOrNullResult();
-                break;
-            case 'qui':
-                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.quinta = :sim or c.quinta = :nao)')
-                ->setParameter(':atividade', $atividade)
-                ->setParameter(':sim', 'S')
-                ->setParameter(':nao', 'N')
-                ->getOneOrNullResult();
-                break;
-            case 'sex':
-                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.sexta = :sim or c.sexta = :nao)')
-                ->setParameter(':atividade', $atividade)
-                ->setParameter(':sim', 'S')
-                ->setParameter(':nao', 'N')
-                ->getOneOrNullResult();
-                break;
-            case 'sab':
-                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.sabado = :sim or c.sabado = :nao)')
-                ->setParameter(':atividade', $atividade)
-                ->setParameter(':sim', 'S')
-                ->setParameter(':nao', 'N')
-                ->getOneOrNullResult();
-                break;
-            case 'dom':
-                $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :atividade and (c.domingo = :sim or c.domingo = :nao)')
-                ->setParameter(':atividade', $atividade)
-                ->setParameter(':sim', 'S')
-                ->setParameter(':nao', 'N')
-                ->getOneOrNullResult();
-                break;
-        }
-        if ($marcacao) {
-            return $marcacao->getId();
-        } else {
-            return 0;
-        }
-    }
-
     public function loadExamples(int $quadro)
     {
-        $dados[] = array('atividade'=>'Acordar sozinho e arrumar a cama','valor'=>1,'proposito'=>'A');
-        $dados[] = array('atividade'=>'Escovar os dentes, usar fio dental e enxaguante bucal','valor'=>1,'proposito'=>'H');
+        $dados[] = array('atividade'=>'Acordar sozinho','valor'=>1,'proposito'=>'A');
+        $dados[] = array('atividade'=>'Arrumar a cama','valor'=>1,'proposito'=>'A');
+        $dados[] = array('atividade'=>'Escovar os dentes','valor'=>1,'proposito'=>'H');
         $dados[] = array('atividade'=>'Preparar seu café da manhã','valor'=>1,'proposito'=>'A');
         $dados[] = array('atividade'=>'Estudar ou fazer a tarefa','valor'=>1,'proposito'=>'E');
         $dados[] = array('atividade'=>'Ler um livro ou gibi','valor'=>1,'proposito'=>'E');
-        $dados[] = array('atividade'=>'Comer ao menos 4 coisas diferentes','valor'=>1,'proposito'=>'R');
+        $dados[] = array('atividade'=>'Comer ao menos 4 tipos de alimentos','valor'=>1,'proposito'=>'R');
         $dados[] = array('atividade'=>'Fazer a oração antes das refeições ou antes de dormir','valor'=>1,'proposito'=>'I');
         $dados[] = array('atividade'=>'Fazer uma tarefa doméstica','valor'=>1,'proposito'=>'D');
         $dados[] = array('atividade'=>'Não brigar, responder ou falar palavrão','valor'=>1,'proposito'=>'C');
@@ -232,6 +172,134 @@ class AtividadeService
             $this->save($atividade);
         }
         return true;
+    }
+
+    public function loadSpecialGift(int $quadro)
+    {
+        try {
+            $mark = $this->em->createQuery('select distinct m.segunda from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
+                ->setParameter(':id', $quadro)
+                ->getOneOrNullResult();
+            $specialGift['segunda'] = true;
+        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+            $specialGift['segunda'] = false;
+        }
+
+        try {
+            $mark = $this->em->createQuery('select distinct m.terca from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
+                ->setParameter(':id', $quadro)
+                ->getOneOrNullResult();
+            $specialGift['terca'] = true;
+        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+            $specialGift['terca'] = false;
+        }
+
+        try {
+            $mark = $this->em->createQuery('select distinct m.quarta from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
+                ->setParameter(':id', $quadro)
+                ->getOneOrNullResult();
+            $specialGift['quarta'] = true;
+        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+            $specialGift['quarta'] = false;
+        }
+
+        try {
+            $mark = $this->em->createQuery('select distinct m.quinta from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
+                ->setParameter(':id', $quadro)
+                ->getOneOrNullResult();
+            $specialGift['quinta'] = true;
+        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+            $specialGift['quinta'] = false;
+        }
+
+        try {
+            $mark = $this->em->createQuery('select distinct m.sexta from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
+                ->setParameter(':id', $quadro)
+                ->getOneOrNullResult();
+            $specialGift['sexta'] = true;
+        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+            $specialGift['sexta'] = false;
+        }
+
+        try {
+            $mark = $this->em->createQuery('select distinct m.sabado from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
+                ->setParameter(':id', $quadro)
+                ->getOneOrNullResult();
+            $specialGift['sabado'] = true;
+        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+            $specialGift['sabado'] = false;
+        }
+
+        try {
+            $mark = $this->em->createQuery('select distinct m.domingo from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
+                ->setParameter(':id', $quadro)
+                ->getOneOrNullResult();
+            $specialGift['domingo'] = true;
+        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+            $specialGift['domingo'] = false;
+        }
+        return $specialGift;
+    }
+
+    public function sumValueDay(int $quadro)
+    {
+        $arr =  $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.segunda = :sim')
+            ->setParameter(':id', $quadro)
+            ->setParameter(':sim', 'S')
+            ->getSingleResult();
+        $result['segunda'] = $arr['valor'];
+        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.terca = :sim')
+            ->setParameter(':id', $quadro)
+            ->setParameter(':sim', 'S')
+            ->getSingleResult();
+        $result['terca'] = $arr['valor'];
+        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.quarta = :sim')
+            ->setParameter(':id', $quadro)
+            ->setParameter(':sim', 'S')
+            ->getSingleResult();
+        $result['quarta'] = $arr['valor'];
+        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.quinta = :sim')
+            ->setParameter(':id', $quadro)
+            ->setParameter(':sim', 'S')
+            ->getSingleResult();
+        $result['quinta'] = $arr['valor'];
+        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.sexta = :sim')
+            ->setParameter(':id', $quadro)
+            ->setParameter(':sim', 'S')
+            ->getSingleResult();
+        $result['sexta'] = $arr['valor'];
+        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.sabado = :sim')
+            ->setParameter(':id', $quadro)
+            ->setParameter(':sim', 'S')
+            ->getSingleResult();
+        $result['sabado'] = $arr['valor'];
+        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.domingo = :sim')
+            ->setParameter(':id', $quadro)
+            ->setParameter(':sim', 'S')
+            ->getSingleResult();
+        $result['domingo'] = $arr['valor'];
+        return $result;
+    }
+
+    public function sumPoints(int $quadro)
+    {
+        $prev =  $this->em->createQuery('select sum(a.valor) as val, count(a.id) as qtd from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
+            ->setParameter(':id', $quadro)
+            ->getOneOrNullResult();
+        $real =  $this->em->createQuery('select sum(a.valor) as val from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and (m.segunda = :sim or m.terca = :sim or m.quarta = :sim or m.quinta = :sim or m.sexta = :sim or m.sabado = :sim or m.domingo = :sim)')
+            ->setParameter(':id', $quadro)
+            ->getOneOrNullResult();
+        //Total de pontos das atividades marcadas como sim dividido pela soma de pontos de todas as atividades existentes
+        //vezes a quantidade de atividade vezes 7 dias
+        return $real['valor'] / ($prev['valor'] * ($prev['qtd'] * 7));
+    }
+
+    public function sumPockedMoney(int $quadro)
+    {
+        $real =  $this->em->createQuery('select sum(a.valor) as val from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and (m.segunda = :sim or m.terca = :sim or m.quarta = :sim or m.quinta = :sim or m.sexta = :sim or m.sabado = :sim or m.domingo = :sim)')
+            ->setParameter(':id', $quadro)
+            ->getOneOrNullResult();
+        return $real['valor'];
     }
 
     public function toArray(AtividadeEntity $atividade)
