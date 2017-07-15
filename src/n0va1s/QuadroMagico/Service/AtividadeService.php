@@ -160,7 +160,6 @@ class AtividadeService
     public function loadActivities(int $quadroOLD, int $quadroNEW)
     {
         $atividades = $this->findByQuadro($quadroOLD);
-
         foreach ($atividades as $atividade) {
             //Adicionar o id do novo quadro para ser relacionado a atividade copiada do quadro anterior
             $atividade['quadro'] = $quadroNEW;
@@ -286,20 +285,18 @@ class AtividadeService
         $prev =  $this->em->createQuery('select sum(a.valor) as val, count(a.id) as qtd from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
             ->setParameter(':id', $quadro)
             ->getOneOrNullResult();
-        $real =  $this->em->createQuery('select sum(a.valor) as val from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and (m.segunda = :sim or m.terca = :sim or m.quarta = :sim or m.quinta = :sim or m.sexta = :sim or m.sabado = :sim or m.domingo = :sim)')
-            ->setParameter(':id', $quadro)
-            ->getOneOrNullResult();
-        //Total de pontos das atividades marcadas como sim dividido pela soma de pontos de todas as atividades existentes
+        $day =  $this->sumValueDay($quadro);
+        $real = $day['segunda']+$day['terca']+$day['quarta']+$day['quinta']+$day['sexta']+$day['sabado']+$day['domingo'];
+        //Total de pontos das atividades marcadas como sim dividido por 70% dos pontos de todas as atividades existentes
         //vezes a quantidade de atividade vezes 7 dias
-        return $real['valor'] / ($prev['valor'] * ($prev['qtd'] * 7));
+        return array('real'=>$real, 'prev'=>($prev['qtd']*7)*.7);
     }
 
-    public function sumPockedMoney(int $quadro)
+    public function sumPocketMoney(int $quadro)
     {
-        $real =  $this->em->createQuery('select sum(a.valor) as val from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and (m.segunda = :sim or m.terca = :sim or m.quarta = :sim or m.quinta = :sim or m.sexta = :sim or m.sabado = :sim or m.domingo = :sim)')
-            ->setParameter(':id', $quadro)
-            ->getOneOrNullResult();
-        return $real['valor'];
+        $day =  $this->sumValueDay($quadro);
+        $real = $day['segunda']+$day['terca']+$day['quarta']+$day['quinta']+$day['sexta']+$day['sabado']+$day['domingo'];
+        return $real;
     }
 
     public function toArray(AtividadeEntity $atividade)

@@ -4,9 +4,9 @@
     <div class="container">
         <div class="row">
             {% if quadro.tipo == 'T' %}
-            <p>Oi <b>{{quadro.crianca}}</b>, faltam XX pontos para alcançar um desejo por semana!</p>
+            <p>Oi <b>{{quadro.crianca}}</b>, vc já realizou {{ totalReal}}/{{ totalPrev}} tarefas para alcançar seu desejo esta semana!</p>
             {% else %}
-            <p>Oi <b>{{quadro.crianca}}</b>, vc já conquistou XX reais de mesada!</p>
+            <p>Oi <b>{{quadro.crianca}}</b>, vc já conquistou {{ totalMesada }} reais de mesada!</p>
             {% endif %}
             {% if atividades is defined %}
             <div class="table-responsive">
@@ -175,6 +175,9 @@
             </div>
             {% endif %}
         </div>
+        <center>
+            <input type="submit" class="btn btn-primary" value="Atualizar resultado" onClick="window.location.reload()">
+        <center>
     </div>
 {% endblock %}
 

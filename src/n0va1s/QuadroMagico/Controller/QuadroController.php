@@ -37,8 +37,11 @@ class QuadroController implements ControllerProviderInterface
             $quadro = $app['quadro_service']->save($dados);
             //Para recuperar o id do quadro no cadastro de atividades
             $app['session']->set('quadro', $quadro);
-            //Carregar atividades de exemplo
-            $atividades = $app['atividade_service']->loadExamples($quadro['id']);
+            //Se for um quadro novo
+            if (empty($dados['id'])) {
+                //Carregar atividades de exemplo
+                $atividades = $app['atividade_service']->loadExamples($quadro['id']);
+            }
             //Envia os dados do quadro para o responsavel
             $tipo = $dados['tipo'] = 'T'? 'tarefa' : 'mesada';
             $crianca = $dados['crianca'];
@@ -66,34 +69,37 @@ class QuadroController implements ControllerProviderInterface
         $ctrl->get('/exibir/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
             $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
+            //Carrega se houve pedido especial em um dos dias
             $specialGifts = $app['atividade_service']->loadSpecialGift($quadro['id']);
+            //Totaliza quanto a crianca conseguiu de mesada no dia
             $valueDays = $app['atividade_service']->sumValueDay($quadro['id']);
-            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'atividades'=>$atividades, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays));
+            //Totaliza quantos pontos faltam para a crianca atingir a meta semanal (70%)
+            $points = $app['atividade_service']->sumPoints($quadro['id']);
+            //Totaliza quanto a crianca alcancou de mesada ate o momento
+            $sumPocketMoney = $app['atividade_service']->sumPocketMoney($quadro['id']);
+            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'atividades'=>$atividades, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays, 'totalReal'=>$points['real'], 'totalPrev'=>$points['prev'], 'totalMesada'=>$sumPocketMoney));
         })->bind('quadroExibir');
 
         $ctrl->get('/duplicar/{codigo}', function ($codigo) use ($app) {
             //Dados do quadro a ser duplicado
             $dados = $app['quadro_service']->findByCodigo($codigo);
-            //ID do quadro que sera duplicado
-
+            //Guarda o id do quadro de origem para duplicar as atividades
             $id = $dados['id'];
-            //Remove o id para incluir um quadro novo
+            //Remove o id do quadro para criar um novo quadro ao salvar
             unset($dados['id']);
+            //Cria um novo quadro com os dados do quadro anterior
             $quadro = $app['quadro_service']->save($dados);
-            //Duplica as atividades do quadro anterior no novo
+            //Carregar atividades do quadro anterior
             $atividades = $app['atividade_service']->loadActivities($id, $quadro['id']);
+            //Informacoes duplicadas vao para a tela para alteracao
             return $app['twig']->render('cadastroQuadro.twig', array('quadro'=>$quadro));
         })->bind('quadroDuplicar');
 
         $ctrl->get('/excluir/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
             $excluiu = $app['quadro_service']->delete($quadro['id']);
-            if ($excluiu) {
-                $quadros = $app['quadro_service']->findByEmail($app['session']->get('email'));
-                return $app['twig']->render('listaQuadro.twig', array('quadros'=>$quadros));
-            } else {
-                return $app['twig']->render('listaQuadro.twig', array('mensagem'=>'Não consegui excluir :('));
-            }
+            $quadros = $app['quadro_service']->findByEmail($app['session']->get('email'));
+            return $app['twig']->render('listaQuadro.twig', array('quadros'=>$quadros));
         })->bind('quadroExcluir')
         ->assert('id', '\d+');
 
