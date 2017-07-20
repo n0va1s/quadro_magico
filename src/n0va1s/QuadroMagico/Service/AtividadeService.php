@@ -287,9 +287,9 @@ class AtividadeService
             ->getOneOrNullResult();
         $day =  $this->sumValueDay($quadro);
         $real = $day['segunda']+$day['terca']+$day['quarta']+$day['quinta']+$day['sexta']+$day['sabado']+$day['domingo'];
-        //Total de pontos das atividades marcadas como sim dividido por 70% dos pontos de todas as atividades existentes
-        //vezes a quantidade de atividade vezes 7 dias
-        return array('real'=>$real, 'prev'=>($prev['qtd']*7)*.7);
+        //70% do Total de pontos das atividades vezes a quantidade de atividade vezes 7 dias
+        $total = round((($prev['qtd']*7)*.7));
+        return array('real'=>$real, 'prev'=>$total);
     }
 
     public function sumPocketMoney(int $quadro)
