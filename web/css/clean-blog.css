@@ -147,6 +147,19 @@ hr.small {
   -o-background-size: cover;
   margin-bottom: 0px;
 }
+
+.page-header {
+  height: 15em;
+  text-align: center;
+  background: no-repeat center center;
+  background-attachment: scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  background-position: 1% 20%;
+}
+
 .intro-header .site-heading,
 .intro-header .post-heading,
 .intro-header .page-heading {

@@ -175,13 +175,20 @@ class AtividadeService
 
     public function loadSpecialGift(int $quadro)
     {
+        $specialGift['segunda'] = false;
+        $specialGift['terca'] = false;
+        $specialGift['quarta'] = false;
+        $specialGift['quinta'] = false;
+        $specialGift['sexta'] = false;
+        $specialGift['sabado'] = false;
+        $specialGift['domingo'] = false;
         try {
             $mark = $this->em->createQuery('select distinct m.segunda from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
                 ->setParameter(':id', $quadro)
                 ->getOneOrNullResult();
             $specialGift['segunda'] = true;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['segunda'] = false;
+            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
         }
 
         try {
@@ -190,7 +197,7 @@ class AtividadeService
                 ->getOneOrNullResult();
             $specialGift['terca'] = true;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['terca'] = false;
+            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
         }
 
         try {
@@ -199,7 +206,7 @@ class AtividadeService
                 ->getOneOrNullResult();
             $specialGift['quarta'] = true;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['quarta'] = false;
+            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
         }
 
         try {
@@ -208,7 +215,7 @@ class AtividadeService
                 ->getOneOrNullResult();
             $specialGift['quinta'] = true;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['quinta'] = false;
+            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
         }
 
         try {
@@ -217,7 +224,7 @@ class AtividadeService
                 ->getOneOrNullResult();
             $specialGift['sexta'] = true;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['sexta'] = false;
+            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
         }
 
         try {
@@ -226,7 +233,7 @@ class AtividadeService
                 ->getOneOrNullResult();
             $specialGift['sabado'] = true;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['sabado'] = false;
+            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
         }
 
         try {
@@ -235,7 +242,7 @@ class AtividadeService
                 ->getOneOrNullResult();
             $specialGift['domingo'] = true;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['domingo'] = false;
+            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
         }
         return $specialGift;
     }
