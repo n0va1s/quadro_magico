@@ -150,6 +150,7 @@ hr.small {
 
 .page-header {
   height: 15em;
+  background-color: #777777;
   text-align: center;
   background: no-repeat center center;
   background-attachment: scroll;
