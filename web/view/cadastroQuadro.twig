@@ -43,7 +43,7 @@
                     <label for="nome" class="sr-only">Nome</label>
                     <input type="text" name="crianca" class="col-lg-12" placeholder="Chamado (a)" required data-validation-required-message="Qual o nome dele ou dela?" value="{% if quadro is defined %}{{ quadro.crianca }}{% endif %}">
                     <label for="nome" class="sr-only">Recompensa</label>
-                    <input type="text" name="recompensa" class="col-lg-12" placeholder="Para quadros de tarefa, qual a recompensa combinada?" value="{% if quadro is defined %}{{ quadro.recompensa }}{% endif %}">
+                    <input type="text" name="recompensa" class="col-lg-12" placeholder="Qual a recompensa combinada?" value="{% if quadro is defined %}{{ quadro.recompensa }}{% endif %}">
                     <div>&nbsp;</div>
                     <center>
                         <button class="btn btn-primary" type="submit">Criar</button>
