@@ -50,6 +50,9 @@ class AtividadeService
     {
         //Verifica se ja existe uma marcacao para a atividade e retorna o ID
         $id = $this->findByMarcacao($dados['atividade']);
+        //Para setar o valor NULL no banco quando uma celular for desmarcada.
+        //Estava setando branco
+        $dados['valor'] = (empty($dados['valor'])) ? null : $dados['valor'];
         if (is_null($id)) { //nao possui marcacao
             $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['atividade']);
             $marcacao = new MarcacaoEntity();
@@ -176,7 +179,7 @@ class AtividadeService
             $mark = $this->em->createQuery('select distinct m.segunda from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
                 ->setParameter(':id', $quadro)
                 ->getOneOrNullResult();
-            $specialGift['segunda'] = (!is_null($mark) and !empty($mark)) ? true : false;
+            $specialGift['segunda'] = ($mark['segunda'] == 'S') ? true : false;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
             $specialGift['segunda'] = false;
         }
@@ -185,7 +188,7 @@ class AtividadeService
             $mark = $this->em->createQuery('select distinct m.terca from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
                 ->setParameter(':id', $quadro)
                 ->getOneOrNullResult();
-            $specialGift['terca'] = (!is_null($mark) or !empty($mark)) ? true : false;
+            $specialGift['terca'] = ($mark['terca'] == 'S') ? true : false;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
             $specialGift['terca'] = false;
         }
@@ -194,7 +197,7 @@ class AtividadeService
             $mark = $this->em->createQuery('select distinct m.quarta from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
                 ->setParameter(':id', $quadro)
                 ->getOneOrNullResult();
-            $specialGift['quarta'] = (!is_null($mark) or !empty($mark)) ? true : false;
+            $specialGift['quarta'] = ($mark['quarta'] == 'S') ? true : false;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
             $specialGift['quarta'] = false;
         }
@@ -203,7 +206,7 @@ class AtividadeService
             $mark = $this->em->createQuery('select distinct m.quinta from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
                 ->setParameter(':id', $quadro)
                 ->getOneOrNullResult();
-            $specialGift['quinta'] = (!is_null($mark) or !empty($mark)) ? true : false;
+            $specialGift['quinta'] = ($mark['quinta'] == 'S') ? true : false;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
             $specialGift['quinta'] = false;
         }
@@ -212,7 +215,7 @@ class AtividadeService
             $mark = $this->em->createQuery('select distinct m.sexta from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
                 ->setParameter(':id', $quadro)
                 ->getOneOrNullResult();
-            $specialGift['sexta'] = (!is_null($mark) or !empty($mark)) ? true : false;
+            $specialGift['sexta'] = ($mark['sexta'] == 'S') ? true : false;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
             $specialGift['sexta'] = false;
         }
@@ -221,7 +224,7 @@ class AtividadeService
             $mark = $this->em->createQuery('select distinct m.sabado from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
                 ->setParameter(':id', $quadro)
                 ->getOneOrNullResult();
-            $specialGift['sabado'] = (!is_null($mark) or !empty($mark)) ? true : false;
+            $specialGift['sabado'] = ($mark['sabado'] == 'S') ? true : false;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
             $specialGift['sabado'] = false;
         }
@@ -230,7 +233,7 @@ class AtividadeService
             $mark = $this->em->createQuery('select distinct m.domingo from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
                 ->setParameter(':id', $quadro)
                 ->getOneOrNullResult();
-            $specialGift['domingo'] = (!is_null($mark) or !empty($mark)) ? true : false;
+            $specialGift['domingo'] = ($mark['domingo'] == 'S') ? true : false;
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
             $specialGift['domingo'] = false;
             //echo 'Exceção capturada: ',  $e->getMessage(), "\n";

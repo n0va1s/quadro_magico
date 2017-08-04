@@ -48,10 +48,10 @@
                                         <tr>
                                             <th>Quadro</th>
                                             <th>Filho(a)</th>
-                                            <th><center>Endereço do quadro</center></th>
-                                            <th><center>Mudar as atividades</center></th>
+                                            <th><center>Abrir quadro</center></th>
+                                            <th><center>Alterar atividades</center></th>
                                              <th><center>Nova semana</center></th>
-                                            <th><center>Excluir o quadro</center></th>
+                                            <th><center>Excluir quadro</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -59,8 +59,8 @@
                                         <tr>
                                             <td><span>{{quadro.tipo == 'T' ? "Tarefa" : "Mesada"}}</span></td>
                                             <td><span>{{ quadro.crianca }}</span></td>
-                                            <td><center><a href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-link"></span></a></center></td>
-                                            <td><center><a href="{{ path('atividadeCadastrar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-check"></span></a></center></td>
+                                            <td><center><a href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-folder-open"></span></a></center></td>
+                                            <td><center><a href="{{ path('atividadeCadastrar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-pencil"></span></a></center></td>
                                             <td><center><a href="{{ path('quadroDuplicar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-plus"></span></a></center></td>
                                             <td><center><a href="{{ path('quadroExcluir',{'codigo':quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a></center></td>
                                         </tr>
