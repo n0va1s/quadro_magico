@@ -21,30 +21,44 @@
     <!-- Main Content -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <form name="frmAtividade" action="{{ path('atividadeSalvar')}}" method="POST" enctype='multipart/form-data'>
+            <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2">
+                <form name="frmAtividade" action="{{ path('atividadeSalvar')}}" method="POST" enctype='multipart/form-data' class="form-inline">
                     <h4>Quer criar novas atividades para o quadro {% if quadro is defined %}de {{quadro.tipo == 'T' ? "Tarefa" : "Mesada"}} para {{ quadro.crianca }} ?{% endif %}</h4>
-                    <label for="atividade" class="sr-only">Atividade</label>
-                    <input type="text" name="atividade" class="col-lg-9" placeholder="Escovar os dentes" autofocus required 
-                    data-validation-required-message="Qual a atividade?">
-                    <label for="valor" class="sr-only">Valor</label>
-                    <input type="number" name="valor" class="col-lg-3" placeholder="Pontos ou $?">
-                    <label for="proposito" class="sr-only">Propósito</label>
-                    <select name="proposito" class="col-lg-4" required>
-                        <option value="">Propósito</option>
-                        <option value="E">Escola</option>
-                        <option value="H">Higiene</option>
-                        <option value="C">Comportamento</option>
-                        <option value="A">Autonomia</option>
-                        <option value="D">Casa</option>
-                        <option value="F">Exercício</option>
-                        <option value="R">Refeição</option>
-                        <option value="I">Espiritualidade</option>
-                    </select>
-                    <label for="imagem" class="sr-only">Imagem</label>
-                    <input type="file" name="imagem" id="imagem" class="col-lg-8">
+                    <div class="form-group col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                        <label for="atividade" class="sr-only">Atividade</label>
+                        <input type="text" name="atividade" class="form-control col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9" placeholder="Escovar os dentes" autofocus required 
+                        data-validation-required-message="Qual a atividade?">
+                    </div>
+                    <div class="form-group col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                        <label for="valor" class="sr-only">Valor</label>
+                        <input type="number" name="valor" class="form-control col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3" placeholder="Pontos ou $?">
+                    </div>
+                    <div class="form-group col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                        <label for="proposito" class="sr-only">Propósito</label>
+                        <select name="proposito" class="form-control col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4" required>
+                            <option value="">Propósito</option>
+                            <option value="E">Escola</option>
+                            <option value="H">Higiene</option>
+                            <option value="C">Comportamento</option>
+                            <option value="A">Autonomia</option>
+                            <option value="D">Casa</option>
+                            <option value="F">Exercício</option>
+                            <option value="R">Refeição</option>
+                            <option value="I">Espiritualidade</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                        <label for="imagem" class="sr-only">Imagem</label>
+                        <input type="file" name="imagem" id="imagem" class="form-control col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                    </div>
                     <div>&nbsp;</div>
-                    <center><button class="btn btn-primary" type="submit">Cadastrar</button><center>
+                    <div class="row">
+                        <center>
+                            <button class="btn btn-primary" type="submit">Salvar</button>
+                            <a href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-folder-open"></span>&nbsp;Abrir quadro</a>
+                        <center>
+                        
+                    </div>
                 </form>
             </div>
         </div>
