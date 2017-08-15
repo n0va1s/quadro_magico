@@ -22,9 +22,9 @@
     <div class="container">
         <div class="row">
             {% if quadro.tipo == 'T' %}
-            <p>Oi <b>{{quadro.crianca}}</b>, vc já realizou {{ totalReal}}/{{ totalPrev}} tarefas para alcançar seu desejo esta semana!</p>
+            <p>Oi <b>{{quadro.crianca}}</b>, vc já conquistou {{ totRealizado}} dos {{ totPrevisto}} pontos para alcançar seu desejo esta semana! {{ pctRealizado }} % do seu objetivo.</p>
             {% else %}
-            <p>Oi <b>{{quadro.crianca}}</b>, vc já conquistou {{ totalMesada }} reais de mesada!</p>
+            <p>Oi <b>{{quadro.crianca}}</b>, vc já conquistou {{ totMesada }} reais de mesada!</p>
             {% endif %}
             {% if atividades is defined %}
             <div style="overflow: auto; width: 100%;">

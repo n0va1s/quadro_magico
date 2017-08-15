@@ -77,7 +77,7 @@ class QuadroController implements ControllerProviderInterface
             $points = $app['atividade_service']->sumPoints($quadro['id']);
             //Totaliza quanto a crianca alcancou de mesada ate o momento
             $sumPocketMoney = $app['atividade_service']->sumPocketMoney($quadro['id']);
-            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'atividades'=>$atividades, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays, 'totalReal'=>$points['real'], 'totalPrev'=>$points['prev'], 'totalMesada'=>$sumPocketMoney));
+            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'atividades'=>$atividades, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays, 'totRealizado'=>$points['real'], 'totPrevisto'=>$points['prev'], 'pctRealizado'=>$points['perc'],'totMesada'=>$sumPocketMoney));
         })->bind('quadroExibir');
 
         $ctrl->get('/duplicar/{codigo}', function ($codigo) use ($app) {

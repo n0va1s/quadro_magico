@@ -289,8 +289,9 @@ class AtividadeService
         $day =  $this->sumValueDay($quadro);
         $real = $day['segunda']+$day['terca']+$day['quarta']+$day['quinta']+$day['sexta']+$day['sabado']+$day['domingo'];
         //70% do Total de pontos das atividades vezes a quantidade de atividade vezes 7 dias
-        $total = round((($prev['qtd']*7)*.7));
-        return array('real'=>$real, 'prev'=>$total);
+        $total = round((($prev['val']*7)*.7));
+        $perc = round(($real/$total)*100);
+        return array('real'=>$real, 'prev'=>$total, 'perc'=>$perc);
     }
 
     public function sumPocketMoney(int $quadro)
