@@ -45,7 +45,13 @@ class AtividadeService
         $this->em->flush();
         return $this->toArray($atividade);
     }
-
+    /**
+     * @param int atividade //seq_atividade
+     * @param char(3) dia //seg, ter,qua,qui,sex,sab,dom
+     * @param char(1) valor //S ou N ou nulo
+     *
+     * @return true
+     */
     public function mark(array $dados)
     {
         //Verifica se ja existe uma marcacao para a atividade e retorna o ID
@@ -107,6 +113,43 @@ class AtividadeService
                     $marcacao->setDomingo($dados['valor']);
                     break;
             }
+        }
+        $this->em->flush();
+        return true;
+    }
+
+    /**
+     * @param int atividade //seq_atividade
+     * @param datetime data //data do evento
+     * @param float valor //10,7.5,5,2.5
+     * @param text positivo //feedback positivo sobre o dia da crianca
+     * @param text negativo //feedback negativo sobre o dia da crianca
+     *
+     * @return true
+     */
+    public function saveEvent(array $dados)
+    {
+        //Verifica se ja existe um evento para a atividade e retorna o ID
+        $id = $this->findByEvento($dados['evento']);
+        //Para setar o valor NULL no banco quando uma celular for desmarcada.
+        //Estava setando branco
+        $dados['valor'] = (empty($dados['valor'])) ? null : $dados['valor'];
+        if (is_null($id)) { //nao possui marcacao
+            $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['atividade']);
+            $evento = new EventoEntity();
+            $evento->setData($dados['data']);
+            $evento->setValor($dados['valor']);
+            $evento->setPositivo($dados['positivo']);
+            $evento->setNegativo($dados['negativo']);
+            $this->em->persist($evento);
+            //Uma marcacao pertence a uma atividade
+            $evento->setAtividade($atividade);
+        } else { // possui marcacao
+            $evento = $this->em->getReference('\n0va1s\QuadroMagico\Entity\EventoEntity', $id);
+            $evento->setData($dados['data']);
+            $evento->setValor($dados['valor']);
+            $evento->setPositivo($dados['positivo']);
+            $evento->setNegativo($dados['negativo']);
         }
         $this->em->flush();
         return true;
