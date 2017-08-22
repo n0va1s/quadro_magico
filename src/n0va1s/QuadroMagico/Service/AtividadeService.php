@@ -329,11 +329,13 @@ class AtividadeService
         $prev =  $this->em->createQuery('select sum(a.valor) as val, count(a.id) as qtd from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
             ->setParameter(':id', $quadro)
             ->getOneOrNullResult();
+        $prev['val'] = is_null($prev['val']) ? 0 : $prev['val'];
         $day =  $this->sumValueDay($quadro);
         $real = $day['segunda']+$day['terca']+$day['quarta']+$day['quinta']+$day['sexta']+$day['sabado']+$day['domingo'];
         //70% do Total de pontos das atividades vezes a quantidade de atividade vezes 7 dias
         $total = round((($prev['val']*7)*.7));
-        $perc = round(($real/($prev['val']*7))*100);
+        //Trata para nao haver divisao por zero
+        $perc = $prev['val'] > 0 ? round(($real/($prev['val']*7))*100) : 0;
         return array('real'=>$real, 'prev'=>$total, 'perc'=>$perc);
     }
 
