@@ -20,6 +20,7 @@
 {% block conteudo %}
     <!-- Main Content -->
     <div class="container">
+        <input type="hidden" id="tipo" value="{{ quadro.tipo }}">
         <div class="row">
             {% if quadro.tipo == 'T' %}
             <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ totRealizado}} dos {{ totPrevisto}} pontos ({{ pctRealizado }}%) para alcançar seu desejo esta semana!</p>
@@ -27,7 +28,7 @@
             <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ totMesada }} reais de mesada!</p>
             {% endif %}
             {% if atividades is defined %}
-            <div style="overflow: auto; width: 100%;">
+            <div style="overflow: auto; width: 100%; border: 1px;">
                 <table class="table table-borded">
                     <thead>
                         <tr>
@@ -114,70 +115,70 @@
                             <td>{{ atividade.valor}}</td>
                             {% endif %}
                             {% if atividade['marcacoes'] is empty %}
-                                <td class="info" id="seg_{{ atividade.id}}"><span></span></td>
-                                <td class="info" id="ter_{{ atividade.id}}"><span></span></td>
-                                <td class="info" id="qua_{{ atividade.id}}"><span></span></td>
-                                <td class="info" id="qui_{{ atividade.id}}"><span></span></td>
-                                <td class="info" id="sex_{{ atividade.id}}"><span></span></td>
-                                <td class="info" id="sab_{{ atividade.id}}"><span></span></td>
-                                <td class="info" id="dom_{{ atividade.id}}"><span></span></td>
+                                <td name="seg_{{ atividade.id}}"><span></span></td>
+                                <td name="ter_{{ atividade.id}}"><span></span></td>
+                                <td name="qua_{{ atividade.id}}"><span></span></td>
+                                <td name="qui_{{ atividade.id}}"><span></span></td>
+                                <td name="sex_{{ atividade.id}}"><span></span></td>
+                                <td name="sab_{{ atividade.id}}"><span></span></td>
+                                <td name="dom_{{ atividade.id}}"><span></span></td>
                             {% else %}
                                 {% for marcacao in atividade['marcacoes'] %}
                                     <!-- Segunda -->
                                     {% if marcacao.segunda == 'S' %}
-                                        <td class="success" id="seg_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                                        <td name="seg_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.segunda == 'N' %}    
-                                        <td class="danger" id="seg_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                                        <td name="seg_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="info" id="seg_{{ atividade.id}}"><span></span></td>
+                                        <td name="seg_{{ atividade.id}}"><span></span></td>
                                     {% endif %}
                                     <!-- Terca -->
                                     {% if marcacao.terca == 'S' %}    
-                                        <td class="success" id="ter_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                                        <td name="ter_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.terca == 'N' %}    
-                                        <td class="danger" id="ter_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                                        <td name="ter_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="info" id="ter_{{ atividade.id}}"><span></span></td>
+                                        <td name="ter_{{ atividade.id}}"><span></span></td>
                                     {% endif %}
                                     <!-- Quarta -->
                                     {% if marcacao.quarta == 'S' %}    
-                                        <td class="success" id="qua_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                                        <td name="qua_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.quarta == 'N' %}    
-                                        <td class="danger" id="qua_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                                        <td name="qua_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="info" id="qua_{{ atividade.id}}"><span></span></td>
+                                        <td name="qua_{{ atividade.id}}"><span></span></td>
                                     {% endif %}
                                     <!-- Quinta -->
                                     {% if marcacao.quinta == 'S' %}    
-                                        <td class="success" id="qui_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                                        <td name="qui_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.quinta == 'N' %}    
-                                        <td class="danger" id="qui_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                                        <td name="qui_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="info" id="qui_{{ atividade.id}}"><span></span></td>
+                                        <td name="qui_{{ atividade.id}}"><span></span></td>
                                     {% endif %}
                                     <!-- Sexta -->
                                     {% if marcacao.sexta == 'S' %}    
-                                        <td class="success" id="sex_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                                        <td name="sex_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.sexta == 'N' %}    
-                                        <td class="danger" id="sex_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                                        <td name="sex_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="info" id="sex_{{ atividade.id}}"><span></span></td>
+                                        <td name="sex_{{ atividade.id}}"><span></span></td>
                                     {% endif %}
                                     <!-- Sabado -->
                                     {% if marcacao.sabado == 'S' %}    
-                                        <td class="success" id="sab_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                                        <td name="sab_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.sabado == 'N' %}    
-                                        <td class="danger" id="sab_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                                        <td name="sab_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="info" id="sab_{{ atividade.id}}"><span></span></td>
+                                        <td name="sab_{{ atividade.id}}"><span></span></td>
                                     {% endif %}
                                     <!-- Domingo -->
                                     {% if marcacao.domingo == 'S' %}    
-                                        <td class="success" id="dom_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                                        <td name="dom_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.domingo == 'N' %}    
-                                        <td class="danger" id="dom_{{ atividade.id}}"><span class="glyphicon glyphicon-thumbs-down"></span></td>
+                                        <td name="dom_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="info" id="dom_{{ atividade.id}}"><span></span></td>
+                                        <td name="dom_{{ atividade.id}}"><span></span></td>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}

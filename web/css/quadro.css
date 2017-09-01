@@ -1,0 +1,12 @@
+.otimo {
+  background-image: url(../img/otimo.png) no-repeat center top;
+}
+.bom {
+  background-image: url(../img/bom.png) no-repeat center top;
+}
+.ruim {
+  background-image: url(../img/ruim.png) no-repeat center top;
+}
+.pessimo {
+  background-image: url(../img/pessimo.png) no-repeat center top;
+}

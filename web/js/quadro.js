@@ -1,23 +1,62 @@
 $(document).ready(function() {
-    $(".info,.success,.danger").click(function(event) {
+    $("td").click(function(event) {
         event.preventDefault();
-        var celula = $(this).attr('id').split("_");
-        var estilo = $(this).attr('class');
+        var celula = $(this).attr('name').split("_");
+        var quadro = $('#tipo').val();
         var valor;
-        //Trocar o estilo e a imagem da celula clicada
-        if(estilo == 'info') {
-            $(this).attr("class","success");
-            valor = 'S';
-            $(this).children("span").attr("class","glyphicon glyphicon-thumbs-up");
-        } else if(estilo == "success") {
-            $(this).attr("class","danger");
-            valor = 'N';
-            $(this).children("span").attr("class","glyphicon glyphicon-thumbs-down");
+        if (quadro != 'F') {
+            //Para quadros de comportamento e mesada
+            //as celulas ficam verde (otimo), vermelha (pessimo)
+            //e azul(vazio)
+            switch ($(this).children().attr("class")) {
+              case "otimo": //otimo para pessimo
+                //$(this).attr("class","success");
+                valor = 'N';
+                $(this).children().attr("class","pessimo");
+                break;
+              case "pessimo": //pessimo para vazio
+                //$(this).attr("class","danger");
+                valor = null;
+                $(this).children().attr("class","");
+                break;
+              default: //vazio para otimo
+                //$(this).attr("class","info");
+                valor = 'S';
+                $(this).children().attr("class","otimo");
+                break;
+            }
         } else {
-            $(this).attr("class","info");
-            valor = null;
-            $(this).children("span").attr("class","");
+            //Para quadros de férias as celulas ficam verde (otimo),
+            //azul (bom), amarelo (ruim), vermelho (pessimo)
+            switch ($(this).attr("class")) {
+              case "info":
+                $(this).attr("class","success");
+                valor = 'O';
+                $(this).children().attr("class","otimo");
+                break;
+              case "success":
+                $(this).attr("class","info");
+                valor = 'B';
+                $(this).children().attr("class","bom");
+                break;
+              case "info":
+                $(this).attr("class","warning");
+                valor = 'R';
+                $(this).children().attr("class","ruim");
+                break;
+              case "warning":
+                $(this).attr("class","danger");
+                valor = 'P';
+                $(this).children().attr("class","pessimo");
+                break;
+              default:
+                $(this).attr("class","");
+                valor = null;
+                $(this).children().attr("class","");
+                break;
+            }
         }
+        
         $.ajax({
             url: '/quadro/atividade/marcar',
             type: 'POST',
