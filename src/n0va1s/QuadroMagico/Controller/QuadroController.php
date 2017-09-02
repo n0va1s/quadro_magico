@@ -43,7 +43,7 @@ class QuadroController implements ControllerProviderInterface
                 $atividades = $app['atividade_service']->loadExamples($quadro['id']);
             }
             //Envia os dados do quadro para o responsavel
-            $tipo = $dados['tipo'] = 'T'? 'tarefa' : 'mesada';
+            $tipo = $app['atividade_service']->findDescricaoByTipoQuadro($quadro['tipo']);
             $crianca = $dados['crianca'];
             $codigo = $dados['codigo'];
             $mail = (new \Swift_Message('[UmDesejoPorSemana] O quadro de '.$tipo.' para '.$crianca))
