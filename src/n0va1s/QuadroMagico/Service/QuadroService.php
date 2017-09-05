@@ -6,8 +6,7 @@ use \Doctrine\ORM\EntityManager;
 use \Doctrine\ORM\Query;
 use \Doctrine\ORM\Tools\Pagination\Paginator;
 use n0va1s\QuadroMagico\Entity\QuadroEntity;
-
-//use n0va1s\QuadroMagico\Entity\UserEntity;
+use n0va1s\QuadroMagico\Entity\TipoQuadroEntity;
 
 class QuadroService
 {
@@ -94,9 +93,13 @@ class QuadroService
 
     public function findByEmail($email)
     {
-        $quadros = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c where c.responsavel = :email')
-                          ->setParameter('email', $email)
-                          ->getArrayResult();
+        $quadros = $this->em->createQuery('SELECT q.id, q.responsavel, q.genero, q.idade, q.crianca, q.recompensa, q.codigo, t.descricao as tipo
+                                           FROM \n0va1s\QuadroMagico\Entity\QuadroEntity q 
+                                           JOIN q.tipo t
+                                           WHERE q.responsavel = :email')
+                           ->setParameter('email', $email)
+                           ->getArrayResult();
+
         if (count($quadros) == 0) {
             $quadros = ['mensagem'=>'Nenhum quadro cadastrado com este email'];
         }

@@ -5,6 +5,7 @@ namespace n0va1s\QuadroMagico\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use n0va1s\QuadroMagico\Entity\AtividadeEntity;
+use n0va1s\QuadroMagico\Entity\TipoQuadroEntity;
 
 /**
  * @ORM\Entity
@@ -25,7 +26,8 @@ class QuadroEntity
     private $responsavel;
 
     /**
-     * @ORM\Column(type="string", length=1, name="tip_quadro")
+     * @ORM\ManyToOne(targetEntity="TipoQuadroEntity")
+     * @ORM\JoinColumn(name="tip_quadro", referencedColumnName="seq_tipo_quadro")
      */
     private $tipo;
 

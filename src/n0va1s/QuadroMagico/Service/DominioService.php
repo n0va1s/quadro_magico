@@ -24,7 +24,7 @@ class DominioService
         $qb = $this->em->createQueryBuilder();
         $qb->insert('tipo_quadro')
            ->values(
-               array('val_tipo_quadro' => 'C','des_tipo_quadro' => 'Comportamento'),
+               array('val_tipo_quadro' => 'T','des_tipo_quadro' => 'Tarefa'),
                array('val_tipo_quadro' => 'F','des_tipo_quadro' => 'Férias'),
                array('val_tipo_quadro' => 'M','des_tipo_quadro' => 'Mesada')
            );

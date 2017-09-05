@@ -57,9 +57,9 @@
                                     <tbody>
                                         {% for quadro in quadros %}
                                         <tr>
-                                            <td><span>{{quadro.tipo == 'T' ? "Tarefa" : "Mesada"}}</span></td>
+                                            <td><span>{{quadro.tipo}}</span></td>
                                             <td><span>{{ quadro.crianca }}</span></td>
-                                            <td><center><a href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-folder-open"></span></a></center></td>
+                                            <td><center><a href={{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-folder-open"></span></a></center></td>
                                             <td><center><a href="{{ path('atividadeCadastrar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-pencil"></span></a></center></td>
                                             <td><center><a href="{{ path('quadroDuplicar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-plus"></span></a></center></td>
                                             <td><center><a href="{{ path('quadroExcluir',{'codigo':quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a></center></td>
