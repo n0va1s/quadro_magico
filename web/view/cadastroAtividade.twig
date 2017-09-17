@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2">
                 <form name="frmAtividade" action="{{ path('atividadeSalvar')}}" method="POST" enctype='multipart/form-data' class="form-inline">
-                    <h4>Quer criar novas atividades para o quadro {% if quadro is defined %}de {{quadro.tipo == 'T' ? "Tarefa" : "Mesada"}} para {{ quadro.crianca }} ?{% endif %}</h4>
+                    <h4>Quer criar novas atividades para o quadro{% if quadro is defined %} de {{ quadro.crianca }}?{% endif %}</h4>
                     <div class="form-group col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
                         <label for="atividade" class="sr-only">Atividade</label>
                         <input type="text" name="atividade" class="form-control col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9" placeholder="Escovar os dentes" autofocus required 
@@ -51,13 +51,16 @@
                         <label for="imagem" class="sr-only">Imagem</label>
                         <input type="file" name="imagem" id="imagem" class="form-control col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
                     </div>
-                    <div>&nbsp;</div>
+                    <div>
+                        <input type="hidden" name="quadro" value="{{ quadro.id }}">
+                        <input type="hidden" name="codigo" value="{{ quadro.codigo }}">
+                        <input type="hidden" name="crianca" value="{{ quadro.crianca }}">
+                    </div>
                     <div class="row">
                         <center>
                             <button class="btn btn-primary" type="submit">Salvar</button>
                             <a href= {{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-folder-open"></span>&nbsp;Abrir quadro</a>
                         <center>
-                        
                     </div>
                 </form>
             </div>

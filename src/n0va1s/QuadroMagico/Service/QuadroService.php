@@ -19,24 +19,25 @@ class QuadroService
 
     public function save(array $dados)
     {
+        $tipo = $this->em->getReference('\n0va1s\QuadroMagico\Entity\TipoQuadroEntity', $dados['tipo']);
         if (empty($dados['id'])) {
             $quadro = new QuadroEntity();
             $quadro->setResponsavel($dados['email']);
-            $quadro->setTipo($dados['tipo']);
             $quadro->setGenero($dados['genero']);
             $quadro->setIdade($dados['idade']);
             $quadro->setCrianca($dados['crianca']);
             $quadro->setRecompensa($dados['recompensa']);
             $this->em->persist($quadro);
+            $quadro->setTipo($tipo);
         } else {
             //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
             $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $dados['id']);
             $quadro->setResponsavel($dados['email']);
-            $quadro->setTipo($dados['tipo']);
             $quadro->setGenero($dados['genero']);
             $quadro->setIdade($dados['idade']);
             $quadro->setCrianca($dados['crianca']);
             $quadro->setRecompensa($dados['recompensa']);
+            $quadro->setTipo($tipo);
         }
         $this->em->flush();
         return $this->toArray($quadro);

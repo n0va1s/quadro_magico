@@ -6,9 +6,11 @@ use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Doctrine\ORM\EntityManager;
-use n0va1s\QuadroMagico\Service\QuadroService;
 use n0va1s\QuadroMagico\Service\AtividadeService;
+use n0va1s\QuadroMagico\Service\DominioService;
+use n0va1s\QuadroMagico\Service\QuadroService;
 
 class QuadroController implements ControllerProviderInterface
 {
@@ -28,8 +30,13 @@ class QuadroController implements ControllerProviderInterface
             return new QuadroService($this->em);
         };
 
+        $app['dominio_service'] = function () {
+            return new DominioService($this->em);
+        };
+
         $ctrl->get('/', function () use ($app) {
-            return $app['twig']->render('cadastroQuadro.twig');
+            $tipos = $app['dominio_service']->fetchAll();
+            return $app['twig']->render('cadastroQuadro.twig', array('tipos'=>$tipos));
         })->bind('indexQuadro');
 
         $ctrl->post('/salvar', function (Request $req) use ($app) {
@@ -43,7 +50,7 @@ class QuadroController implements ControllerProviderInterface
                 $atividades = $app['atividade_service']->loadExamples($quadro['id']);
             }
             //Envia os dados do quadro para o responsavel
-            $tipo = $app['dominio_service']->findDescricaoByTipoQuadro($quadro['tipo']);
+            $tipo = $app['dominio_service']->findById($quadro['tipo']->getId());
             $crianca = $dados['crianca'];
             $codigo = $dados['codigo'];
             $mail = (new \Swift_Message('[UmDesejoPorSemana] O quadro de '.$tipo.' para '.$crianca))
@@ -51,8 +58,12 @@ class QuadroController implements ControllerProviderInterface
                 ->setTo($dados['responsavel'])
                 ->setBody("O quadro de $tipo para $crianca está disponível no endereço <br /> <a href='umdesejoporsemana.com/quadro/exibir/'$codigo", 'text/html');
             $app['mailer']->send($mail);
-            //Redireciona para o cadastro de atividades
-            return $app->redirect('./atividade'); //TODO:retirar a URL fixa
+            //Cria um novo request para o cadastro de atividades
+            $dados = array('quadro'=>$quadro, 'tipo'=>$tipo);
+            $subRequest = $req::create('/quadro/atividade', 'GET', $dados);
+            $response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
+            return $response;
+            
         })->bind('quadroSalvar');
 
         $ctrl->get('/consultar', function () use ($app) {
@@ -107,10 +118,16 @@ class QuadroController implements ControllerProviderInterface
             return new AtividadeService($this->em);
         };
 
-        $ctrl->get('/atividade', function () use ($app) {
+        $ctrl->get('/atividade', function (Request $req) use ($app) {
+            $dados = $req->request->all();
+            //Caso o request venha do salvar quadro e nao do cadastro de atividade
+            if (empty($dados)) {
+                $quadro = $req->query->get('quadro');
+                $tipo = $req->query->get('tipo');
+            }
             //Pesquisar as atividades do quadro
-            $atividades = $app['atividade_service']->findByQuadro($app['session']->get('quadro')['id']);
-            return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$app['session']->get('quadro'), 'atividades'=>$atividades));
+            $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
+            return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades, 'tipo'=>$tipo));
         })->bind('indexAtividade');
 
         $ctrl->get('/atividade/cadastrar/{codigo}', function ($codigo) use ($app) {

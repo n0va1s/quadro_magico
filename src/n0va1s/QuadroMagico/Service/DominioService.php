@@ -4,6 +4,7 @@ namespace n0va1s\QuadroMagico\Service;
 
 use \Doctrine\ORM\EntityManager;
 use \Doctrine\ORM\Query;
+use n0va1s\QuadroMagico\Entity\TipoQuadroEntity;
 
 class DominioService
 {
@@ -32,20 +33,24 @@ class DominioService
         return true;
     }
 
-    public function listTipoQuadro()
+    public function fetchAll()
     {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('t')->from('tipo_quadro', 't')->orderBy('t.des_tipo_quadro', 'ASC');
-        return $qb->getQuery()->getArrayResult();
+        $tipos = $this->em->createQuery('select t from \n0va1s\QuadroMagico\Entity\TipoQuadroEntity t')->getArrayResult();
+        return $tipos;
     }
 
-    public function findDescricaoByTipoQuadro(string $tipo)
+    public function findById(string $tipo)
     {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('t.des_tipo_quadro')
-           ->from('tipo_quadro', 't')
-           ->where('t.val_tipo_quadro = ?1')
-           ->setParameter(1, $tipo);
-        return $qb->getQuery()->getArrayResult();
+        $tipo = $this->em->createQuery('select t from \n0va1s\QuadroMagico\Entity\TipoQuadroEntity t where t.id = :id')->setParameter('id', $tipo)->getSingleResult();
+        return $this->toArray($tipo);
+    }
+
+    public function toArray(TipoQuadroEntity $tipo)
+    {
+        return  array(
+            'id' => $tipo->getId(),
+            'codigo' => $tipo->getCodigo(),
+            'descricao' => $tipo->getDescricao()
+        );
     }
 }
