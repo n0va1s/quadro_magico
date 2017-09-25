@@ -79,6 +79,7 @@ class QuadroController implements ControllerProviderInterface
 
         $ctrl->get('/exibir/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
+            $tipo = $app['dominio_service']->findById($quadro['tipo']->getId());
             $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
             //Carrega se houve pedido especial em um dos dias
             $specialGifts = $app['atividade_service']->loadSpecialGift($quadro['id']);
@@ -88,7 +89,7 @@ class QuadroController implements ControllerProviderInterface
             $points = $app['atividade_service']->sumPoints($quadro['id']);
             //Totaliza quanto a crianca alcancou de mesada ate o momento
             $sumPocketMoney = $app['atividade_service']->sumPocketMoney($quadro['id']);
-            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'atividades'=>$atividades, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays, 'totRealizado'=>$points['real'], 'totPrevisto'=>$points['prev'], 'pctRealizado'=>$points['perc'],'totMesada'=>$sumPocketMoney));
+            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'tipo'=>$tipo, 'atividades'=>$atividades, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays, 'totRealizado'=>$points['real'], 'totPrevisto'=>$points['prev'], 'pctRealizado'=>$points['perc'],'totMesada'=>$sumPocketMoney));
         })->bind('quadroExibir');
 
         $ctrl->get('/duplicar/{codigo}', function ($codigo) use ($app) {

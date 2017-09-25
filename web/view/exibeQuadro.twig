@@ -20,12 +20,14 @@
 {% block conteudo %}
     <!-- Main Content -->
     <div class="container">
-        <input type="hidden" id="tipo" value="{{ quadro.tipo }}">
+        <input type="hidden" id="tipo" value="{{ tipo.codigo }}">
         <div class="row">
-            {% if quadro.tipo == 'T' %}
+            {% if tipo.codigo == 'T' %}
             <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ totRealizado}} dos {{ totPrevisto}} pontos ({{ pctRealizado }}%) para alcançar seu desejo esta semana!</p>
-            {% else %}
+            {% elseif tipo.codigo == 'M' %}
             <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ totMesada }} reais de mesada!</p>
+            {% else %}
+            <p>Oi <b>{{quadro.crianca}}</b>, você está fazendo o seu melhor possível? Vamos em frente!</p>
             {% endif %}
             {% if atividades is defined %}
             <div style="overflow: auto; width: 100%; border: 1px;">
@@ -91,7 +93,6 @@
                         <tr>
                             <th>&nbsp;</th>
                             <th>Mesada</th>
-                            <th>&nbsp;</th>
                             <th>R$ {{ valorDia['segunda'] }}</th>
                             <th>R$ {{ valorDia['terca'] }}</th>
                             <th>R$ {{ valorDia['quarta'] }}</th>
@@ -115,70 +116,70 @@
                             <td>{{ atividade.valor}}</td>
                             {% endif %}
                             {% if atividade['marcacoes'] is empty %}
-                                <td name="seg_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
-                                <td name="ter_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
-                                <td name="qua_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
-                                <td name="qui_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
-                                <td name="sex_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
-                                <td name="sab_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
-                                <td name="dom_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                <td class="emoji" id="seg_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                <td class="emoji" id="ter_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                <td class="emoji" id="qua_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                <td class="emoji" id="qui_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                <td class="emoji" id="sex_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                <td class="emoji" id="sab_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                <td class="emoji" id="dom_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
                             {% else %}
                                 {% for marcacao in atividade['marcacoes'] %}
                                     <!-- Segunda -->
                                     {% if marcacao.segunda == 'S' %}
-                                        <td name="seg_{{ atividade.id}}"><img class="emoji" src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="seg_{{ atividade.id}}"><img src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% elseif marcacao.segunda == 'N' %}    
-                                        <td name="seg_{{ atividade.id}}"><img class="emoji" src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="seg_{{ atividade.id}}"><img src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% else %}
-                                        <td name="seg_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="seg_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
                                     {% endif %}
                                     <!-- Terca -->
                                     {% if marcacao.terca == 'S' %}    
-                                        <td name="ter_{{ atividade.id}}"><img class="emoji" src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="ter_{{ atividade.id}}"><img src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% elseif marcacao.terca == 'N' %}    
-                                        <td name="ter_{{ atividade.id}}"><img class="emoji" src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="ter_{{ atividade.id}}"><img src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% else %}
-                                        <td name="ter_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="ter_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
                                     {% endif %}
                                     <!-- Quarta -->
                                     {% if marcacao.quarta == 'S' %}    
-                                        <td name="qua_{{ atividade.id}}"><img class="emoji" src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="qua_{{ atividade.id}}"><img src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% elseif marcacao.quarta == 'N' %}    
-                                        <td name="qua_{{ atividade.id}}"><img class="emoji" src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="qua_{{ atividade.id}}"><img src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% else %}
-                                        <td name="qua_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="qua_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
                                     {% endif %}
                                     <!-- Quinta -->
                                     {% if marcacao.quinta == 'S' %}    
-                                        <td name="qui_{{ atividade.id}}"><img class="emoji" src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="qui_{{ atividade.id}}"><img src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% elseif marcacao.quinta == 'N' %}    
-                                        <td name="qui_{{ atividade.id}}"><img class="emoji" src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="qui_{{ atividade.id}}"><img src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% else %}
-                                        <td name="qui_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="qui_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
                                     {% endif %}
                                     <!-- Sexta -->
                                     {% if marcacao.sexta == 'S' %}    
-                                        <td name="sex_{{ atividade.id}}"><img class="emoji" src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="sex_{{ atividade.id}}"><img src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% elseif marcacao.sexta == 'N' %}    
-                                        <td name="sex_{{ atividade.id}}"><img class="emoji" src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="sex_{{ atividade.id}}"><img src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% else %}
-                                        <td name="sex_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="sex_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
                                     {% endif %}
                                     <!-- Sabado -->
                                     {% if marcacao.sabado == 'S' %}    
-                                        <td name="sab_{{ atividade.id}}"><img class="emoji" src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="sab_{{ atividade.id}}"><img src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% elseif marcacao.sabado == 'N' %}    
-                                        <td name="sab_{{ atividade.id}}"><img class="emoji" src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="sab_{{ atividade.id}}"><img src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% else %}
-                                        <td name="sab_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="sab_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
                                     {% endif %}
                                     <!-- Domingo -->
                                     {% if marcacao.domingo == 'S' %}    
-                                        <td name="dom_{{ atividade.id}}"><img class="emoji" src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="dom_{{ atividade.id}}"><img src="{{ asset('otimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% elseif marcacao.domingo == 'N' %}    
-                                        <td name="dom_{{ atividade.id}}"><img class="emoji" src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="dom_{{ atividade.id}}"><img src="{{ asset('pessimo.png', 'img') }}" width="50px" height="50px"></td>
                                     {% else %}
-                                        <td name="dom_{{ atividade.id}}"><img class="emoji" src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
+                                        <td class="emoji" id="dom_{{ atividade.id}}"><img src="{{ asset('duvida.png', 'img') }}" width="50px" height="50px"></td>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
