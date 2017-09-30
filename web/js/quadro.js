@@ -8,40 +8,47 @@ $(document).ready(function() {
             //Para quadros de comportamento e mesada
             //as celulas ficam verde (otimo), vermelha (pessimo)
             //e azul(vazio)
-            switch ($(this).children().attr('src')) {
-              case '/img/otimo.png': //otimo para pessimo
+            switch ($(this).children().attr('class')) {
+              case 'otimo': //otimo para pessimo
                 //$(this).attr('class','success');
                 valor = 'N';
-                $(this).children().attr('src','/img/pessimo.png');
+                $(this).children().toggleClass("pessimo");
+                //$(this).children().attr('class','pessimo');
                 break;
-              case '/img/pessimo.png': //pessimo para vazio
+              case 'pessimo': //pessimo para vazio
                 //$(this).attr('class','danger');
                 valor = null;
-                $(this).children().attr('src','/img/duvida.png');
+                $(this).children().toggleClass("duvida");
+                //$(this).children().attr('class','duvida');
                 break;
               default: //vazio para otimo
                 //$(this).attr('class','info');
                 valor = 'S';
-                $(this).children().attr('src','/img/otimo.png');
+                $(this).children().toggleClass("otimo");
+                //$(this).children().attr('class','otimo');
                 break;
             }
         } else {
-            switch ($(this).children().attr('src')) {
-              case '/img/otimo.png':
+            switch ($(this).children().attr('class')) {
+              case 'otimo':
                 valor = 'B';
-                $(this).children().attr('src','/img/bom.png');
+                $(this).children().toggleClass("bom");
+                //$(this).children().attr('class','bom');
                 break;
-              case '/img/bom.png':
+              case 'bom':
                 valor = 'R';
-                $(this).children().attr('src','/img/ruim.png');
+                $(this).children().toggleClass("ruim");
+                //$(this).children().attr('class','ruim');
                 break;
-              case '/img/ruim.png':
+              case 'ruim':
                 valor = 'P';
-                $(this).children().attr('src','/img/pessimo.png');
+                $(this).children().toggleClass("pessimo");
+                //$(this).children().attr('class','pessimo');
                 break;
               default:
                 valor = 'O';
-                $(this).children().attr('src','/img/otimo.png');
+                $(this).children().toggleClass("otimo");
+                //$(this).children().attr('class','otimo');
                 break;
             }
         }

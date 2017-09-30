@@ -56,11 +56,6 @@ class AtividadeEntity
      */
     private $marcacoes;
 
-    /**
-     * @ORM\OneToMany(targetEntity="EventoEntity", mappedBy="atividade")
-     */
-    private $eventos;
-
     public function __construct()
     {
         $this->cadastro = new \Datetime();
