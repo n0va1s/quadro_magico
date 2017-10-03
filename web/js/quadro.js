@@ -6,56 +6,45 @@ $(document).ready(function() {
         var valor;
         if (quadro != 'F') {
             //Para quadros de comportamento e mesada
-            //as celulas ficam verde (otimo), vermelha (pessimo)
-            //e azul(vazio)
+            //a regra e fez (1), nao fez (0) ou nao teve oportunidade de fazer (0)
             switch ($(this).children().attr('class')) {
               case 'otimo': //otimo para pessimo
-                //$(this).attr('class','success');
                 valor = 'N';
-                $(this).children().removeClass("otimo");
-                $(this).children().addClass("pessimo");
-                //$(this).children().attr('class','pessimo');
+                $(this).children().removeClass("otimo").addClass("pessimo");
                 break;
               case 'pessimo': //pessimo para vazio
-                //$(this).attr('class','danger');
                 valor = null;
-                $(this).children().removeClass("pessimo");
-                $(this).children().addClass("duvida");
-                //$(this).children().attr('class','duvida');
+                $(this).children().removeClass("pessimo").addClass("duvida");
                 break;
               default: //vazio para otimo
-                //$(this).attr('class','info');
                 valor = 'S';
-                $(this).children().removeClass("duvida");
-                $(this).children().addClass("otimo");
-                //$(this).children().attr('class','otimo');
+                $(this).children().removeClass("duvida").addClass("otimo");
                 break;
             }
         } else {
+            //Para quadros de ferias
+            //a regra e otimo (4), bom(3), ruim (2), pessimo (1)
+            //multiplicado pelo valor atribuido a atividade
             switch ($(this).children().attr('class')) {
               case 'otimo':
-                valor = 'B';
-                $(this).children().removeClass("otimo");
-                $(this).children().addClass("bom");
-                //$(this).children().attr('class','bom');
+              valor = 'B';
+              $(this).children().removeClass("otimo").addClass("bom");
                 break;
-              case 'bom':
+                case 'bom':
                 valor = 'R';
-                $(this).children().removeClass("bom");
-                $(this).children().addClass("ruim");
-                //$(this).children().attr('class','ruim');
+                $(this).children().removeClass("bom").addClass("ruim");
                 break;
-              case 'ruim':
+                case 'ruim':
                 valor = 'P';
-                $(this).children().removeClass("ruim");
-                $(this).children().toggleClass("pessimo");
-                //$(this).children().attr('class','pessimo');
+                $(this).children().removeClass("ruim").addClass("pessimo");
                 break;
-              default:
+                case 'pessimo':
+                valor = null;
+                $(this).children().removeClass("pessimo").addClass("duvida");
+                break;
+                default:
                 valor = 'O';
-                $(this).children().removeClass("pessimo");
-                $(this).children().addClass("otimo");
-                //$(this).children().attr('class','otimo');
+                $(this).children().removeClass("duvida").addClass("otimo");
                 break;
             }
         }

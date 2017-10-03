@@ -5,6 +5,7 @@
   background-size: 3em;
   width: 3em;
   height: 3em;
+  display: inline-block;
 }
 .bom {
   background-image: url(../img/bom.png);
@@ -13,6 +14,7 @@
   background-size: 3em;
   width: 3em;
   height: 3em;
+  display: inline-block;
 }
 .ruim {
   background-image: url(../img/ruim.png);
@@ -21,6 +23,7 @@
   background-size: 3em;
   width: 3em;
   height: 3em;
+  display: inline-block;
 }
 .pessimo {
   background-image: url(../img/pessimo.png);
@@ -29,6 +32,7 @@
   background-size: 3em;
   width: 3em;
   height: 3em;
+  display: inline-block;
 }
 .duvida {
   background-image: url(../img/duvida.png);
@@ -37,8 +41,11 @@
   background-size: 3em;
   width: 3em;
   height: 3em;
+  display: inline-block;
 }
 .emoji {
+}
+.imagem {
   padding: 0;
   margin: 0;
   width: 5em; 

@@ -36,7 +36,7 @@
                         <tr>
                             <th>&nbsp;</th>
                             <th>Tarefa</th>
-                            {% if quadro.tipo == 'M' %}
+                            {% if tipo.codigo == 'M' %}
                             <th>Valor</th>
                             {% endif %}
                             <th>Seg</th>
@@ -49,7 +49,7 @@
                         </tr>
                     </thead>
                     <tfoot>
-                        {% if quadro.tipo == 'T' %}
+                        {% if tipo.codigo == 'T' %}
                         <tr>
                             <th>&nbsp;</th>
                             <th>Pedido especial</th>
@@ -107,12 +107,12 @@
                         {% for atividade in atividades %}
                         <tr>
                             {% if atividade.imagem is not null %}
-                            <td><img src="{{ asset(atividade.imagem, 'file') }}" width="5em" height="5em"></td>
+                            <td class="imagem"><img src="{{ asset(atividade.imagem, 'file') }}"></td>
                             {% else %}
-                            <td width="100" height="100"></td>
+                            <td class="imagem"></td>
                             {% endif %}
                             <td>{{ atividade.atividade}}</td>
-                            {% if quadro.tipo == 'M' %}
+                            {% if tipo.codigo == 'M' %}
                             <td>{{ atividade.valor}}</td>
                             {% endif %}
                             {% if atividade['marcacoes'] is empty %}
