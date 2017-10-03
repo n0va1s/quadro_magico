@@ -107,7 +107,7 @@
                         {% for atividade in atividades %}
                         <tr>
                             {% if atividade.imagem is not null %}
-                            <td><img src="{{ asset(atividade.imagem, 'file') }}" width="100px" height="100px"></td>
+                            <td><img src="{{ asset(atividade.imagem, 'file') }}" width="5em" height="5em"></td>
                             {% else %}
                             <td width="100" height="100"></td>
                             {% endif %}
@@ -116,70 +116,70 @@
                             <td>{{ atividade.valor}}</td>
                             {% endif %}
                             {% if atividade['marcacoes'] is empty %}
-                                <td class="emoji" id="seg_{{ atividade.id}}"><img class="duvida"></td>
-                                <td class="emoji" id="ter_{{ atividade.id}}"><img class="duvida"></td>
-                                <td class="emoji" id="qua_{{ atividade.id}}"><img class="duvida"></td>
-                                <td class="emoji" id="qui_{{ atividade.id}}"><img class="duvida"></td>
-                                <td class="emoji" id="sex_{{ atividade.id}}"><img class="duvida"></td>
-                                <td class="emoji" id="sab_{{ atividade.id}}"><img class="duvida"></td>
-                                <td class="emoji" id="dom_{{ atividade.id}}"><img class="duvida"></td>
+                                <td class="emoji" id="seg_{{ atividade.id}}"><span class="duvida"></span></td>
+                                <td class="emoji" id="ter_{{ atividade.id}}"><span class="duvida"></span></td>
+                                <td class="emoji" id="qua_{{ atividade.id}}"><span class="duvida"></span></td>
+                                <td class="emoji" id="qui_{{ atividade.id}}"><span class="duvida"></span></td>
+                                <td class="emoji" id="sex_{{ atividade.id}}"><span class="duvida"></span></td>
+                                <td class="emoji" id="sab_{{ atividade.id}}"><span class="duvida"></span></td>
+                                <td class="emoji" id="dom_{{ atividade.id}}"><span class="duvida"></span></td>
                             {% else %}
                                 {% for marcacao in atividade['marcacoes'] %}
                                     <!-- Segunda -->
                                     {% if marcacao.segunda == 'S' %}
-                                        <td class="emoji" id="seg_{{ atividade.id}}"><img class="otimo"></td>
+                                        <td class="emoji" id="seg_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.segunda == 'N' %}    
-                                        <td class="emoji" id="seg_{{ atividade.id}}"><img class="pessimo"></td>
+                                        <td class="emoji" id="seg_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="emoji" id="seg_{{ atividade.id}}"><img class="duvida"></td>
+                                        <td class="emoji" id="seg_{{ atividade.id}}"><span class="duvida"></span></td>
                                     {% endif %}
                                     <!-- Terca -->
                                     {% if marcacao.terca == 'S' %}    
-                                        <td class="emoji" id="ter_{{ atividade.id}}"><img class="otimo"></td>
+                                        <td class="emoji" id="ter_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.terca == 'N' %}    
-                                        <td class="emoji" id="ter_{{ atividade.id}}"><img class="pessimo"></td>
+                                        <td class="emoji" id="ter_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="emoji" id="ter_{{ atividade.id}}"><img class="duvida"></td>
+                                        <td class="emoji" id="ter_{{ atividade.id}}"><span class="duvida"></span></td>
                                     {% endif %}
                                     <!-- Quarta -->
                                     {% if marcacao.quarta == 'S' %}    
-                                        <td class="emoji" id="qua_{{ atividade.id}}"><img class="otimo"></td>
+                                        <td class="emoji" id="qua_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.quarta == 'N' %}    
-                                        <td class="emoji" id="qua_{{ atividade.id}}"><img class="pessimo"></td>
+                                        <td class="emoji" id="qua_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="emoji" id="qua_{{ atividade.id}}"><img class="duvida"></td>
+                                        <td class="emoji" id="qua_{{ atividade.id}}"><span class="duvida"></span></td>
                                     {% endif %}
                                     <!-- Quinta -->
                                     {% if marcacao.quinta == 'S' %}    
-                                        <td class="emoji" id="qui_{{ atividade.id}}"><img class="otimo"></td>
+                                        <td class="emoji" id="qui_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.quinta == 'N' %}    
-                                        <td class="emoji" id="qui_{{ atividade.id}}"><img class="pessimo"></td>
+                                        <td class="emoji" id="qui_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="emoji" id="qui_{{ atividade.id}}"><img class="duvida"></td>
+                                        <td class="emoji" id="qui_{{ atividade.id}}"><span class="duvida"></span></td>
                                     {% endif %}
                                     <!-- Sexta -->
                                     {% if marcacao.sexta == 'S' %}    
-                                        <td class="emoji" id="sex_{{ atividade.id}}"><img class="otimo"></td>
+                                        <td class="emoji" id="sex_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.sexta == 'N' %}    
-                                        <td class="emoji" id="sex_{{ atividade.id}}"><img class="pessimo"></td>
+                                        <td class="emoji" id="sex_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="emoji" id="sex_{{ atividade.id}}"><img class="duvida"></td>
+                                        <td class="emoji" id="sex_{{ atividade.id}}"><span class="duvida"></span></td>
                                     {% endif %}
                                     <!-- Sabado -->
                                     {% if marcacao.sabado == 'S' %}    
-                                        <td class="emoji" id="sab_{{ atividade.id}}"><img class="otimo"></td>
+                                        <td class="emoji" id="sab_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.sabado == 'N' %}    
-                                        <td class="emoji" id="sab_{{ atividade.id}}"><img class="pessimo"></td>
+                                        <td class="emoji" id="sab_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="emoji" id="sab_{{ atividade.id}}"><img class="duvida"></td>
+                                        <td class="emoji" id="sab_{{ atividade.id}}"><span class="duvida"></span></td>
                                     {% endif %}
                                     <!-- Domingo -->
                                     {% if marcacao.domingo == 'S' %}    
-                                        <td class="emoji" id="dom_{{ atividade.id}}"><img class="otimo"></td>
+                                        <td class="emoji" id="dom_{{ atividade.id}}"><span class="otimo"></span></td>
                                     {% elseif marcacao.domingo == 'N' %}    
-                                        <td class="emoji" id="dom_{{ atividade.id}}"><img class="pessimo"></td>
+                                        <td class="emoji" id="dom_{{ atividade.id}}"><span class="pessimo"></span></td>
                                     {% else %}
-                                        <td class="emoji" id="dom_{{ atividade.id}}"><img class="duvida"></td>
+                                        <td class="emoji" id="dom_{{ atividade.id}}"><span class="duvida"></span></td>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}

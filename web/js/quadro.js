@@ -12,19 +12,22 @@ $(document).ready(function() {
               case 'otimo': //otimo para pessimo
                 //$(this).attr('class','success');
                 valor = 'N';
-                $(this).children().toggleClass("pessimo");
+                $(this).children().removeClass("otimo");
+                $(this).children().addClass("pessimo");
                 //$(this).children().attr('class','pessimo');
                 break;
               case 'pessimo': //pessimo para vazio
                 //$(this).attr('class','danger');
                 valor = null;
-                $(this).children().toggleClass("duvida");
+                $(this).children().removeClass("pessimo");
+                $(this).children().addClass("duvida");
                 //$(this).children().attr('class','duvida');
                 break;
               default: //vazio para otimo
                 //$(this).attr('class','info');
                 valor = 'S';
-                $(this).children().toggleClass("otimo");
+                $(this).children().removeClass("duvida");
+                $(this).children().addClass("otimo");
                 //$(this).children().attr('class','otimo');
                 break;
             }
@@ -32,22 +35,26 @@ $(document).ready(function() {
             switch ($(this).children().attr('class')) {
               case 'otimo':
                 valor = 'B';
-                $(this).children().toggleClass("bom");
+                $(this).children().removeClass("otimo");
+                $(this).children().addClass("bom");
                 //$(this).children().attr('class','bom');
                 break;
               case 'bom':
                 valor = 'R';
-                $(this).children().toggleClass("ruim");
+                $(this).children().removeClass("bom");
+                $(this).children().addClass("ruim");
                 //$(this).children().attr('class','ruim');
                 break;
               case 'ruim':
                 valor = 'P';
+                $(this).children().removeClass("ruim");
                 $(this).children().toggleClass("pessimo");
                 //$(this).children().attr('class','pessimo');
                 break;
               default:
                 valor = 'O';
-                $(this).children().toggleClass("otimo");
+                $(this).children().removeClass("pessimo");
+                $(this).children().addClass("otimo");
                 //$(this).children().attr('class','otimo');
                 break;
             }
