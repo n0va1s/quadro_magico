@@ -286,41 +286,34 @@ class AtividadeService
 
     public function sumValueDay(int $quadro)
     {
-        $arr =  $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.segunda = :sim')
+        $arr['segunda'] =  $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.segunda = :sim')
             ->setParameter(':id', $quadro)
             ->setParameter(':sim', 'S')
             ->getSingleResult();
-        $result['segunda'] = $arr['valor'];
-        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.terca = :sim')
+        $arr['terca'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.terca = :sim')
             ->setParameter(':id', $quadro)
             ->setParameter(':sim', 'S')
             ->getSingleResult();
-        $result['terca'] = $arr['valor'];
-        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.quarta = :sim')
+        $arr['quarta'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.quarta = :sim')
             ->setParameter(':id', $quadro)
             ->setParameter(':sim', 'S')
             ->getSingleResult();
-        $result['quarta'] = $arr['valor'];
-        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.quinta = :sim')
+        $arr['quinta'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.quinta = :sim')
             ->setParameter(':id', $quadro)
             ->setParameter(':sim', 'S')
             ->getSingleResult();
-        $result['quinta'] = $arr['valor'];
-        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.sexta = :sim')
+        $arr['sexta'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.sexta = :sim')
             ->setParameter(':id', $quadro)
             ->setParameter(':sim', 'S')
             ->getSingleResult();
-        $result['sexta'] = $arr['valor'];
-        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.sabado = :sim')
+        $arr['sabado'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.sabado = :sim')
             ->setParameter(':id', $quadro)
             ->setParameter(':sim', 'S')
             ->getSingleResult();
-        $result['sabado'] = $arr['valor'];
-        $arr = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.domingo = :sim')
+        $arr['domingo'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.domingo = :sim')
             ->setParameter(':id', $quadro)
             ->setParameter(':sim', 'S')
             ->getSingleResult();
-        $result['domingo'] = $arr['valor'];
         return $result;
     }
 
@@ -344,6 +337,153 @@ class AtividadeService
         $day =  $this->sumValueDay($quadro);
         $real = $day['segunda']+$day['terca']+$day['quarta']+$day['quinta']+$day['sexta']+$day['sabado']+$day['domingo'];
         return $real;
+    }
+
+    public function sumResult(int $quadro)
+    {
+        $arr['segunda'] = $this->em->createQuery('select sum(a.valor * m.segunda) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
+            ->setParameter(':id', $quadro)
+            ->getSingleResult();
+        $arr['terca'] = $this->em->createQuery('select sum(a.valor * m.terca) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
+            ->setParameter(':id', $quadro)
+            ->getSingleResult();
+        $arr['quarta'] = $this->em->createQuery('select sum(a.valor * m.quarta) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
+            ->setParameter(':id', $quadro)
+            ->getSingleResult();
+        $arr['quinta'] = $this->em->createQuery('select sum(a.valor * m.quinta) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
+            ->setParameter(':id', $quadro)
+            ->getSingleResult();
+        $arr['sexta'] = $this->em->createQuery('select sum(a.valor * m.sexta) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
+            ->setParameter(':id', $quadro)
+            ->getSingleResult();
+        $arr['sabado'] = $this->em->createQuery('select sum(a.valor * m.sabado) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
+            ->setParameter(':id', $quadro)
+            ->getSingleResult();
+        $arr['domingo'] = $this->em->createQuery('select sum(a.valor * m.domingo) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
+            ->setParameter(':id', $quadro)
+            ->getSingleResult();
+        $arr['atividades'] = $this->em->createQuery('select sum(a.valor) as peso from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a where q.id = :id')
+            ->setParameter(':id', $quadro)
+            ->getSingleResult();
+        return $arr;
+    }
+
+    public function getResult(int $quadro)
+    {
+        $result =  $this->sumResult($quadro);
+        switch (round($result['segunda']['nota'] / $result['atividades']['peso'])) {
+            case "1":
+                $arr['segunda'] = "Péssimo";
+                break;
+            case "2":
+                $arr['segunda'] = "Ruim";
+                break;
+            case "3":
+                $arr['segunda'] = "Bom";
+                break;
+            case "4":
+                $arr['segunda'] = "Ótimo";
+                break;
+            default:
+                $arr['segunda'] = "Não sei";
+        }
+        switch (round($result['terca']['nota'] / $result['atividades']['peso'])) {
+            case "1":
+                $arr['terca'] = "Péssimo";
+                break;
+            case "2":
+                $arr['terca'] = "Ruim";
+                break;
+            case "3":
+                $arr['terca'] = "Bom";
+                break;
+            case "4":
+                $arr['terca'] = "Ótimo";
+                break;
+            default:
+                $arr['terca'] = "Não sei";
+        }
+        switch (round($result['quarta']['nota'] / $result['atividades']['peso'])) {
+            case "1":
+                $arr['quarta'] = "Péssimo";
+                break;
+            case "2":
+                $arr['quarta'] = "Ruim";
+                break;
+            case "3":
+                $arr['quarta'] = "Bom";
+                break;
+            case "4":
+                $arr['quarta'] = "Ótimo";
+                break;
+            default:
+                $arr['quarta'] = "Não sei";
+        }
+        switch (round($result['quinta']['nota'] / $result['atividades']['peso'])) {
+            case "1":
+                $arr['quinta'] = "Péssimo";
+                break;
+            case "2":
+                $arr['quinta'] = "Ruim";
+                break;
+            case "3":
+                $arr['quinta'] = "Bom";
+                break;
+            case "4":
+                $arr['quinta'] = "Ótimo";
+                break;
+            default:
+                $arr['quinta'] = "Não sei";
+        }
+        switch (round($result['sexta']['nota'] / $result['atividades']['peso'])) {
+            case "1":
+                $arr['sexta'] = "Péssimo";
+                break;
+            case "2":
+                $arr['sexta'] = "Ruim";
+                break;
+            case "3":
+                $arr['sexta'] = "Bom";
+                break;
+            case "4":
+                $arr['sexta'] = "Ótimo";
+                break;
+            default:
+                $arr['sexta'] = "Não sei";
+        }
+        switch (round($result['sabado']['nota'] / $result['atividades']['peso'])) {
+            case "1":
+                $arr['sabado'] = "Péssimo";
+                break;
+            case "2":
+                $arr['sabado'] = "Ruim";
+                break;
+            case "3":
+                $arr['sabado'] = "Bom";
+                break;
+            case "4":
+                $arr['sabado'] = "Ótimo";
+                break;
+            default:
+                $arr['sabado'] = "Não sei";
+        }
+        switch (round($result['domingo']['nota'] / $result['atividades']['peso'])) {
+            case "1":
+                $arr['domingo'] = "Péssimo";
+                break;
+            case "2":
+                $arr['domingo'] = "Ruim";
+                break;
+            case "3":
+                $arr['domingo'] = "Bom";
+                break;
+            case "4":
+                $arr['domingo'] = "Ótimo";
+                break;
+            default:
+                $arr['domingo'] = "Não sei";
+        }
+        return $arr;
     }
 
     public function toArray(AtividadeEntity $atividade)

@@ -89,7 +89,7 @@
                                 <th><span class="glyphicon glyphicon-heart-empty"></span></th>
                             {% endif %}
                         </tr>
-                        {% else %}
+                        {% elseif tipo.codigo == 'M' %}
                         <tr>
                             <th>&nbsp;</th>
                             <th>Mesada</th>
@@ -100,6 +100,18 @@
                             <th>R$ {{ valorDia['sexta'] }}</th>
                             <th>R$ {{ valorDia['sabado'] }}</th>
                             <th>R$ {{ valorDia['domingo'] }}</th>
+                        </tr>
+                        {% elseif tipo.codigo == 'F' %}
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>O dia foi</th>
+                            <th>{{ resultado['segunda'] }}</th>
+                            <th>{{ resultado['terca'] }}</th>
+                            <th>{{ resultado['quarta'] }}</th>
+                            <th>{{ resultado['quinta'] }}</th>
+                            <th>{{ resultado['sexta'] }}</th>
+                            <th>{{ resultado['sabado'] }}</th>
+                            <th>{{ resultado['domingo'] }}</th>
                         </tr>
                         {% endif %}
                     </tfoot>

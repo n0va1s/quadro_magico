@@ -9,7 +9,7 @@ $(document).ready(function() {
             //a regra e fez (1), nao fez (0) ou nao teve oportunidade de fazer (0)
             switch ($(this).children().attr('class')) {
               case 'otimo': //otimo para pessimo
-                valor = 'N';
+                valor = -1;
                 $(this).children().removeClass("otimo").addClass("pessimo");
                 break;
               case 'pessimo': //pessimo para vazio
@@ -17,7 +17,7 @@ $(document).ready(function() {
                 $(this).children().removeClass("pessimo").addClass("duvida");
                 break;
               default: //vazio para otimo
-                valor = 'S';
+                valor = 1;
                 $(this).children().removeClass("duvida").addClass("otimo");
                 break;
             }
@@ -27,15 +27,15 @@ $(document).ready(function() {
             //multiplicado pelo valor atribuido a atividade
             switch ($(this).children().attr('class')) {
               case 'otimo':
-              valor = 'B';
-              $(this).children().removeClass("otimo").addClass("bom");
+                valor = 3;
+                $(this).children().removeClass("otimo").addClass("bom");
                 break;
                 case 'bom':
-                valor = 'R';
+                valor = 2;
                 $(this).children().removeClass("bom").addClass("ruim");
                 break;
                 case 'ruim':
-                valor = 'P';
+                valor = 1;
                 $(this).children().removeClass("ruim").addClass("pessimo");
                 break;
                 case 'pessimo':
@@ -43,7 +43,7 @@ $(document).ready(function() {
                 $(this).children().removeClass("pessimo").addClass("duvida");
                 break;
                 default:
-                valor = 'O';
+                valor = 4;
                 $(this).children().removeClass("duvida").addClass("otimo");
                 break;
             }
