@@ -90,9 +90,12 @@ class QuadroController implements ControllerProviderInterface
             //Totaliza quanto a crianca alcancou de mesada ate o momento
             $sumPocketMoney = $app['atividade_service']->sumPocketMoney($quadro['id']);
             //Totaliza o resultado do dia da crianca (otimo, bom, ruim ou pessimo)
-            $result = $app['atividade_service']->getResult($quadro['id']);
-            
-            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'tipo'=>$tipo, 'atividades'=>$atividades, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays, 'totRealizado'=>$points['real'], 'totPrevisto'=>$points['prev'], 'pctRealizado'=>$points['perc'],'totMesada'=>$sumPocketMoney,'resultado'=>$result));
+            $result = $app['atividade_service']->sumResult($quadro['id']);
+            // Lista de atividades com os respectivos emojis
+            $marcacao = $app['atividade_service']->mountBoard($quadro['id']);
+            var_dump($marcacao);
+            exit;
+            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'tipo'=>$tipo, 'atividades'=>$atividades, 'marcacoes'=>$marcacao, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays, 'totRealizado'=>$points['real'], 'totPrevisto'=>$points['prev'], 'pctRealizado'=>$points['perc'],'totMesada'=>$sumPocketMoney,'resultado'=>$result));
         })->bind('quadroExibir');
 
         $ctrl->get('/duplicar/{codigo}', function ($codigo) use ($app) {

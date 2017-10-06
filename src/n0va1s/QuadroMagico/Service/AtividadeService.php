@@ -12,10 +12,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 class AtividadeService
 {
     private $em;
+    private $semana;
 
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
+        $this->semana = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado", "domingo"];
     }
 
     public function save(array $dados, File $imagem = null)
@@ -218,102 +220,28 @@ class AtividadeService
 
     public function loadSpecialGift(int $quadro)
     {
-        try {
-            $mark = $this->em->createQuery('select distinct m.segunda from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
-                ->setParameter(':id', $quadro)
-                ->getOneOrNullResult();
-            $specialGift['segunda'] = ($mark['segunda'] == 'S') ? true : false;
-        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['segunda'] = false;
-        }
-
-        try {
-            $mark = $this->em->createQuery('select distinct m.terca from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
-                ->setParameter(':id', $quadro)
-                ->getOneOrNullResult();
-            $specialGift['terca'] = ($mark['terca'] == 'S') ? true : false;
-        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['terca'] = false;
-        }
-
-        try {
-            $mark = $this->em->createQuery('select distinct m.quarta from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
-                ->setParameter(':id', $quadro)
-                ->getOneOrNullResult();
-            $specialGift['quarta'] = ($mark['quarta'] == 'S') ? true : false;
-        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['quarta'] = false;
-        }
-
-        try {
-            $mark = $this->em->createQuery('select distinct m.quinta from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
-                ->setParameter(':id', $quadro)
-                ->getOneOrNullResult();
-            $specialGift['quinta'] = ($mark['quinta'] == 'S') ? true : false;
-        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['quinta'] = false;
-        }
-
-        try {
-            $mark = $this->em->createQuery('select distinct m.sexta from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
-                ->setParameter(':id', $quadro)
-                ->getOneOrNullResult();
-            $specialGift['sexta'] = ($mark['sexta'] == 'S') ? true : false;
-        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['sexta'] = false;
-        }
-
-        try {
-            $mark = $this->em->createQuery('select distinct m.sabado from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
-                ->setParameter(':id', $quadro)
-                ->getOneOrNullResult();
-            $specialGift['sabado'] = ($mark['sabado'] == 'S') ? true : false;
-        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['sabado'] = false;
-        }
-
-        try {
-            $mark = $this->em->createQuery('select distinct m.domingo from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
-                ->setParameter(':id', $quadro)
-                ->getOneOrNullResult();
-            $specialGift['domingo'] = ($mark['domingo'] == 'S') ? true : false;
-        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            $specialGift['domingo'] = false;
-            //echo 'Exceção capturada: ',  $e->getMessage(), "\n";
+        foreach ($this->semana as $dia) {
+            try {
+                $mark = $this->em->createQuery("select distinct m.$dia from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id")
+                    ->setParameter(':id', $quadro)
+                    ->getOneOrNullResult();
+                $specialGift[$dia] = ($mark[$dia] == 1) ? true : false;
+            } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+                $specialGift[$dia] = false;
+            }
         }
         return $specialGift;
     }
 
     public function sumValueDay(int $quadro)
     {
-        $arr['segunda'] =  $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.segunda = :sim')
-            ->setParameter(':id', $quadro)
-            ->setParameter(':sim', 'S')
-            ->getSingleResult();
-        $arr['terca'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.terca = :sim')
-            ->setParameter(':id', $quadro)
-            ->setParameter(':sim', 'S')
-            ->getSingleResult();
-        $arr['quarta'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.quarta = :sim')
-            ->setParameter(':id', $quadro)
-            ->setParameter(':sim', 'S')
-            ->getSingleResult();
-        $arr['quinta'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.quinta = :sim')
-            ->setParameter(':id', $quadro)
-            ->setParameter(':sim', 'S')
-            ->getSingleResult();
-        $arr['sexta'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.sexta = :sim')
-            ->setParameter(':id', $quadro)
-            ->setParameter(':sim', 'S')
-            ->getSingleResult();
-        $arr['sabado'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.sabado = :sim')
-            ->setParameter(':id', $quadro)
-            ->setParameter(':sim', 'S')
-            ->getSingleResult();
-        $arr['domingo'] = $this->em->createQuery('select sum(a.valor) as valor from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id and m.domingo = :sim')
-            ->setParameter(':id', $quadro)
-            ->setParameter(':sim', 'S')
-            ->getSingleResult();
+        foreach ($this->semana as $dia) {
+            $arr[$dia] =  $this->em->createQuery("select sum(a.valor) as valor from n0va1s\QuadroMagico\Entity\QuadroEntity q 
+                join q.atividades a join a.marcacoes m where q.id = :id and m.$dia = :sim")
+                ->setParameter(':id', $quadro)
+                ->setParameter(':sim', '1')
+                ->getSingleResult();
+        }
         return $result;
     }
 
@@ -341,149 +269,40 @@ class AtividadeService
 
     public function sumResult(int $quadro)
     {
-        $arr['segunda'] = $this->em->createQuery('select sum(a.valor * m.segunda) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
+        $peso = $this->em->createQuery('select sum(a.valor) as peso from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a where q.id = :id')
             ->setParameter(':id', $quadro)
-            ->getSingleResult();
-        $arr['terca'] = $this->em->createQuery('select sum(a.valor * m.terca) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
-            ->setParameter(':id', $quadro)
-            ->getSingleResult();
-        $arr['quarta'] = $this->em->createQuery('select sum(a.valor * m.quarta) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
-            ->setParameter(':id', $quadro)
-            ->getSingleResult();
-        $arr['quinta'] = $this->em->createQuery('select sum(a.valor * m.quinta) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
-            ->setParameter(':id', $quadro)
-            ->getSingleResult();
-        $arr['sexta'] = $this->em->createQuery('select sum(a.valor * m.sexta) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
-            ->setParameter(':id', $quadro)
-            ->getSingleResult();
-        $arr['sabado'] = $this->em->createQuery('select sum(a.valor * m.sabado) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
-            ->setParameter(':id', $quadro)
-            ->getSingleResult();
-        $arr['domingo'] = $this->em->createQuery('select sum(a.valor * m.domingo) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id')
-            ->setParameter(':id', $quadro)
-            ->getSingleResult();
-        $arr['atividades'] = $this->em->createQuery('select sum(a.valor) as peso from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a where q.id = :id')
-            ->setParameter(':id', $quadro)
-            ->getSingleResult();
+            ->getResult(Query::HYDRATE_SINGLE_SCALAR);
+        foreach ($this->semana as $dia) {
+            $nota = $this->em->createQuery("select sum(a.valor * m.$dia) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id")
+                ->setParameter(':id', $quadro)
+                ->getResult(Query::HYDRATE_SINGLE_SCALAR);
+            $quali = ["Péssimo", "Ruim", "Bom", "Ótimo"];
+            $arr[$dia] = "Não sei";
+            $med = round($nota/$peso);
+            if ($med) {
+                $arr[$dia] = $quali[$med-1];
+            }
+        }
         return $arr;
     }
 
-    public function getResult(int $quadro)
+    public function mountBoard(int $quadro)
     {
-        $result =  $this->sumResult($quadro);
-        switch (round($result['segunda']['nota'] / $result['atividades']['peso'])) {
-            case "1":
-                $arr['segunda'] = "Péssimo";
-                break;
-            case "2":
-                $arr['segunda'] = "Ruim";
-                break;
-            case "3":
-                $arr['segunda'] = "Bom";
-                break;
-            case "4":
-                $arr['segunda'] = "Ótimo";
-                break;
-            default:
-                $arr['segunda'] = "Não sei";
+        if ($quadro['tipo'] == 'F') {
+            foreach ($this->semana as $dia) {
+                $dados[$dia] = $this->em->createQuery("select a.id, m.$dia as valor, case m.$dia when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
+                    where q.id = :id")
+                    ->setParameter(':id', $quadro)
+                    ->getResult(Query::HYDRATE_SCALAR);
+            }
+        } else {
+            foreach ($this->semana as $dia) {
+                $dados[$dia] = $this->em->createQuery("select a.id, m.$dia as valor, case m.$dia when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id")
+                    ->setParameter(':id', $quadro)
+                    ->getResult(Query::HYDRATE_SCALAR);
+            }
         }
-        switch (round($result['terca']['nota'] / $result['atividades']['peso'])) {
-            case "1":
-                $arr['terca'] = "Péssimo";
-                break;
-            case "2":
-                $arr['terca'] = "Ruim";
-                break;
-            case "3":
-                $arr['terca'] = "Bom";
-                break;
-            case "4":
-                $arr['terca'] = "Ótimo";
-                break;
-            default:
-                $arr['terca'] = "Não sei";
-        }
-        switch (round($result['quarta']['nota'] / $result['atividades']['peso'])) {
-            case "1":
-                $arr['quarta'] = "Péssimo";
-                break;
-            case "2":
-                $arr['quarta'] = "Ruim";
-                break;
-            case "3":
-                $arr['quarta'] = "Bom";
-                break;
-            case "4":
-                $arr['quarta'] = "Ótimo";
-                break;
-            default:
-                $arr['quarta'] = "Não sei";
-        }
-        switch (round($result['quinta']['nota'] / $result['atividades']['peso'])) {
-            case "1":
-                $arr['quinta'] = "Péssimo";
-                break;
-            case "2":
-                $arr['quinta'] = "Ruim";
-                break;
-            case "3":
-                $arr['quinta'] = "Bom";
-                break;
-            case "4":
-                $arr['quinta'] = "Ótimo";
-                break;
-            default:
-                $arr['quinta'] = "Não sei";
-        }
-        switch (round($result['sexta']['nota'] / $result['atividades']['peso'])) {
-            case "1":
-                $arr['sexta'] = "Péssimo";
-                break;
-            case "2":
-                $arr['sexta'] = "Ruim";
-                break;
-            case "3":
-                $arr['sexta'] = "Bom";
-                break;
-            case "4":
-                $arr['sexta'] = "Ótimo";
-                break;
-            default:
-                $arr['sexta'] = "Não sei";
-        }
-        switch (round($result['sabado']['nota'] / $result['atividades']['peso'])) {
-            case "1":
-                $arr['sabado'] = "Péssimo";
-                break;
-            case "2":
-                $arr['sabado'] = "Ruim";
-                break;
-            case "3":
-                $arr['sabado'] = "Bom";
-                break;
-            case "4":
-                $arr['sabado'] = "Ótimo";
-                break;
-            default:
-                $arr['sabado'] = "Não sei";
-        }
-        switch (round($result['domingo']['nota'] / $result['atividades']['peso'])) {
-            case "1":
-                $arr['domingo'] = "Péssimo";
-                break;
-            case "2":
-                $arr['domingo'] = "Ruim";
-                break;
-            case "3":
-                $arr['domingo'] = "Bom";
-                break;
-            case "4":
-                $arr['domingo'] = "Ótimo";
-                break;
-            default:
-                $arr['domingo'] = "Não sei";
-        }
-        return $arr;
+        return $dados;
     }
 
     public function toArray(AtividadeEntity $atividade)
