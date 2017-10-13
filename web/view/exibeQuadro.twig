@@ -23,9 +23,9 @@
         <input type="hidden" id="tipo" value="{{ tipo.codigo }}">
         <div class="row">
             {% if tipo.codigo == 'T' %}
-            <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ totRealizado}} dos {{ totPrevisto}} pontos ({{ pctRealizado }}%) para alcançar seu desejo esta semana!</p>
+            <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ real}} dos {{ prev }} pontos ({{ perc }}%) para alcançar seu desejo esta semana!</p>
             {% elseif tipo.codigo == 'M' %}
-            <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ totMesada }} reais de mesada!</p>
+            <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ mesada }} reais de mesada!</p>
             {% else %}
             <p>Oi <b>{{quadro.crianca}}</b>, você está fazendo o seu melhor possível? Vamos em frente!</p>
             {% endif %}
@@ -39,97 +39,65 @@
                             {% if tipo.codigo == 'M' %}
                             <th>Valor</th>
                             {% endif %}
-                            <th>Seg</th>
-                            <th>Ter</th>
-                            <th>Qua</th>
-                            <th>Qui</th>
-                            <th>Sex</th>
-                            <th>Sáb</th>
-                            <th>Dom</th>
+                            <th><center>Seg</center></th>
+                            <th><center>Ter</center></th>
+                            <th><center>Qua</center></th>
+                            <th><center>Qui</center></th>
+                            <th><center>Sex</center></th>
+                            <th><center>Sab</center></th>
+                            <th><center>Dom</center></th>
                         </tr>
                     </thead>
+                    {% if resultado is defined %}
                     <tfoot>
                         {% if tipo.codigo == 'T' %}
                         <tr>
                             <th>&nbsp;</th>
                             <th>Pedido especial</th>
-                            {% if pedidoEspecial['segunda'] == true %}
-                                <th><span class="glyphicon glyphicon-heart"></span></th>
-                            {% else %}
-                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            {% endif %}
-                            {% if pedidoEspecial['terca'] == true %}
-                                <th><span class="glyphicon glyphicon-heart"></span></th>
-                            {% else %}
-                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            {% endif %}
-                            {% if pedidoEspecial['quarta'] == true %}
-                                <th><span class="glyphicon glyphicon-heart"></span></th>
-                            {% else %}
-                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            {% endif %}
-                            {% if pedidoEspecial['quinta'] == true %}
-                                <th><span class="glyphicon glyphicon-heart"></span></th>
-                            {% else %}
-                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            {% endif %}
-                            {% if pedidoEspecial['sexta'] == true %}
-                                <th><span class="glyphicon glyphicon-heart"></span></th>
-                            {% else %}
-                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            {% endif %}
-                            {% if pedidoEspecial['sabado'] == true %}
-                                <th><span class="glyphicon glyphicon-heart"></span></th>
-                            {% else %}
-                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            {% endif %}
-                            {% if pedidoEspecial['domingo'] == true %}
-                                <th><span class="glyphicon glyphicon-heart"></span></th>
-                            {% else %}
-                                <th><span class="glyphicon glyphicon-heart-empty"></span></th>
-                            {% endif %}
+                            {% for resultado in resultados %}
+                                {% for dia in resultado %}
+                            <th><center><span class="{{ dia }}"></span></center></th>
+                                {% endfor %}
+                            {% endfor %}
                         </tr>
                         {% elseif tipo.codigo == 'M' %}
                         <tr>
                             <th>&nbsp;</th>
                             <th>Mesada</th>
-                            <th>R$ {{ valorDia['segunda'] }}</th>
-                            <th>R$ {{ valorDia['terca'] }}</th>
-                            <th>R$ {{ valorDia['quarta'] }}</th>
-                            <th>R$ {{ valorDia['quinta'] }}</th>
-                            <th>R$ {{ valorDia['sexta'] }}</th>
-                            <th>R$ {{ valorDia['sabado'] }}</th>
-                            <th>R$ {{ valorDia['domingo'] }}</th>
+                            {% for dia in resultados %}
+                            <th>R$ {{ dia }}</th>
+                            {% endfor %}
                         </tr>
                         {% elseif tipo.codigo == 'F' %}
                         <tr>
                             <th>&nbsp;</th>
                             <th>O dia foi</th>
-                            <th>{{ resultado['segunda'] }}</th>
-                            <th>{{ resultado['terca'] }}</th>
-                            <th>{{ resultado['quarta'] }}</th>
-                            <th>{{ resultado['quinta'] }}</th>
-                            <th>{{ resultado['sexta'] }}</th>
-                            <th>{{ resultado['sabado'] }}</th>
-                            <th>{{ resultado['domingo'] }}</th>
+                            {% for dia in resultados %}
+                            <th>{{ dia }}</th>
+                            {% endfor %}
                         </tr>
                         {% endif %}
                     </tfoot>
+                    {% endif %}
                     <tbody>
                         {% for atividade in atividades %}
                         <tr>
                             {% if atividade.imagem is not null %}
-                            <td class="imagem"><img src="{{ asset(atividade.imagem, 'file') }}"></td>
+                            <td><img class="imagem" src="{{ asset(atividade.imagem, 'file') }}"></td>
                             {% else %}
-                            <td class="imagem"></td>
+                            <td>&nbsp;</td>
                             {% endif %}
                             <td>{{ atividade.atividade}}</td>
                             {% if tipo.codigo == 'M' %}
                             <td>{{ atividade.valor}}</td>
                             {% endif %}
-                            {% for marcacao in marcacoes  %}
-                            <td class="emoji" id="{{ marcacao.id }}"><span class="{{ marcacao.emoji }}"></span></td>
-                            {% endfor %}
+                            <td class="emoji" id="seg_{{ atividade.id }}"><span class="{{ atividade.emoji_segunda }}"></span></td>
+                            <td class="emoji" id="ter_{{ atividade.id }}"><span class="{{ atividade.emoji_terca }}"></span></td>
+                            <td class="emoji" id="qua_{{ atividade.id }}"><span class="{{ atividade.emoji_quarta }}"></span></td>
+                            <td class="emoji" id="qui_{{ atividade.id }}"><span class="{{ atividade.emoji_quinta }}"></span></td>
+                            <td class="emoji" id="sex_{{ atividade.id }}"><span class="{{ atividade.emoji_sexta }}"></span></td>
+                            <td class="emoji" id="sab_{{ atividade.id }}"><span class="{{ atividade.emoji_sabado }}"></span></td>
+                            <td class="emoji" id="dom_{{ atividade.id }}"><span class="{{ atividade.emoji_domingo }}"></span></td>
                         </tr>
                         {% endfor %}
                     </tbody>

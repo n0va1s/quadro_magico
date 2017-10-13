@@ -1,6 +1,6 @@
 CREATE TABLE tipo_quadro (seq_tipo_quadro INT AUTO_INCREMENT NOT NULL, val_tipo_quadro VARCHAR(1) NOT NULL, des_tipo_quadro VARCHAR(255) NOT NULL, PRIMARY KEY(seq_tipo_quadro)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
-insert into tipo_quadro (val_tipo_quadro, des_tipo_quadro) values ('F', 'Férias');
+insert into tipo_quadro (val_tipo_quadro, des_tipo_quadro) values ('F', 'FÃ©rias');
 insert into tipo_quadro (val_tipo_quadro, des_tipo_quadro) values ('M', 'Mesada');
 insert into tipo_quadro (val_tipo_quadro, des_tipo_quadro) values ('T', 'Tarefa');
 

@@ -80,22 +80,12 @@ class QuadroController implements ControllerProviderInterface
         $ctrl->get('/exibir/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
             $tipo = $app['dominio_service']->findById($quadro['tipo']->getId());
-            $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
-            //Carrega se houve pedido especial em um dos dias
-            $specialGifts = $app['atividade_service']->loadSpecialGift($quadro['id']);
-            //Totaliza quanto a crianca conseguiu de mesada no dia
-            $valueDays = $app['atividade_service']->sumValueDay($quadro['id']);
+            $atividades = $app['atividade_service']->findByQuadro($quadro);
+            $resultados = $app['atividade_service']->mountBoardResult($quadro);
             //Totaliza quantos pontos faltam para a crianca atingir a meta semanal (70%)
-            $points = $app['atividade_service']->sumPoints($quadro['id']);
-            //Totaliza quanto a crianca alcancou de mesada ate o momento
-            $sumPocketMoney = $app['atividade_service']->sumPocketMoney($quadro['id']);
-            //Totaliza o resultado do dia da crianca (otimo, bom, ruim ou pessimo)
-            $result = $app['atividade_service']->sumResult($quadro['id']);
-            // Lista de atividades com os respectivos emojis
-            $marcacao = $app['atividade_service']->mountBoard($quadro['id']);
-            var_dump($marcacao);
-            exit;
-            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'tipo'=>$tipo, 'atividades'=>$atividades, 'marcacoes'=>$marcacao, 'pedidoEspecial'=>$specialGifts, 'valorDia'=>$valueDays, 'totRealizado'=>$points['real'], 'totPrevisto'=>$points['prev'], 'pctRealizado'=>$points['perc'],'totMesada'=>$sumPocketMoney,'resultado'=>$result));
+            $progresso = $app['atividade_service']->calcProgress($quadro);
+            $mesada = $app['atividade_service']->calcPocketMoney($quadro);
+            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'tipo'=>$tipo, 'atividades'=>$atividades, 'resultados'=>$resultados, 'real'=>$progresso['real'], 'prev'=>$progresso['prev'], 'perc'=>$progresso['perc'], 'mesada'=>$mesada));
         })->bind('quadroExibir');
 
         $ctrl->get('/duplicar/{codigo}', function ($codigo) use ($app) {
@@ -107,10 +97,12 @@ class QuadroController implements ControllerProviderInterface
             unset($dados['id']);
             //Cria um novo quadro com os dados do quadro anterior
             $quadro = $app['quadro_service']->save($dados);
+            //Lista de tipos de quadro
+            $tipos = $app['dominio_service']->fetchAll();
             //Carregar atividades do quadro anterior
             $atividades = $app['atividade_service']->loadActivities($id, $quadro['id']);
             //Informacoes duplicadas vao para a tela para alteracao
-            return $app['twig']->render('cadastroQuadro.twig', array('quadro'=>$quadro));
+            return $app['twig']->render('cadastroQuadro.twig', array('quadro'=>$quadro, 'tipos'=>$tipos));
         })->bind('quadroDuplicar');
 
         $ctrl->get('/excluir/{codigo}', function ($codigo) use ($app) {
@@ -132,15 +124,16 @@ class QuadroController implements ControllerProviderInterface
                 $quadro = $req->query->get('quadro');
                 $tipo = $req->query->get('tipo');
             }
+            $quadro = $app['quadro_service']->findById($quadro);
             //Pesquisar as atividades do quadro
-            $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
+            $atividades = $app['atividade_service']->findByQuadro($quadro);
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades, 'tipo'=>$tipo));
         })->bind('indexAtividade');
 
         $ctrl->get('/atividade/cadastrar/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
             //Pesquisar as atividades do quadro
-            $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
+            $atividades = $app['atividade_service']->findByQuadro($quadro);
             //Enviar o quadro para sessao para ser salvo junto com a atividade
             $app['session']->set('quadro', $quadro);
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
@@ -156,14 +149,14 @@ class QuadroController implements ControllerProviderInterface
             //Salvar a atividade
             $resultado = $app['atividade_service']->save($dados, $imagem);
             //Pesquisar as atividades do quadro
-            $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
+            $atividades = $app['atividade_service']->findByQuadro($quadro);
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
         })->bind('atividadeSalvar');
 
         $ctrl->get('/atividade/excluir/{id}', function ($id) use ($app) {
             $resultado = $app['atividade_service']->delete($id);
             $quadro = $app['session']->get('quadro');
-            $atividades = $app['atividade_service']->findByQuadro($quadro['id']);
+            $atividades = $app['atividade_service']->findByQuadro($quadro);
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
         })->bind('atividadeExcluir')
         ->assert('id', '\d+');

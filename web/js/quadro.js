@@ -9,7 +9,7 @@ $(document).ready(function() {
             //a regra e fez (1), nao fez (0) ou nao teve oportunidade de fazer (0)
             switch ($(this).children().attr('class')) {
               case 'otimo': //otimo para pessimo
-                valor = -1;
+                valor = 1;
                 $(this).children().removeClass("otimo").addClass("pessimo");
                 break;
               case 'pessimo': //pessimo para vazio
@@ -17,7 +17,7 @@ $(document).ready(function() {
                 $(this).children().removeClass("pessimo").addClass("duvida");
                 break;
               default: //vazio para otimo
-                valor = 1;
+                valor = 2;
                 $(this).children().removeClass("duvida").addClass("otimo");
                 break;
             }

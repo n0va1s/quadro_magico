@@ -19,8 +19,11 @@ class QuadroService
 
     public function save(array $dados)
     {
-        $tipo = $this->em->getReference('\n0va1s\QuadroMagico\Entity\TipoQuadroEntity', $dados['tipo']);
+        $tipo = is_object($dados['tipo']) ?  $dados['tipo']->getId() : $dados['tipo'];
+        //Tipo e um objeto, nao somente um atributo de quadro
+        $tipo = $this->em->getReference('\n0va1s\QuadroMagico\Entity\TipoQuadroEntity', $tipo);
         if (empty($dados['id'])) {
+            //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
             $quadro = new QuadroEntity();
             $quadro->setResponsavel($dados['email']);
             $quadro->setGenero($dados['genero']);
@@ -30,7 +33,6 @@ class QuadroService
             $this->em->persist($quadro);
             $quadro->setTipo($tipo);
         } else {
-            //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
             $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $dados['id']);
             $quadro->setResponsavel($dados['email']);
             $quadro->setGenero($dados['genero']);

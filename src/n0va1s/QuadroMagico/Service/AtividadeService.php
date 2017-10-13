@@ -165,26 +165,49 @@ class AtividadeService
         return true;
     }
 
-    public function findByQuadro(int $id)
+    public function findByQuadro($quadro)
     {
-        $atividades = $this->em->createQuery('select a, m from \n0va1s\QuadroMagico\Entity\AtividadeEntity a left join a.marcacoes m where a.quadro = :id')
-                           ->setParameter('id', $id)
-                           ->getArrayResult();
-        return $atividades;
+        if ($quadro['tipo']->getCodigo() == 'F') {
+            $dados = $this->em->createQuery("select a.id, a.imagem, a.atividade, a.valor, 
+                m.segunda as mark_segunda, case m.segunda when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_segunda,
+                m.terca as mark_terca, case m.terca when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_terca, 
+                m.quarta as mark_quarta, case m.quarta when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_quarta,
+                m.quinta as mark_quinta, case m.quinta when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_quinta,
+                m.sexta as mark_sexta, case m.sexta when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_sexta,
+                m.sabado as mark_sabado, case m.sabado when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_sabado,
+                m.domingo as mark_domingo, case m.domingo when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_domingo
+                from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
+                where q.id = :id")
+                ->setParameter(':id', $quadro['id'])
+                ->getArrayResult();
+        } else {
+            $dados = $this->em->createQuery("select a.id, a.imagem, a.atividade, a.valor, 
+                m.segunda as mark_segunda, case m.segunda when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_segunda,
+                m.terca as mark_terca, case m.terca when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_terca,
+                m.quarta as mark_quarta, case m.quarta when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_quarta,
+                m.quinta as mark_quinta, case m.quinta when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_quinta,
+                m.sexta as mark_sexta, case m.sexta when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_sexta,
+                m.sabado as mark_sabado, case m.sabado when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_sabado,
+                m.domingo as mark_domingo, case m.domingo when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_domingo
+                from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id")
+                ->setParameter(':id', $quadro['id'])
+                ->getArrayResult();
+        }
+        return $dados;
     }
 
     public function findByMarcacao(int $atividade)
     {
         $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :id')
-                           ->setParameter('id', $atividade)
-                           ->getOneOrNullResult();
+            ->setParameter('id', $atividade)
+            ->getOneOrNullResult();
         if ($marcacao) {
             return $marcacao->getId();
         } else {
             return $marcacao;
         }
     }
-
+    //Cria um array com exemplos de atividades durante a criacao do quadro
     public function loadExamples(int $quadro)
     {
         $dados[] = array('atividade'=>'Arrumar a cama','valor'=>1,'proposito'=>'A');
@@ -201,7 +224,7 @@ class AtividadeService
         }
         return true;
     }
-
+    //Copia as atividades do quadro antigo no quadro novo (duplicado)
     public function loadActivities(int $quadroOLD, int $quadroNEW)
     {
         $atividades = $this->findByQuadro($quadroOLD);
@@ -217,92 +240,97 @@ class AtividadeService
         }
         return true;
     }
-
-    public function loadSpecialGift(int $quadro)
+    //Calcula o resultado do dia
+    //Para  FERIAS: OTIMO, BOM, RUIM ou PESSIMO
+    //Para MESADA: valor acumulado no dia
+    //Para TAREFA: TRUE ou FALSE para o pedido especial
+    public function mountBoardResult($quadro)
     {
         foreach ($this->semana as $dia) {
-            try {
-                $mark = $this->em->createQuery("select distinct m.$dia from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id")
-                    ->setParameter(':id', $quadro)
-                    ->getOneOrNullResult();
-                $specialGift[$dia] = ($mark[$dia] == 1) ? true : false;
-            } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-                $specialGift[$dia] = false;
+            if ($quadro['tipo']->getCodigo() == 'F') {
+                $resultado[] = $this->sumResult($quadro, $dia);
+            } elseif ($quadro['tipo']->getCodigo() == 'M') {
+                $resultado[] = $this->calcPocketMoney($quadro);
+            } elseif ($quadro['tipo']->getCodigo() == 'T') {
+                $resultado['resultado'][$dia] = $this->loadSpecialGift($quadro, $dia);
             }
+        }
+        return $resultado;
+    }
+    //Calcula ao resultado do dia do quadro de TAREFA da crianca
+    //True - ganhou o pedido especial. Coracao preenchido
+    //False - NÃO ganhou o pedido especial. Coracao vazio
+    public function loadSpecialGift($quadro, string $dia)
+    {
+        try {
+            $mark = $this->em->createQuery("select distinct m.$dia from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id")
+            ->setParameter(':id', $quadro['id'])
+            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+            $specialGift = ($mark == 2) ? 'glyphicon glyphicon-heart' : 'glyphicon glyphicon-heart-empty';
+        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+            $specialGift = 'glyphicon glyphicon-heart-empty';
         }
         return $specialGift;
     }
-
-    public function sumValueDay(int $quadro)
+    //Calcula o total de pontos das atividades realizadas no dia
+    //o total de pontos possiveis no quadro e o progresso da crianca
+    public function calcProgress($quadro)
     {
+        //Calcula os pontos das atividades realizadas (otimo) no quadro
+        //Nao soma o valor registrado no quadro, mas o valor da atividade
         foreach ($this->semana as $dia) {
-            $arr[$dia] =  $this->em->createQuery("select sum(a.valor) as valor from n0va1s\QuadroMagico\Entity\QuadroEntity q 
-                join q.atividades a join a.marcacoes m where q.id = :id and m.$dia = :sim")
-                ->setParameter(':id', $quadro)
-                ->setParameter(':sim', '1')
-                ->getSingleResult();
+            $real += $this->em->createQuery("select sum(a.valor) as val 
+                from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
+                where q.id=:id and m.$dia = :feito group by q.id")
+                ->setParameter(':id', $quadro['id'])
+                ->setParameter(':feito', '2')
+                ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
         }
-        return $result;
-    }
-
-    public function sumPoints(int $quadro)
-    {
-        $prev =  $this->em->createQuery('select sum(a.valor) as val, count(a.id) as qtd from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id')
-            ->setParameter(':id', $quadro)
+        //Calcula a quantidade de atividades do quadro e a soma dos pesos
+        $prev =  $this->em->createQuery('select sum(a.valor) as val, count(a.id) as qtd from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id
+            group by q.id')
+            ->setParameter(':id', $quadro['id'])
             ->getOneOrNullResult();
-        $prev['val'] = is_null($prev['val']) ? 0 : $prev['val'];
-        $day =  $this->sumValueDay($quadro);
-        $real = $day['segunda']+$day['terca']+$day['quarta']+$day['quinta']+$day['sexta']+$day['sabado']+$day['domingo'];
-        //70% do Total de pontos das atividades vezes a quantidade de atividade vezes 7 dias
-        $total = round((($prev['val']*7)*.7));
-        //Trata para nao haver divisao por zero
-        $perc = $prev['val'] > 0 ? round(($real/($prev['val']*7))*100) : 0;
+        //Calcula o total de pontos possivel para a semana
+        $total = round((($prev['val']??0)*7));
+        //Calcula o percentual de execucao
+        $perc = round((($real??0) / (($prev['val']??0)*7))*100);
         return array('real'=>$real, 'prev'=>$total, 'perc'=>$perc);
     }
 
-    public function sumPocketMoney(int $quadro)
+    public function calcPocketMoney($quadro)
     {
-        $day =  $this->sumValueDay($quadro);
-        $real = $day['segunda']+$day['terca']+$day['quarta']+$day['quinta']+$day['sexta']+$day['sabado']+$day['domingo'];
-        return $real;
+        //Calcula os pontos das atividades realizadas no quadro
+        foreach ($this->semana as $dia) {
+            $total += $this->em->createQuery("select sum(m.$dia) as val 
+                from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
+                where q.id=:id group by q.id")
+                ->setParameter(':id', $quadro['id'])
+                ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+        }
+        return $total;
     }
-
-    public function sumResult(int $quadro)
+  
+    //Calcula ao resultado do dia do quadro de FERIAS da crianca
+    //1 - PESSIMO
+    //2 - RUIM
+    //3 - BOM
+    //4 - OTIMO
+    public function sumResult($quadro, string $dia)
     {
         $peso = $this->em->createQuery('select sum(a.valor) as peso from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a where q.id = :id')
-            ->setParameter(':id', $quadro)
-            ->getResult(Query::HYDRATE_SINGLE_SCALAR);
-        foreach ($this->semana as $dia) {
-            $nota = $this->em->createQuery("select sum(a.valor * m.$dia) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id")
-                ->setParameter(':id', $quadro)
-                ->getResult(Query::HYDRATE_SINGLE_SCALAR);
-            $quali = ["Péssimo", "Ruim", "Bom", "Ótimo"];
-            $arr[$dia] = "Não sei";
-            $med = round($nota/$peso);
-            if ($med) {
-                $arr[$dia] = $quali[$med-1];
-            }
+            ->setParameter(':id', $quadro['id'])
+            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR) ?? 1;//retorna 1 caso o valor seja nulo PHP7
+        $nota = $this->em->createQuery("select sum(a.valor * m.$dia) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id")
+            ->setParameter(':id', $quadro['id'])
+            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR) ?? 0;//retorna 0 caso o valor seja nulo PHP7
+        $quali = ["Péssimo", "Ruim", "Bom", "Ótimo"];
+        $result = "Não sei";
+        $med = round($nota/$peso);
+        if ($med) {
+            $result = $quali[$med-1];
         }
-        return $arr;
-    }
-
-    public function mountBoard(int $quadro)
-    {
-        if ($quadro['tipo'] == 'F') {
-            foreach ($this->semana as $dia) {
-                $dados[$dia] = $this->em->createQuery("select a.id, m.$dia as valor, case m.$dia when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
-                    where q.id = :id")
-                    ->setParameter(':id', $quadro)
-                    ->getResult(Query::HYDRATE_SCALAR);
-            }
-        } else {
-            foreach ($this->semana as $dia) {
-                $dados[$dia] = $this->em->createQuery("select a.id, m.$dia as valor, case m.$dia when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id")
-                    ->setParameter(':id', $quadro)
-                    ->getResult(Query::HYDRATE_SCALAR);
-            }
-        }
-        return $dados;
+        return $result;
     }
 
     public function toArray(AtividadeEntity $atividade)
