@@ -42,7 +42,8 @@ class QuadroService
             $quadro->setTipo($tipo);
         }
         $this->em->flush();
-        return $this->toArray($quadro);
+        //return $this->toArray($quadro);
+        return $quadro;
     }
 
     public function delete(int $id)
@@ -56,56 +57,40 @@ class QuadroService
     public function fetchAll()
     {
         //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
-        $quadros = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c')
+        $quadros = $this->em->createQuery('select q from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t')
                            ->getArrayResult();
-        if (!isset($quadros)) {
-            throw new Exception("Não encontrei quadros");
-        }
         return $quadros;
     }
 
     public function fetchLimit(int $qtd)
     {
         $quadros = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c')
-                   ->setMaxResults($qtd)
-                   ->getArrayResult();
+            ->setMaxResults($qtd)
+            ->getArrayResult();
         return $quadros;
     }
 
     public function findById(int $id)
     {
-        $quadro = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c where c.id = :id')
-                          ->setParameter('id', $id)
-                          ->getSingleResult();
-        if (count($quadro) == 0) {
-            $quadro = ['mensagem'=>'Nenhum quadro cadastrado com este identificador'];
-        }
-        return $this->toArray($quadro);
+        $quadro = $this->em->createQuery('select q from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t where q.id = :id')
+            ->setParameter('id', $id)
+            ->getSingleResult();
+        return $quadro;
     }
 
     public function findByCodigo($codigo)
     {
-        $quadro = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c where c.codigo = :codigo')
-                          ->setParameter('codigo', $codigo)
-                          ->getSingleResult();
-        if (count($quadro) == 0) {
-            $quadro = ['mensagem'=>'Nenhum quadro cadastrado com este identificador'];
-        }
-        return $this->toArray($quadro);
+        $quadro = $this->em->createQuery('select q from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t where q.codigo = :codigo')
+            ->setParameter('codigo', $codigo)
+            ->getSingleResult();
+        return $quadro;
     }
 
     public function findByEmail($email)
     {
-        $quadros = $this->em->createQuery('SELECT q.id, q.responsavel, q.genero, q.idade, q.crianca, q.recompensa, q.codigo, t.descricao as tipo
-                                           FROM \n0va1s\QuadroMagico\Entity\QuadroEntity q 
-                                           JOIN q.tipo t
-                                           WHERE q.responsavel = :email')
-                           ->setParameter('email', $email)
-                           ->getArrayResult();
-
-        if (count($quadros) == 0) {
-            $quadros = ['mensagem'=>'Nenhum quadro cadastrado com este email'];
-        }
+        $quadros = $this->em->createQuery('select q.id, q.responsavel, q.genero, q.idade, q.crianca, q.recompensa, q.codigo, t.descricao as tipo from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t where q.responsavel = :email')
+            ->setParameter('email', $email)
+            ->getArrayResult();
         return $quadros;
     }
 

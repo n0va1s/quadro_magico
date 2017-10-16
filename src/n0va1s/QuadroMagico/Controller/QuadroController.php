@@ -47,10 +47,10 @@ class QuadroController implements ControllerProviderInterface
             //Se for um quadro novo
             if (empty($dados['id'])) {
                 //Carregar atividades de exemplo
-                $atividades = $app['atividade_service']->loadExamples($quadro['id']);
+                $atividades = $app['atividade_service']->loadExamples($quadro->getId());
             }
             //Envia os dados do quadro para o responsavel
-            $tipo = $app['dominio_service']->findById($quadro['tipo']->getId());
+            $tipo = $app['dominio_service']->findById($quadro->getTipo()->getId());
             $crianca = $dados['crianca'];
             $codigo = $dados['codigo'];
             $mail = (new \Swift_Message('[UmDesejoPorSemana] O quadro de '.$tipo.' para '.$crianca))
@@ -79,13 +79,12 @@ class QuadroController implements ControllerProviderInterface
 
         $ctrl->get('/exibir/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
-            $tipo = $app['dominio_service']->findById($quadro['tipo']->getId());
             $atividades = $app['atividade_service']->findByQuadro($quadro);
             $resultados = $app['atividade_service']->mountBoardResult($quadro);
             //Totaliza quantos pontos faltam para a crianca atingir a meta semanal (70%)
             $progresso = $app['atividade_service']->calcProgress($quadro);
             $mesada = $app['atividade_service']->calcPocketMoney($quadro);
-            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'tipo'=>$tipo, 'atividades'=>$atividades, 'resultados'=>$resultados, 'real'=>$progresso['real'], 'prev'=>$progresso['prev'], 'perc'=>$progresso['perc'], 'mesada'=>$mesada));
+            return $app['twig']->render('exibeQuadro.twig', array('quadro'=>$quadro, 'tipo'=>$quadro->getTipo(), 'atividades'=>$atividades, 'resultados'=>$resultados, 'real'=>$progresso['real'], 'prev'=>$progresso['prev'], 'perc'=>$progresso['perc'], 'mesada'=>$mesada));
         })->bind('quadroExibir');
 
         $ctrl->get('/duplicar/{codigo}', function ($codigo) use ($app) {
@@ -124,7 +123,7 @@ class QuadroController implements ControllerProviderInterface
                 $quadro = $req->query->get('quadro');
                 $tipo = $req->query->get('tipo');
             }
-            $quadro = $app['quadro_service']->findById($quadro);
+            $quadro = $app['quadro_service']->findById($quadro->getId());
             //Pesquisar as atividades do quadro
             $atividades = $app['atividade_service']->findByQuadro($quadro);
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades, 'tipo'=>$tipo));
@@ -154,8 +153,8 @@ class QuadroController implements ControllerProviderInterface
         })->bind('atividadeSalvar');
 
         $ctrl->get('/atividade/excluir/{id}', function ($id) use ($app) {
+            $quadro = $app['atividade_service']->findById($id);
             $resultado = $app['atividade_service']->delete($id);
-            $quadro = $app['session']->get('quadro');
             $atividades = $app['atividade_service']->findByQuadro($quadro);
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
         })->bind('atividadeExcluir')
