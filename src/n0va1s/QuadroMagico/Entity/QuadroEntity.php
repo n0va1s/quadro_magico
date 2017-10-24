@@ -172,4 +172,9 @@ class QuadroEntity
     {
         return $this->codigo;
     }
+
+    public function getAtividades()
+    {
+        return $this->atividades;
+    }
 }

@@ -121,12 +121,17 @@ class AtividadeService
         return true;
     }
 
-    public function delete(int $id)
+    public function delete($quadro)
     {
-        $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $id);
-        $this->em->remove($atividade);
-        $this->em->flush();
-        return true;
+        $excluiu = ArquivoService::apagarImagem($quadro->getAtividades()[0]->getImagem());
+        if ($excluiu) {
+            $this->em->remove($quadro->getAtividades()[0]);
+            $this->em->flush();
+            //Lista de atividades atualizada
+            return $this->findByQuadro($quadro);
+        } else {
+            return false;
+        }
     }
 
     public function findByQuadro($quadro)

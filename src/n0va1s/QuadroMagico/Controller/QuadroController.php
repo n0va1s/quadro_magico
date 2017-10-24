@@ -157,8 +157,7 @@ class QuadroController implements ControllerProviderInterface
 
         $ctrl->get('/atividade/excluir/{id}', function ($id) use ($app) {
             $quadro = $app['atividade_service']->findById($id);
-            $resultado = $app['atividade_service']->delete($id);
-            $atividades = $app['atividade_service']->findByQuadro($quadro);
+            $atividades = $app['atividade_service']->delete($quadro);
             return $app['twig']->render('cadastroAtividade.twig', array('quadro'=>$quadro, 'atividades'=>$atividades));
         })->bind('atividadeExcluir')
         ->assert('id', '\d+');

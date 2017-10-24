@@ -60,4 +60,12 @@ class ArquivoService
             //return new BinaryFileResponse($path);
         }
     }
+
+    public static function apagarImagem($path)
+    {
+        if (is_file($path)) {
+            unlink($path);
+            return true;
+        }
+    }
 }
