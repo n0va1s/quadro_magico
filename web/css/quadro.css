@@ -45,7 +45,12 @@
 }
 .emoji {
 }
+
 .imagem {
-  width: 5em; 
-  height: 5em;
+  width: 3em; 
+  height: 3em;
+}
+
+.imagem img {
+  width: inherit; 
 }

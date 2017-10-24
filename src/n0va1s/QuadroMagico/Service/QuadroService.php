@@ -17,28 +17,35 @@ class QuadroService
         $this->em = $em;
     }
 
-    public function save(array $dados)
+    public function save($dados)
     {
-        $tipo = is_object($dados['tipo']) ?  $dados['tipo']->getId() : $dados['tipo'];
+        //Dados vindo da tela em formato de array para criacao de um novo quadro
+        //Quadro original a ser duplicado e um objeto
+        $id = is_array($dados) ? $dados['id'] : $dados->getId();
+        $tipo = is_array($dados) ?  : $dados->getTipo()->getId();
+        $responsavel = is_array($dados) ? $dados['email'] : $dados->getResponsavel();
+        $genero = is_array($dados) ? $dados['genero'] : $dados->getGenero();
+        $idade = is_array($dados) ? $dados['idade'] : $dados->getIdade();
+        $crianca = is_array($dados) ? $dados['crianca'] : $dados->getCrianca();
+        $recompensa = is_array($dados) ? $dados['recompensa'] : $dados->getRecompensa();
         //Tipo e um objeto, nao somente um atributo de quadro
         $tipo = $this->em->getReference('\n0va1s\QuadroMagico\Entity\TipoQuadroEntity', $tipo);
-        if (empty($dados['id'])) {
-            //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
+        if (empty($id)) {
             $quadro = new QuadroEntity();
-            $quadro->setResponsavel($dados['email']);
-            $quadro->setGenero($dados['genero']);
-            $quadro->setIdade($dados['idade']);
-            $quadro->setCrianca($dados['crianca']);
-            $quadro->setRecompensa($dados['recompensa']);
+            $quadro->setResponsavel($responsavel);
+            $quadro->setGenero($genero);
+            $quadro->setIdade($idade);
+            $quadro->setCrianca($crianca);
+            $quadro->setRecompensa($recompensa);
             $this->em->persist($quadro);
             $quadro->setTipo($tipo);
         } else {
-            $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $dados['id']);
-            $quadro->setResponsavel($dados['email']);
-            $quadro->setGenero($dados['genero']);
-            $quadro->setIdade($dados['idade']);
-            $quadro->setCrianca($dados['crianca']);
-            $quadro->setRecompensa($dados['recompensa']);
+            $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $id);
+            $quadro->setResponsavel($responsavel);
+            $quadro->setGenero($genero);
+            $quadro->setIdade($idade);
+            $quadro->setCrianca($crianca);
+            $quadro->setRecompensa($recompensa);
             $quadro->setTipo($tipo);
         }
         $this->em->flush();
@@ -88,7 +95,7 @@ class QuadroService
 
     public function findByEmail($email)
     {
-        $quadros = $this->em->createQuery('select q.id, q.responsavel, q.genero, q.idade, q.crianca, q.recompensa, q.codigo, t.descricao as tipo from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t where q.responsavel = :email')
+        $quadros = $this->em->createQuery('select q.id, q.responsavel, q.genero, q.idade, q.crianca, q.recompensa, q.codigo, t.descricao as tipo from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t where q.responsavel = :email order by t.codigo, q.crianca, q.cadastro')
             ->setParameter('email', $email)
             ->getArrayResult();
         return $quadros;

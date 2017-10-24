@@ -8,17 +8,17 @@ $(document).ready(function() {
             //Para quadros de comportamento e mesada
             //a regra e fez (1), nao fez (0) ou nao teve oportunidade de fazer (0)
             switch ($(this).children().attr('class')) {
-              case 'otimo': //otimo para pessimo
+              case 'duvida': //duvida para pessimo
                 valor = 1;
-                $(this).children().removeClass("otimo").addClass("pessimo");
+                $(this).children().removeClass("duvida").addClass("pessimo");
                 break;
-              case 'pessimo': //pessimo para vazio
-                valor = null;
-                $(this).children().removeClass("pessimo").addClass("duvida");
-                break;
-              default: //vazio para otimo
+              case 'pessimo': //pessimo para otimo
                 valor = 2;
-                $(this).children().removeClass("duvida").addClass("otimo");
+                $(this).children().removeClass("pessimo").addClass("otimo");
+                break;
+              default: //otimo para duvida
+                valor = null;
+                $(this).children().removeClass("otimo").addClass("duvida");
                 break;
             }
         } else {
@@ -26,29 +26,28 @@ $(document).ready(function() {
             //a regra e otimo (4), bom(3), ruim (2), pessimo (1)
             //multiplicado pelo valor atribuido a atividade
             switch ($(this).children().attr('class')) {
-              case 'otimo':
-                valor = 3;
-                $(this).children().removeClass("otimo").addClass("bom");
-                break;
-                case 'bom':
-                valor = 2;
-                $(this).children().removeClass("bom").addClass("ruim");
-                break;
-                case 'ruim':
+              case 'duvida':
                 valor = 1;
-                $(this).children().removeClass("ruim").addClass("pessimo");
+                $(this).children().removeClass("duvida").addClass("pessimo");
                 break;
                 case 'pessimo':
-                valor = null;
-                $(this).children().removeClass("pessimo").addClass("duvida");
+                valor = 2;
+                $(this).children().removeClass("pessimo").addClass("ruim");
+                break;
+                case 'ruim':
+                valor = 3;
+                $(this).children().removeClass("ruim").addClass("bom");
+                break;
+                case 'bom':
+                valor = 4;
+                $(this).children().removeClass("bom").addClass("otimo");
                 break;
                 default:
-                valor = 4;
-                $(this).children().removeClass("duvida").addClass("otimo");
+                valor = null;
+                $(this).children().removeClass("otimo").addClass("duvida");
                 break;
             }
         }
-        
         $.ajax({
             url: '/quadro/atividade/marcar',
             type: 'POST',

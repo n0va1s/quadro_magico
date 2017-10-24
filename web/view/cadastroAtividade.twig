@@ -74,17 +74,17 @@
                             <th>&nbsp;</th>
                             <th>Propósito</th>
                             <th>Tarefa</th>
-                            <th>Valor</th>
-                            <th>Excluir</th>
+                            <th><center>Valor</center></th>
+                            <th><center>Excluir</center></th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for atividade in atividades %}
-                        <tr align="center">
+                        <tr>
                             {% if atividade.imagem is not null %}
-                            <td><img src="{{ asset(atividade.imagem, 'file') }}" width="100" height="100"></td>
+                            <td><img class="imagem" src="{{ asset(atividade.imagem, 'file') }}"></td>
                             {% else %}
-                            <td width="100" height="100">&nbsp;</td>
+                            <td>&nbsp;</td>
                             {% endif %}
                             {% if atividade.proposito == 'E' %} {% set proposito = 'Escola' %}
                             {% elseif atividade.proposito == 'H' %} {% set proposito = 'Higiene' %}
@@ -95,10 +95,10 @@
                             {% elseif atividade.proposito == 'R' %} {% set proposito = 'Refeição' %}
                             {% elseif atividade.proposito == 'I' %} {% set proposito = 'Espiritualidade' %}
                             {% endif %}
-                            <td align="center">{{ proposito }}</td>
-                            <td align="left">{{ atividade.atividade }}</td>
-                            <td align="center">{{ atividade.valor }}</td>
-                            <td align="center"><a href="{{ path('atividadeExcluir',{id:atividade.id})}}"><span class="glyphicon glyphicon-remove">&nbsp;</span></a></td>
+                            <td>{{ proposito }}</td>
+                            <td>{{ atividade.atividade }}</td>
+                            <td><center>{{ atividade.valor }}</center></td>
+                            <td><center><a href="{{ path('atividadeExcluir',{id:atividade.id})}}"><span class="glyphicon glyphicon-remove">&nbsp;</span></a></center></td>
                         </tr>
                         {% endfor %}
                     </tbody>

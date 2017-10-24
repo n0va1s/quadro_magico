@@ -47,7 +47,7 @@ class QuadroController implements ControllerProviderInterface
             //Se for um quadro novo
             if (empty($dados['id'])) {
                 //Carregar atividades de exemplo
-                $atividades = $app['atividade_service']->loadExamples($quadro->getId());
+                $atividades = $app['atividade_service']->loadExamples($quadro);
             }
             //Envia os dados do quadro para o responsavel
             $tipo = $app['dominio_service']->findById($quadro->getTipo()->getId());
@@ -89,24 +89,26 @@ class QuadroController implements ControllerProviderInterface
 
         $ctrl->get('/duplicar/{codigo}', function ($codigo) use ($app) {
             //Dados do quadro a ser duplicado
-            $dados = $app['quadro_service']->findByCodigo($codigo);
+            $quadroOLD = $app['quadro_service']->findByCodigo($codigo);
             //Guarda o id do quadro de origem para duplicar as atividades
-            $id = $dados['id'];
+            $id = $quadroOLD->getId();
             //Remove o id do quadro para criar um novo quadro ao salvar
-            unset($dados['id']);
+            $quadroOLD->setId(null);
             //Cria um novo quadro com os dados do quadro anterior
-            $quadro = $app['quadro_service']->save($dados);
+            $quadroNEW = $app['quadro_service']->save($quadroOLD);
+            //Recoloca o id do quadro para carregar as atividades antigas
+            $quadroOLD->setid($id);
             //Lista de tipos de quadro
             $tipos = $app['dominio_service']->fetchAll();
             //Carregar atividades do quadro anterior
-            $atividades = $app['atividade_service']->loadActivities($id, $quadro['id']);
+            $atividades = $app['atividade_service']->loadActivities($quadroOLD, $quadroNEW);
             //Informacoes duplicadas vao para a tela para alteracao
-            return $app['twig']->render('cadastroQuadro.twig', array('quadro'=>$quadro, 'tipos'=>$tipos));
+            return $app['twig']->render('cadastroQuadro.twig', array('quadro'=>$quadroOLD, 'tipos'=>$tipos));
         })->bind('quadroDuplicar');
 
         $ctrl->get('/excluir/{codigo}', function ($codigo) use ($app) {
             $quadro = $app['quadro_service']->findByCodigo($codigo);
-            $excluiu = $app['quadro_service']->delete($quadro['id']);
+            $excluiu = $app['quadro_service']->delete($quadro->getId());
             $quadros = $app['quadro_service']->findByEmail($app['session']->get('email'));
             return $app['twig']->render('listaQuadro.twig', array('quadros'=>$quadros));
         })->bind('quadroExcluir')
@@ -141,10 +143,11 @@ class QuadroController implements ControllerProviderInterface
         $ctrl->post('/atividade/salvar', function (Request $req) use ($app) {
             $dados = $req->request->all();
             $imagem = $req->files->get('imagem');
+            $quadro = $app['quadro_service']->findByCodigo($dados['codigo']);
             //Recupera os dados do quadro da sessao
-            $quadro = $app['session']->get('quadro');
+            //$quadro = $app['session']->get('quadro');
             //Adiciona o id do quadro nos dados da atividade
-            $dados['quadro'] = $quadro['id'];
+            $dados['quadro'] = $quadro->getId();
             //Salvar a atividade
             $resultado = $app['atividade_service']->save($dados, $imagem);
             //Pesquisar as atividades do quadro
@@ -163,7 +166,7 @@ class QuadroController implements ControllerProviderInterface
         $ctrl->post('/atividade/marcar', function (Request $req) use ($app) {
             $dados = $req->request->all();
             $resultado = $app['atividade_service']->mark($dados);
-            return $app->json($resultado);
+            return $resultado;
         })->bind('atividadeMarcar');
 
         return $ctrl;

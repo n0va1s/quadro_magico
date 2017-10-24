@@ -26,7 +26,7 @@
                     <h4>Crie o seu quadro</h4>
                     <div class="form-group col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <label for="email" class="sr-only">Email</label>
-                        <input type="email" name="email" class="form-control col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" placeholder="seuemail@provedor.com" required data-validation-required-message="Qual o seu email?" value="{% if quadro is defined %}{{ quadro.email }}{% endif %}" autofocus>
+                        <input type="email" name="email" class="form-control col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" placeholder="seuemail@provedor.com" required data-validation-required-message="Qual o seu email?" value="{% if quadro is defined %}{{ quadro.responsavel }}{% endif %}" autofocus>
                     </div>
                     <div class="form-group col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label for="tipo" class="sr-only">Tipo de quadro</label>

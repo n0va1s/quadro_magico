@@ -58,11 +58,11 @@ class AtividadeService
     public function mark(array $dados)
     {
         //Verifica se ja existe uma marcacao para a atividade e retorna o ID
-        $id = $this->findByMarcacao($dados['atividade']);
+        $temMarcacao = $this->hasMarcacao($dados['atividade']);
         //Para setar o valor NULL no banco quando uma celular for desmarcada.
         //Estava setando branco
         $dados['valor'] = (empty($dados['valor'])) ? null : $dados['valor'];
-        if (is_null($id)) { //nao possui marcacao
+        if (!$temMarcacao) { //nao possui marcacao
             $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['atividade']);
             $marcacao = new MarcacaoEntity();
             switch ($dados['dia']) {
@@ -92,7 +92,7 @@ class AtividadeService
             //Uma marcacao pertence a uma atividade
             $marcacao->setAtividade($atividade);
         } else { // possui marcacao
-            $marcacao = $this->em->getReference('\n0va1s\QuadroMagico\Entity\MarcacaoEntity', $id);
+            $marcacao = $this->em->getReference('\n0va1s\QuadroMagico\Entity\MarcacaoEntity', $temMarcacao->getId());
             switch ($dados['dia']) {
                 case 'seg':
                     $marcacao->setSegunda($dados['valor']);
@@ -131,9 +131,7 @@ class AtividadeService
 
     public function findByQuadro($quadro)
     {
-        $id = $quadro->getId();
-        $tipo = is_object($quadro) ? $quadro->getTipo()->getCodigo() : $tipo = $quadro['tipo']->getCodigo();
-        if ($tipo == 'F') {
+        if ($quadro->getTipo()->getCodigo() == 'F') {
             $dados = $this->em->createQuery("select a.id, a.imagem, a.atividade, a.valor, a.proposito,
                 m.segunda as mark_segunda, case m.segunda when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_segunda,
                 m.terca as mark_terca, case m.terca when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_terca, 
@@ -144,7 +142,7 @@ class AtividadeService
                 m.domingo as mark_domingo, case m.domingo when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_domingo
                 from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a left join a.marcacoes m 
                 where q.id = :id")
-                ->setParameter(':id', $id)
+                ->setParameter(':id', $quadro->getId())
                 ->getArrayResult();
         } else {
             $dados = $this->em->createQuery("select a.id, a.imagem, a.atividade, a.valor, a.proposito,
@@ -156,51 +154,69 @@ class AtividadeService
                 m.sabado as mark_sabado, case m.sabado when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_sabado,
                 m.domingo as mark_domingo, case m.domingo when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_domingo
                 from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a left join a.marcacoes m where q.id = :id")
-                ->setParameter(':id', $id)
+                ->setParameter(':id', $quadro->getId())
                 ->getArrayResult();
         }
         return $dados;
     }
 
-    public function findById(int $atividade)
+    public function findById(int $id)
     {
         $dados = $this->em->createQuery('select q, a, m from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a left join a.marcacoes m where a.id = :id')
-            ->setParameter('id', $atividade)
+            ->setParameter('id', $id)
             ->getOneOrNullResult();
         return $dados;
     }
 
-    public function findByMarcacao(int $atividade)
+    public function hasMarcacao(int $id)
     {
         $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :id')
-            ->setParameter('id', $atividade)
+            ->setParameter('id', $id)
             ->getOneOrNullResult();
         return $marcacao;
     }
     //Cria um array com exemplos de atividades durante a criacao do quadro
-    public function loadExamples(int $quadro)
+    public function loadExamples($quadro)
     {
-        $dados[] = array('atividade'=>'Arrumar a cama','valor'=>1,'proposito'=>'A');
-        $dados[] = array('atividade'=>'Preparar seu café da manhã','valor'=>1,'proposito'=>'A');
-        $dados[] = array('atividade'=>'Estudar ou fazer a tarefa','valor'=>1,'proposito'=>'E');
-        $dados[] = array('atividade'=>'Comer ao menos 4 tipos de alimentos','valor'=>1,'proposito'=>'R');
-        $dados[] = array('atividade'=>'Fazer a oração antes das refeições ou antes de dormir','valor'=>1,'proposito'=>'I');
-        $dados[] = array('atividade'=>'Fazer uma tarefa doméstica','valor'=>1,'proposito'=>'D');
-        $dados[] = array('atividade'=>'Não brigar, responder ou falar palavrão','valor'=>1,'proposito'=>'C');
-        $dados[] = array('atividade'=>'Não deixar suas coisas espalhadas pela casa','valor'=>1,'proposito'=>'A');
+        if ($quadro->getTipo()->getCodigo() == 'T') {
+            $dados[] = array('atividade'=>'Arrumar a cama','valor'=>1,'proposito'=>'A');
+            $dados[] = array('atividade'=>'Preparar seu café da manhã','valor'=>1,'proposito'=>'A');
+            $dados[] = array('atividade'=>'Estudar ou fazer a tarefa','valor'=>1,'proposito'=>'E');
+            $dados[] = array('atividade'=>'Comer ao menos 4 tipos de alimentos','valor'=>1,'proposito'=>'R');
+            $dados[] = array('atividade'=>'Fazer a oração antes das refeições ou antes de dormir','valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Fazer uma tarefa doméstica','valor'=>1,'proposito'=>'D');
+            $dados[] = array('atividade'=>'Não brigar, responder ou falar palavrão','valor'=>1,'proposito'=>'C');
+            $dados[] = array('atividade'=>'Não deixar suas coisas espalhadas pela casa','valor'=>1,'proposito'=>'A');
+        } elseif ($quadro->getTipo()->getCodigo() == 'M') {
+            $dados[] = array('atividade'=>'Arrumar a cama','valor'=>0.5,'proposito'=>'A');
+            $dados[] = array('atividade'=>'Fazer a tarefa','valor'=>0.5,'proposito'=>'E');
+            $dados[] = array('atividade'=>'Lavar a louça','valor'=>0.5,'proposito'=>'D');
+            $dados[] = array('atividade'=>'Comer ao menos 4 tipos de alimentos','valor'=>1.5,'proposito'=>'R');
+            $dados[] = array('atividade'=>'Cortar a grama','valor'=>0.5,'proposito'=>'D');
+            $dados[] = array('atividade'=>'Varrer a casa','valor'=>1,'proposito'=>'D');
+            $dados[] = array('atividade'=>'Cuidar do bicho de estimação','valor'=>0.5,'proposito'=>'I');
+
+        } elseif ($quadro->getTipo()->getCodigo() == 'F') {
+            $dados[] = array('atividade'=>'Refeição','valor'=>3,'proposito'=>'R');
+            $dados[] = array('atividade'=>'Comportamento','valor'=>3,'proposito'=>'C');
+            $dados[] = array('atividade'=>'Higiene','valor'=>1,'proposito'=>'H');
+            $dados[] = array('atividade'=>'Obrigações','valor'=>2,'proposito'=>'A');
+            $dados[] = array('atividade'=>'Espiritualidade','valor'=>2,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Atividade física','valor'=>2,'proposito'=>'F');
+        }
         foreach ($dados as $atividade) {
-            $atividade['quadro'] = $quadro;
+            $atividade['quadro'] = $quadro->getId();
             $this->save($atividade);
         }
         return true;
     }
     //Copia as atividades do quadro antigo no quadro novo (duplicado)
-    public function loadActivities(int $quadroOLD, int $quadroNEW)
+    public function loadActivities($quadroOLD, $quadroNEW)
     {
         $atividades = $this->findByQuadro($quadroOLD);
         foreach ($atividades as $atividade) {
             //Adicionar o id do novo quadro para ser relacionado a atividade copiada do quadro anterior
-            $atividade['quadro'] = $quadroNEW;
+            $atividade['quadro'] = $quadroNEW->getId();
             //Remover o id para que entre na inclusao e nao na alteracao
             unset($atividade['id']);
             //Remover informacoes desnecessaria a duplicacao
@@ -220,7 +236,7 @@ class AtividadeService
             if ($quadro->getTipo()->getCodigo() == 'F') {
                 $resultado[] = $this->sumResult($quadro, $dia);
             } elseif ($quadro->getTipo()->getCodigo() == 'M') {
-                $resultado[] = $this->calcPocketMoney($quadro);
+                $resultado[] = $this->calcDayMoney($quadro, $dia);
             } elseif ($quadro->getTipo()->getCodigo() == 'T') {
                 $resultado['resultado'][$dia] = $this->loadSpecialGift($quadro, $dia);
             }
@@ -234,7 +250,7 @@ class AtividadeService
     {
         try {
             $mark = $this->em->createQuery("select distinct m.$dia from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id")
-            ->setParameter(':id', $quadro['id'])
+            ->setParameter(':id', $quadro->getId())
             ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
             $specialGift = ($mark == 2) ? 'glyphicon glyphicon-heart' : 'glyphicon glyphicon-heart-empty';
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
@@ -267,15 +283,28 @@ class AtividadeService
         $perc = round((($real??0) / (($prev['val']??0)*7))*100);
         return array('real'=>$real, 'prev'=>$total, 'perc'=>$perc);
     }
-
+    //Calcula quanto a crianca conseguiu de mesada por dia
+    public function calcDayMoney($quadro, $dia)
+    {
+        //Calcula a quantia com base no valor atribuido a atividade e nao ao valor da marcacao
+        $valor = $this->em->createQuery("select sum(a.valor) as val 
+            from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
+            where q.id=:id and m.$dia=:otimo group by q.id")
+            ->setParameter(':id', $quadro->getId())
+            ->setParameter(":otimo", '2')
+            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+        return $valor;
+    }
+    //Calcula o valor total da semana da crianca
     public function calcPocketMoney($quadro)
     {
         //Calcula os pontos das atividades realizadas no quadro
         foreach ($this->semana as $dia) {
-            $total += $this->em->createQuery("select sum(m.$dia) as val 
+            $total += $this->em->createQuery("select sum(a.valor) as val 
                 from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
-                where q.id=:id group by q.id")
+                where q.id=:id and m.$dia=:otimo group by q.id")
                 ->setParameter(':id', $quadro->getId())
+                ->setParameter(':otimo', '2')
                 ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
         }
         return $total;
