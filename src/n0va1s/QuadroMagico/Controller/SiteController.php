@@ -43,12 +43,16 @@ class SiteController implements ControllerProviderInterface
 
         $app->post('/contato/enviar', function (Request $req) use ($app) {
             $dados = $req->request->all();
-            $mail = (new \Swift_Message('[UmDesejoPorSemana] Contato'))
-                ->setFrom($dados['email'], $dados['nome'])
-                ->setTo('contato@umdesejoporsemana.com')
-                ->setBody($dados['mensagem'], 'text/html');
-            $app['mailer']->send($mail);
-            return $app['twig']->render('contato.twig', array('mensagem'=>'Obrigado! Sua mensagem foi enviada.'));
+            $message = (new \Swift_Message('[UmDesejoPorSemana] Contato'))
+              ->setFrom([$dados['email'] => $dados['nome']])
+              ->setTo(['contato@umdesejoporsemana.com', 'jp.trabalho@gmail.com' => 'JP Trabalho'])
+              ->setBody($dados['mensagem']);
+            $result = $app['mailer']->send($message);
+            if ($result) {
+                return $app['twig']->render('contato.twig', array('mensagem'=>'Obrigado! Sua mensagem foi enviada.'));
+            } else {
+                return $app['twig']->render('contato.twig', array('mensagem'=>'Erro ao enviar a mensagem :-('));
+            }
         })->bind('contatoEnviar');
         return $ctrl;
     }

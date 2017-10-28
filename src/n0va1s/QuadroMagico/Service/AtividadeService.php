@@ -280,7 +280,7 @@ class AtividadeService
         //Calcula o total de pontos possivel para a semana
         $total = round((($prev['val']??0)*7));
         //Calcula o percentual de execucao
-        $perc = round((($real??0) / (($prev['val']??0)*7))*100);
+        $perc = round((($real??0) / (($prev['val']??1)*7))*100);
         return array('real'=>$real, 'prev'=>$total, 'perc'=>$perc);
     }
     //Calcula quanto a crianca conseguiu de mesada por dia
