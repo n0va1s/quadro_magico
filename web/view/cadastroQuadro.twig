@@ -30,16 +30,16 @@
                     </div>
                     <div class="form-group col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label for="tipo" class="sr-only">Tipo de quadro</label>
-                        <select name="tipo"  class="form-control col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                            <option>Um quadro de</option>
+                        <select name="tipo" class="form-control col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3" required data-validation-required-message="Que tipo de quadro vc quer?">
+                            <option value="" disabled selected>Um quadro de</option>
                             {% for tipo in tipos %}
                                 <option value="{{ tipo.id }}" {% if quadro is defined and quadro.tipo.id == tipo.id %} selected {% endif %}>{{ tipo.descricao }}</option>
                             {% endfor %} 
                         </select>
                     </div>
                     <div class="form-group col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                        <select name="genero" class="form-control col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                            <option>Para</option>
+                        <select name="genero" class="form-control col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3" required data-validation-required-message="É para um menino ou uma menina?">
+                            <option value="" disabled selected>Para</option>
                             <option value="M" {% if quadro is defined and quadro.genero == 'M' %} selected {% endif %}>um menino</option>
                             <option value="F" {% if quadro is defined and quadro.genero == 'F' %} selected {% endif %}>uma menina</option>
                         </select>
