@@ -1,4 +1,7 @@
 composer.phar
+composer.lock
+config.ini
+Procfile
 /vendor/
 /web/file/
 /web/view/cache/
