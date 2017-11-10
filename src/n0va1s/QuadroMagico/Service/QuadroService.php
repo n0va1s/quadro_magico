@@ -22,7 +22,7 @@ class QuadroService
         //Dados vindo da tela em formato de array para criacao de um novo quadro
         //Quadro original a ser duplicado e um objeto
         $id = is_array($dados) ? $dados['id'] : $dados->getId();
-        $tipo = is_array($dados) ?  : $dados->getTipo()->getId();
+        $tipo = is_array($dados) ? $dados['tipo'] : $dados->getTipo()->getId();
         $responsavel = is_array($dados) ? $dados['email'] : $dados->getResponsavel();
         $genero = is_array($dados) ? $dados['genero'] : $dados->getGenero();
         $idade = is_array($dados) ? $dados['idade'] : $dados->getIdade();

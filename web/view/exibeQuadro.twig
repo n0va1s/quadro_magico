@@ -1,5 +1,5 @@
 {% extends 'leiaute.twig' %}
-{% block titulo %}Um desejo por semana - Meus Quadros{% endblock %}
+{% block titulo %}Um desejo por semana - seu quadro{% endblock %}
 
 {% block topo %}
     <!-- Page Header -->
@@ -26,8 +26,10 @@
             <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ real}} dos {{ prev }} pontos ({{ perc }}%) para <b>{{quadro.recompensa|lower}}</b></p>
             {% elseif tipo.codigo == 'M' %}
             <p>Oi <b>{{quadro.crianca}}</b>, vc conquistou {{ mesada }} reais de mesada!</p>
-            {% else %}
+            {% elseif tipo.codigo == 'F' %}
             <p>Oi <b>{{quadro.crianca}}</b>, faça o seu melhor possível para <b>{{quadro.recompensa|lower}}</b></p>
+            {% else %}
+            <p>Oi <b>{{quadro.crianca}}</b>, vc consegue! #top</b></p>
             {% endif %}
             {% if atividades is defined %}
             <div style="overflow: auto; width: 100%; border: 1px;">

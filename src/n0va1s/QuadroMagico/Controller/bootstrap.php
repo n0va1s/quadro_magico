@@ -14,11 +14,6 @@ use Doctrine\Common\ClassLoader;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-//Buscar as variaveis do arquivo de configuracao
-$env = getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production';
-$ini_config = parse_ini_file(__DIR__.'/config.ini', true);
-$file_config = $ini_config[$env];
-
 $cache = new Doctrine\Common\Cache\ArrayCache;
 $annotationReader = new Doctrine\Common\Annotations\AnnotationReader;
 
@@ -43,20 +38,20 @@ $config->setMetadataCacheImpl($cache);
 $config->setQueryCacheImpl($cache);
 
 AnnotationRegistry::registerFile(__DIR__. DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'doctrine' . DIRECTORY_SEPARATOR . 'orm' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'Doctrine' . DIRECTORY_SEPARATOR . 'ORM' . DIRECTORY_SEPARATOR . 'Mapping' . DIRECTORY_SEPARATOR . 'Driver' . DIRECTORY_SEPARATOR . 'DoctrineAnnotations.php');
+
 $evm = new Doctrine\Common\EventManager();
 $em = EntityManager::create(
     array(
-        'driver'    => $file_config['db.driver'],
-        'host'      => $file_config['db.host'],
-        'port'      => $file_config['db.port'],
-        'user'      => $file_config['db.user'],
-        'password'  => $file_config['db.password'],
-        'dbname'    => $file_config['db.name'],
+        'driver'  => 'pdo_mysql',
+        'host'    => 'mysql.umdesejoporsemana.com',
+        'port'    => '3306',
+        'user'    => 'umdesejoporsem',
+        'password'  => 'Run1mdaa',
+        'dbname'  => 'umdesejoporsem',
     ),
     $config,
     $evm
 );
-
 /*
 ini_set('display_errors', 1);
 error_reporting(-1);
@@ -70,29 +65,17 @@ $app['debug'] = true;
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/web/view',
-    'twig.options' => array('cache' => __DIR__.'/web/view/cache'),
 ));
 
 $app->register(new Silex\Provider\AssetServiceProvider(), array(
     'assets.version' => 'v1',
     'assets.version_format' => '%s?version=%s',
     'assets.named_packages' => array(
-        'css' => array('version' => 'css2', 'base_path' => $file_config['path.css']),
-        'img' => array('base_path' => $file_config['path.img']),
-        'js' => array('base_path' => $file_config['path.js']),
-        'file' => array('base_path' => $file_config['path.file']),
+        'css' => array('version' => 'css2', 'base_path' => '/web/css'),
+        'img' => array('base_path' => '/web/img'),
+        'js' => array('base_path' => '/web/js'),
+        'file' => array('base_path' => '/web/file'),
     ),
-));
-
-$app->register(new Silex\Provider\SwiftmailerServiceProvider(), array(
-    'swiftmailer.options' => array(
-        'host'       => $file_config['mail.host'],
-        'port'       => $file_config['mail.port'],
-        'username'   => $file_config['mail.username'],
-        'password'   => $file_config['mail.password'],
-        'encryption' => $file_config['mail.encryption'],
-        'auth_mode'  => $file_config['mail.auth_mode'],
-    )
 ));
 
 $app->register(new Silex\Provider\SessionServiceProvider());
@@ -129,6 +112,16 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 $app->get('/', function () use ($app) {
     return $app['twig']->render('inicio.twig');
 })->bind('index');
+
+$app->register(new Silex\Provider\SwiftmailerServiceProvider());
+$app['swiftmailer.options'] = array(
+    'host' => 'host',
+    'port' => '25',
+    'username' => 'username',
+    'password' => 'password',
+    'encryption' => null,
+    'auth_mode' => null
+);
 $app->mount('/site', new n0va1s\QuadroMagico\Controller\SiteController($em));
 $app->mount('/quadro', new n0va1s\QuadroMagico\Controller\QuadroController($em));
 $app->mount('/responsavel', new n0va1s\QuadroMagico\Controller\ResponsavelController($em));
