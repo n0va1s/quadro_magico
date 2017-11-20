@@ -184,7 +184,7 @@ class __TwigTemplate_9a7c827e46557b9422a992a08a7d82e1595937176da5016df75b36b3513
     // line 13
     public function block_titulo($context, array $blocks = array())
     {
-        echo "Um Desejo Por Semana - quadros que transformam a sua vida e a dos seus filhos";
+        echo "BrinqueCoin - as moedas da brincadeira";
     }
 
     // line 78
@@ -201,9 +201,9 @@ class __TwigTemplate_9a7c827e46557b9422a992a08a7d82e1595937176da5016df75b36b3513
             <div class=\"row\">
                 <div class=\"col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0\">
                     <div class=\"site-heading\">
-                        <h1>Um desejo por semana</h1>
+                        <h1>BrinqueCoin</h1>
                         <hr class=\"small\">
-                        <span class=\"subheading\">Organize a rotina e de quebra crie filhos responsáveis, confiantes e felizes</span>
+                        <span class=\"subheading\">Jogue com seus filhos, organize a rotina e crie filhos responsáveis, confiantes e felizes</span>
                     </div>
                 </div>
             </div>
@@ -293,7 +293,7 @@ class __TwigTemplate_9a7c827e46557b9422a992a08a7d82e1595937176da5016df75b36b3513
     <meta name=\"robots\" content=\"index, follow\">
     <meta name=\"author\" content=\"jp.trabalho@gmail.com\">
 
-    <title>{% block titulo %}Um Desejo Por Semana - quadros que transformam a sua vida e a dos seus filhos{% endblock %}</title>
+    <title>{% block titulo %}BrinqueCoin - as moedas da brincadeira{% endblock %}</title>
 
     <!-- Bootstrap Core CSS -->
     <!--<link href=\"/web/vendor/bootstrap/css/bootstrap.min.css\" rel=\"stylesheet\">-->
@@ -366,9 +366,9 @@ class __TwigTemplate_9a7c827e46557b9422a992a08a7d82e1595937176da5016df75b36b3513
             <div class=\"row\">
                 <div class=\"col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0\">
                     <div class=\"site-heading\">
-                        <h1>Um desejo por semana</h1>
+                        <h1>BrinqueCoin</h1>
                         <hr class=\"small\">
-                        <span class=\"subheading\">Organize a rotina e de quebra crie filhos responsáveis, confiantes e felizes</span>
+                        <span class=\"subheading\">Jogue com seus filhos, organize a rotina e crie filhos responsáveis, confiantes e felizes</span>
                     </div>
                 </div>
             </div>
@@ -437,6 +437,6 @@ class __TwigTemplate_9a7c827e46557b9422a992a08a7d82e1595937176da5016df75b36b3513
       ga('send', 'pageview');
     </script>
 </body>
-</html>", "leiaute.twig", "/home/novais/public-html/quadro_magico/web/view/leiaute.twig");
+</html>", "leiaute.twig", "/home/85236250110/Documentos/trabalho/public-html/quadro_magico/web/view/leiaute.twig");
     }
 }

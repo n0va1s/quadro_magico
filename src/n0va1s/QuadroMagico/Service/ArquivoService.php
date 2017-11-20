@@ -64,8 +64,17 @@ class ArquivoService
     public static function apagarImagem($path)
     {
         if (is_file($path)) {
-            unlink($path);
-            return true;
+            $deleteOK = true;
         }
+
+        if (file_exists($path)) {
+            $deleteOK = true;
+        }
+
+        if ($deleteOK) {
+            unlink($path);
+        }
+
+        return $deleteOK;
     }
 }

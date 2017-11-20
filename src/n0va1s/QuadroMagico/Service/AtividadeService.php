@@ -123,15 +123,15 @@ class AtividadeService
 
     public function delete($quadro)
     {
-        $excluiu = ArquivoService::apagarImagem($quadro->getAtividades()[0]->getImagem());
-        if ($excluiu) {
+        //$excluiu = ArquivoService::apagarImagem($quadro->getAtividades()[0]->getImagem());
+        //if ($excluiu) {
             $this->em->remove($quadro->getAtividades()[0]);
             $this->em->flush();
             //Lista de atividades atualizada
             return $this->findByQuadro($quadro);
-        } else {
-            return false;
-        }
+        //} else {
+        //    return false;
+        //}
     }
 
     public function findByQuadro($quadro)

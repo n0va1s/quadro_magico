@@ -29,7 +29,7 @@ class __TwigTemplate_955d07b3dabc89b83fe045e9361e5cc61ca77c0319806e9fed85bb7fafe
     // line 2
     public function block_titulo($context, array $blocks = array())
     {
-        echo "Um desejo por semana - Página Inicial";
+        echo "brinquecoin - Página Inicial";
     }
 
     // line 4
@@ -41,17 +41,18 @@ class __TwigTemplate_955d07b3dabc89b83fe045e9361e5cc61ca77c0319806e9fed85bb7fafe
         <div class=\"row\">
             <p>Bem-vindo pai, mãe, avô, avó, tio, tia, padrinho, madrinha ...</p><br />
             <div class=\"col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1\" >
-                    <h2 class=\"post-title\">O que é \"um desejo por semana\"?</h2>
+                    <h2 class=\"post-title\">O que é o \"brinquecoin\"?</h2>
                     <p class=\"post-meta\">
-                        <b>Para pais e mães</b> que buscam desenvolver crianças, jovens e adolescentes confiantes e responsáveis, o
-                        \"um desejo por semana\" é um <b>quadro de tarefas</b> diferente, sustentável e fácil de alterar.<br />Esse quadro está no <b>mundo digital</b> deles, possui uma metodologia de trabalho baseada em <b>jogos</b>, facilita a <b>comunicação</b> e permite o <b>acompanhamento mesmo à distância</b>.
+                        O <b>brinquecoin</b> é uma moeda virtual usada pelo seu filho ou filha como recompensa pelo seu esforço.<br />
+                        Para ganhar brinquecoins o responsável deve criar uma <b>quadro de tarefas, mesada ou férias</b> com atividades combinadas com as crianças e acompanhar durante a semana o que está dando certo ou errado.<br />
                     </p>
                     <p class=\"post-meta\">
-                        A criança deve cumprir 70% das atividades propostas pelo responsável para alcançar o <b>desejo da semana</b> que a criança escolheu. Pode ser uma ida ao clube, um passeio no parque, um dia de jogos em casa, ir a uma festa, etc... lembre-se que qualquer mudança leva ao menos 30 dias e que a persistência é a chave para o seu sucesso e o do filhote
+                        Com este jogo temos percebido crianças e jovens mais organizados, confiantes e superando desafios de forma lúdica... tudo isso <b>de forma digital</b> e com a participação <b>à distância</b> mesmo dos pais e mães mais ocupados.<br />
+                        Lembre-se que qualquer mudança leva ao menos 90 dias e que a persistência é a chave para o seu sucesso e o do filhote.
                     </p>
                     <h2>Exemplo de quadro</h2>
                     <img src=\"";
-        // line 19
+        // line 20
         echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("quadro.png", "img"), "html", null, true);
         echo "\" alt=\"Como funciona o quadro de tarefas\">
                     <h2>Regras do Jogo</h2>
@@ -70,10 +71,10 @@ class __TwigTemplate_955d07b3dabc89b83fe045e9361e5cc61ca77c0319806e9fed85bb7fafe
  ";
     }
 
-    // line 35
+    // line 36
     public function block_rodape($context, array $blocks = array())
     {
-        // line 36
+        // line 37
         echo "<footer class=\"intro-header\" style=\"background-image: url(";
         echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("idealizadores.jpg", "img"), "html", null, true);
         echo ")\">
@@ -98,13 +99,13 @@ class __TwigTemplate_955d07b3dabc89b83fe045e9361e5cc61ca77c0319806e9fed85bb7fafe
 
     public function getDebugInfo()
     {
-        return array (  77 => 36,  74 => 35,  55 => 19,  39 => 5,  36 => 4,  30 => 2,  11 => 1,);
+        return array (  78 => 37,  75 => 36,  56 => 20,  39 => 5,  36 => 4,  30 => 2,  11 => 1,);
     }
 
     public function getSourceContext()
     {
         return new Twig_Source("{% extends 'leiaute.twig' %}
-{% block titulo %}Um desejo por semana - Página Inicial{% endblock %}
+{% block titulo %}brinquecoin - Página Inicial{% endblock %}
 
 {% block conteudo %}
     <!-- Main Content -->
@@ -112,13 +113,14 @@ class __TwigTemplate_955d07b3dabc89b83fe045e9361e5cc61ca77c0319806e9fed85bb7fafe
         <div class=\"row\">
             <p>Bem-vindo pai, mãe, avô, avó, tio, tia, padrinho, madrinha ...</p><br />
             <div class=\"col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1\" >
-                    <h2 class=\"post-title\">O que é \"um desejo por semana\"?</h2>
+                    <h2 class=\"post-title\">O que é o \"brinquecoin\"?</h2>
                     <p class=\"post-meta\">
-                        <b>Para pais e mães</b> que buscam desenvolver crianças, jovens e adolescentes confiantes e responsáveis, o
-                        \"um desejo por semana\" é um <b>quadro de tarefas</b> diferente, sustentável e fácil de alterar.<br />Esse quadro está no <b>mundo digital</b> deles, possui uma metodologia de trabalho baseada em <b>jogos</b>, facilita a <b>comunicação</b> e permite o <b>acompanhamento mesmo à distância</b>.
+                        O <b>brinquecoin</b> é uma moeda virtual usada pelo seu filho ou filha como recompensa pelo seu esforço.<br />
+                        Para ganhar brinquecoins o responsável deve criar uma <b>quadro de tarefas, mesada ou férias</b> com atividades combinadas com as crianças e acompanhar durante a semana o que está dando certo ou errado.<br />
                     </p>
                     <p class=\"post-meta\">
-                        A criança deve cumprir 70% das atividades propostas pelo responsável para alcançar o <b>desejo da semana</b> que a criança escolheu. Pode ser uma ida ao clube, um passeio no parque, um dia de jogos em casa, ir a uma festa, etc... lembre-se que qualquer mudança leva ao menos 30 dias e que a persistência é a chave para o seu sucesso e o do filhote
+                        Com este jogo temos percebido crianças e jovens mais organizados, confiantes e superando desafios de forma lúdica... tudo isso <b>de forma digital</b> e com a participação <b>à distância</b> mesmo dos pais e mães mais ocupados.<br />
+                        Lembre-se que qualquer mudança leva ao menos 90 dias e que a persistência é a chave para o seu sucesso e o do filhote.
                     </p>
                     <h2>Exemplo de quadro</h2>
                     <img src=\"{{ asset('quadro.png', 'img') }}\" alt=\"Como funciona o quadro de tarefas\">
@@ -147,6 +149,6 @@ class __TwigTemplate_955d07b3dabc89b83fe045e9361e5cc61ca77c0319806e9fed85bb7fafe
 </footer>
 {% endblock %}
 
-", "inicio.twig", "/home/novais/public-html/quadro_magico/web/view/inicio.twig");
+", "inicio.twig", "/home/85236250110/Documentos/trabalho/public-html/quadro_magico/web/view/inicio.twig");
     }
 }
