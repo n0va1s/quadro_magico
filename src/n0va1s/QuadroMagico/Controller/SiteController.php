@@ -43,9 +43,9 @@ class SiteController implements ControllerProviderInterface
 
         $app->post('/contato/enviar', function (Request $req) use ($app) {
             $dados = $req->request->all();
-            $message = (new \Swift_Message('[UmDesejoPorSemana] Contato'))
+            $message = (new \Swift_Message('[BrinqueCoin] Contato'))
               ->setFrom([$dados['email'] => $dados['nome']])
-              ->setTo(['contato@umdesejoporsemana.com', 'jp.trabalho@gmail.com' => 'JP Trabalho'])
+              ->setTo(['contato@brinquecoin.com'])
               ->setBody($dados['mensagem']);
             $result = $app['mailer']->send($message);
             if ($result) {

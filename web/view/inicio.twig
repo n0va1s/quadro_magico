@@ -1,36 +1,45 @@
 {% extends 'leiaute.twig' %}
-{% block titulo %}brinquecoin - Página Inicial{% endblock %}
 
 {% block conteudo %}
     <!-- Main Content -->
     <div class="container">
         <div class="row">
-            <p>Bem-vindo pai, mãe, avô, avó, tio, tia, padrinho, madrinha ...</p><br />
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" >
-                    <h2 class="post-title">O que é o "brinquecoin"?</h2>
+            <p>Bem-vindo pai, mãe, avô, avó, tio, tia, padrinho, madrinha ...</p>
+            <div class="col-lg-12 col-md-12 col-12" >
+                <div class="col-lg-4 col-md-4 col-4" >
+                    <h2 class="post-title">O que é?</h2>
                     <p class="post-meta">
                         O <b>brinquecoin</b> é uma moeda virtual usada pelo seu filho ou filha como recompensa pelo seu esforço.<br />
-                        Para ganhar brinquecoins o responsável deve criar uma <b>quadro de tarefas, mesada ou férias</b> com atividades combinadas com as crianças e acompanhar durante a semana o que está dando certo ou errado.<br />
-                    </p>
-                    <p class="post-meta">
-                        Com este jogo temos percebido crianças e jovens mais organizados, confiantes e superando desafios de forma lúdica... tudo isso <b>de forma digital</b> e com a participação <b>à distância</b> mesmo dos pais e mães mais ocupados.<br />
-                        Lembre-se que qualquer mudança leva ao menos 90 dias e que a persistência é a chave para o seu sucesso e o do filhote.
-                    </p>
-                    <h2>Exemplo de quadro</h2>
-                    <img src="{{ asset('quadro.png', 'img') }}" alt="Como funciona o quadro de tarefas">
-                    <h2>Regras do Jogo</h2>
-                    <p class="post-meta">
-                    1. Escolha tarefas que corrijam ou aperfeiçoem um comportamento.<br />
-                    2. Reserve um horário, antes de dormir, para conversar e preencher o quadro.<br />
-                    3. Estabeleça metas semanais e comemore as conquistas. Apresente as consequências também.<br />
-                    4. Não ceda às pressões. O adulto é você. Cara feia passa, um mau comportamento pode durar a vida toda.<br />
-                    5. A quantidade de tarefas deve ser próxima à idade da criança até o limite de 8 por dia.
+                        Para ganhar brinquecoins o responsável deve criar um <b>quadro de tarefas, mesada ou férias</b> com atividades combinadas com as crianças e acompanhar durante a semana o que está dando certo ou errado.<br />
                     </p>
                 </div>
+                <div class="col-lg-4 col-md-4 col-4" >
+                    <h2>Benefícios</h2>
+                    <ul class="post-meta">
+                        <li>Crianças e jovens mais organizados, confiantes e superando desafios de forma lúdica</li>
+                        <li>Acompanhamento pelos pais mesmo à distância</li>
+                        <li>Uma ótima forma de interação com seu filho</li>
+                        <li>Mudanças visíveis já no primeiro mês</li>
+                    </ul>                    
+                </div>
+                <div class="col-lg-4 col-md-4 col-4" >
+                    <h2>Regras do Jogo</h2>
+                    <ol class="post-meta">
+                        <li>Escolha tarefas que corrijam ou aperfeiçoem um comportamento.</li>
+                        <li>Reserve um horário, antes de dormir, para conversar e preencher o quadro.</li>
+                        <li>Estabeleça metas semanais e comemore as conquistas. Apresente as consequências também.</li>
+                        <li>Não ceda às pressões. O adulto é você. Cara feia passa, um mau comportamento pode durar a vida toda.</li>
+                        <li>A quantidade de tarefas deve ser próxima à idade da criança até o limite de 8 por dia.</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1" >
+                <h2>Veja como funciona</h2>
+                <img class="img-responsive" src="{{ asset('quadro.png', 'img') }}">
+                <br />
             </div>
         </div>
-    </div>
-    
+    </div>    
  {% endblock %}
 
 {% block rodape %}
