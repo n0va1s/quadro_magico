@@ -11,6 +11,8 @@ use Doctrine\ORM\EntityManager;
 use n0va1s\QuadroMagico\Service\AtividadeService;
 use n0va1s\QuadroMagico\Service\DominioService;
 use n0va1s\QuadroMagico\Service\QuadroService;
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
 
 class QuadroController implements ControllerProviderInterface
 {
@@ -53,11 +55,17 @@ class QuadroController implements ControllerProviderInterface
             $descricao = $quadro->getTipo()->getDescricao();
             $crianca = $quadro->getCrianca();
             $codigo = $quadro->getCodigo();
-            $mail = (new \Swift_Message('[UmDesejoPorSemana] O quadro de '.$descricao.' para '.$crianca))
-                ->setFrom('contato@umdesejoporsemana.com', 'Um Desejo Por Semana')
-                ->setTo($dados['responsavel'])
-                ->setBody("O quadro de $descricao para $crianca está disponível no endereço <br /> <a href='umdesejoporsemana.com/quadro/exibir/'$codigo", 'text/html');
-            $app['mailer']->send($mail);
+
+            $validator = new EmailValidator();
+            if ($validator->isValid($dados['email'], new RFCValidation())) {
+                $message = (new \Swift_Message())->setCharset('utf-8');
+                $message->setSubject('O quadro de '.strtolower($descricao).' para '.$crianca);
+                $message->setFrom(['brinquecoin@brinquecoin.com' => 'brinquecoin.com']);
+                $message->setTo([$dados['email']]);
+                $message->setBody($app['twig']->render('emailCadastro.twig', array('quadro'=>$quadro)), 'text/html');
+                $app['mailer']->send($message);
+            }
+            
             //Cria um novo request para o cadastro de atividades
             $tipo = $app['dominio_service']->findById($quadro->getTipo()->getId());
             $dados = array('quadro'=>$quadro, 'tipo'=>$tipo);

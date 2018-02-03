@@ -95,6 +95,9 @@ $app->register(new Silex\Provider\SwiftmailerServiceProvider(), array(
     )
 ));
 
+//Para nao guardar os emails na fila
+$app['swiftmailer.use_spool'] = false;
+
 $app->register(new Silex\Provider\SessionServiceProvider());
 /*
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
