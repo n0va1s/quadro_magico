@@ -45,7 +45,7 @@
                     </div>
                     <div class="form-group col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                         <label for="idade" class="sr-only">Idade</label>
-                        <input type="number" name="idade" class="form-control col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2" placeholder="10 anos" required data-validation-required-message="Quantos anos ele ou ela tem?" value="{% if quadro is defined %}{{ quadro.idade }}{% endif %}">
+                        <input type="number" min="3" name="idade" class="form-control col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2" placeholder="10 anos" required data-validation-required-message="Quantos anos ele ou ela tem?" value="{% if quadro is defined %}{{ quadro.idade }}{% endif %}">
                     </div>
                     <div class="form-group col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label for="nome" class="sr-only">Nome</label>
