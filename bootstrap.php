@@ -66,7 +66,7 @@ if ('cli' !== php_sapi_name()) {
 }
 */
 $app = new \Silex\Application();
-$app['debug'] = true;
+$app['debug'] = $file_config['log.enabled'];
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/web/view',
@@ -134,4 +134,4 @@ $app->get('/', function () use ($app) {
 })->bind('index');
 $app->mount('/site', new n0va1s\QuadroMagico\Controller\SiteController($em));
 $app->mount('/quadro', new n0va1s\QuadroMagico\Controller\QuadroController($em));
-$app->mount('/responsavel', new n0va1s\QuadroMagico\Controller\ResponsavelController($em));
+$app->mount('/api', new n0va1s\QuadroMagico\Controller\BotController($em));

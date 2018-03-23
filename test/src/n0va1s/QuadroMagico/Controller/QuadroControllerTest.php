@@ -21,11 +21,11 @@ class CategoriaControllerTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testIndexCategoriaAPP()
+    public function testIndexQuadroAPP()
     {
-        $this->client->request('GET', '/categoria/');
+        $this->client->request('GET', '/quadro/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertContains('Módulo Categoria (API)', $this->client->getResponse()->getContent());
+        $this->assertContains('Módulo Categoria', $this->client->getResponse()->getContent());
     }
 
     public function testInserirCategoriaAPI()

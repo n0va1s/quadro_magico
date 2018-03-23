@@ -44,6 +44,10 @@
                             <option value="F">Exercício</option>
                             <option value="R">Refeição</option>
                             <option value="I">Espiritualidade</option>
+                            <option value="M">Meu momento</option>
+                            <option value="W">Nosso momento</option>
+                            <option value="T">Tarefas das família</option>
+                            <option value="G">Momentos cinza</option>
                         </select>
                     </div>
                     <div class="form-group col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
@@ -93,6 +97,10 @@
                             {% elseif atividade.proposito == 'F' %} {% set proposito = 'Exercício' %}
                             {% elseif atividade.proposito == 'R' %} {% set proposito = 'Refeição' %}
                             {% elseif atividade.proposito == 'I' %} {% set proposito = 'Espiritualidade' %}
+                            {% elseif atividade.proposito == 'M' %} {% set proposito = 'Meu momento' %}
+                            {% elseif atividade.proposito == 'W' %} {% set proposito = 'Nosso momento' %}
+                            {% elseif atividade.proposito == 'T' %} {% set proposito = 'Tarefas da família' %}
+                            {% elseif atividade.proposito == 'G' %} {% set proposito = 'Momentos cinza' %}
                             {% endif %}
                             <td>{{ proposito }}</td>
                             <td>{{ atividade.atividade }}</td>

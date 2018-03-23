@@ -26,7 +26,7 @@ class AtividadeEntity
     private $atividade;
 
     /**
-     * @ORM\Column(type="decimal", scale=0, name="val_atividade", nullable=true)
+     * @ORM\Column(type="decimal", scale=2, name="val_atividade", nullable=true)
      */
     private $valor;
 

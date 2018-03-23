@@ -1059,16 +1059,16 @@
         },
         {
             "name": "silex/silex",
-            "version": "v2.2.3",
+            "version": "v2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "90c80c3e5ef86c54b8769feca0320154c6e63f7c"
+                "reference": "d2531e5b8099c429b752ad2154e85999c3689057"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/90c80c3e5ef86c54b8769feca0320154c6e63f7c",
-                "reference": "90c80c3e5ef86c54b8769feca0320154c6e63f7c",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/d2531e5b8099c429b752ad2154e85999c3689057",
+                "reference": "d2531e5b8099c429b752ad2154e85999c3689057",
                 "shasum": ""
             },
             "require": {
@@ -1144,7 +1144,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2018-02-25T11:21:42+00:00"
+            "time": "2018-03-16T23:34:20+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2187,16 +2187,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.4.6",
+            "version": "v2.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "d2117ec118c1ff3d28ccddca8212d82787a4809f"
+                "reference": "7b604c89da162034bdf4bb66310f358d313dd16d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d2117ec118c1ff3d28ccddca8212d82787a4809f",
-                "reference": "d2117ec118c1ff3d28ccddca8212d82787a4809f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7b604c89da162034bdf4bb66310f358d313dd16d",
+                "reference": "7b604c89da162034bdf4bb66310f358d313dd16d",
                 "shasum": ""
             },
             "require": {
@@ -2205,8 +2205,8 @@
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.3@dev"
+                "symfony/debug": "^2.7",
+                "symfony/phpunit-bridge": "^3.3"
             },
             "type": "library",
             "extra": {
@@ -2249,22 +2249,22 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-03-03T16:23:01+00:00"
+            "time": "2018-04-02T09:24:19+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "heroku/heroku-buildpack-php",
-            "version": "v132",
+            "version": "v134",
             "source": {
                 "type": "git",
                 "url": "https://github.com/heroku/heroku-buildpack-php.git",
-                "reference": "dd950a605fb0c5e50ab71774e299fa26c9093f80"
+                "reference": "16dd536d084b2a12528713a1efda113f22c6b378"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/dd950a605fb0c5e50ab71774e299fa26c9093f80",
-                "reference": "dd950a605fb0c5e50ab71774e299fa26c9093f80",
+                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/16dd536d084b2a12528713a1efda113f22c6b378",
+                "reference": "16dd536d084b2a12528713a1efda113f22c6b378",
                 "shasum": ""
             },
             "bin": [
@@ -2295,7 +2295,7 @@
                 "nginx",
                 "php"
             ],
-            "time": "2018-03-02T17:10:10+00:00"
+            "time": "2018-03-30T20:37:55+00:00"
         },
         {
             "name": "myclabs/deep-copy",

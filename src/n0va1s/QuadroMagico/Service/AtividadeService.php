@@ -200,7 +200,6 @@ class AtividadeService
             $dados[] = array('atividade'=>'Cortar a grama','valor'=>0.5,'proposito'=>'D');
             $dados[] = array('atividade'=>'Varrer a casa','valor'=>1,'proposito'=>'D');
             $dados[] = array('atividade'=>'Cuidar do bicho de estimação','valor'=>0.5,'proposito'=>'I');
-
         } elseif ($quadro->getTipo()->getCodigo() == 'F') {
             $dados[] = array('atividade'=>'Refeição','valor'=>3,'proposito'=>'R');
             $dados[] = array('atividade'=>'Comportamento','valor'=>3,'proposito'=>'C');
@@ -208,7 +207,73 @@ class AtividadeService
             $dados[] = array('atividade'=>'Obrigações','valor'=>2,'proposito'=>'A');
             $dados[] = array('atividade'=>'Espiritualidade','valor'=>2,'proposito'=>'I');
             $dados[] = array('atividade'=>'Atividade física','valor'=>2,'proposito'=>'F');
-        }
+        } elseif ($quadro->getTipo()->getCodigo() == 'E') { //meu momento
+            $dados[] = array('atividade'=>'Ler um livro', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Estudar', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Brincar', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Meditar', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Escrever', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Voluntariado', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Cuidado pessoal', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Jogar', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Usar celular/tablet', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Exercícios', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Ouvir música', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Sair com os amigos', 'valor'=>1,'proposito'=>'I');
+            $dados[] = array('atividade'=>'Cuidar das plantas', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Fazer dever de casa', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Limpar casa', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Fazer compras', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Lavar roupas', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Arrumar casa', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Tirar lixo', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Cuidar do animal', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Cuidar do bebê', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Lavar carro', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Fazer extra-classe', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Consertar casa', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Organizar orçamento doméstico', 'valor'=>1,'proposito'=>'T');
+            $dados[] = array('atividade'=>'Fazer refeição', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Levar/buscar de festa', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Ir à escola', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Fazer higiene pessoal', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Ver TV', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Dormir', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Comer', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Ir ao trabalho', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Ir ao médico', 'valor'=>1,'proposito'=>'G');
+        } elseif ($quadro->getTipo()->getCodigo() == 'N') { //nosso momento
+            $dados[] = array('atividade'=>'Viajar', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Conversar', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Passear', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Ver filme', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Jogar', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Ir a um evento', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Construir algo', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Cuidar das plantas', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Fazer dever de casa', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Limpar casa', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Fazer compras', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Lavar roupas', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Arrumar casa', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Tirar lixo', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Cuidar do animal', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Cuidar do bebê', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Lavar carro', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Fazer extra-classe', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Consertar casa', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Organizar orçamento doméstico', 'valor'=>1,'proposito'=>'W');
+            $dados[] = array('atividade'=>'Fazer refeição', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Levar/buscar de festa', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Ir à escola', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Fazer higiene pessoal', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Ver TV', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Dormir', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Comer', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Ir ao trabalho', 'valor'=>1,'proposito'=>'G');
+            $dados[] = array('atividade'=>'Ir ao médico', 'valor'=>1,'proposito'=>'G');
+        } 
+
         foreach ($dados as $atividade) {
             $atividade['quadro'] = $quadro->getId();
             $this->save($atividade);
