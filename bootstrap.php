@@ -66,7 +66,7 @@ if ('cli' !== php_sapi_name()) {
 }
 */
 $app = new \Silex\Application();
-$app['debug'] = true;
+$app['debug'] = $file_config['log.enabled'];
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/web/view',

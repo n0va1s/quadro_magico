@@ -55,17 +55,19 @@ class QuadroController implements ControllerProviderInterface
             $descricao = $quadro->getTipo()->getDescricao();
             $crianca = $quadro->getCrianca();
             $codigo = $quadro->getCodigo();
-
-            $validator = new EmailValidator();
-            if ($validator->isValid($dados['email'], new RFCValidation())) {
-                $message = (new \Swift_Message())->setCharset('utf-8');
-                $message->setSubject('O quadro de '.strtolower($descricao).' para '.$crianca);
-                $message->setFrom(['brinquecoin@brinquecoin.com' => 'brinquecoin.com']);
-                $message->setTo([$dados['email']]);
-                $message->setBody($app['twig']->render('emailCadastro.twig', array('quadro'=>$quadro)), 'text/html');
-                $app['mailer']->send($message);
-            }
             
+            //so envia email se estiver configurado no config.ini
+            if($file_config['mail.enabled']) {
+                $validator = new EmailValidator();
+                if ($validator->isValid($dados['email'], new RFCValidation())) {
+                    $message = (new \Swift_Message())->setCharset('utf-8');
+                    $message->setSubject('O quadro de '.strtolower($descricao).' para '.$crianca);
+                    $message->setFrom(['brinquecoin@brinquecoin.com' => 'brinquecoin.com']);
+                    $message->setTo([$dados['email']]);
+                    $message->setBody($app['twig']->render('emailCadastro.twig', array('quadro'=>$quadro)), 'text/html');
+                    $app['mailer']->send($message);
+                }
+            }
             //Cria um novo request para o cadastro de atividades
             $tipo = $app['dominio_service']->findById($quadro->getTipo()->getId());
             $dados = array('quadro'=>$quadro, 'tipo'=>$tipo);
