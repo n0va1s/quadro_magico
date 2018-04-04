@@ -35,27 +35,39 @@ class BotController implements ControllerProviderInterface
                 }
             });
 
-            $ctrl->post('/botSalvarQuadro', function (Request $req) use ($app) {
+            $ctrl->post('/botQuadroIncluir', function (Request $req) use ($app) {
                 $dados = $req->request->all();
                 $quadro = $app['quadro_service']->save($dados);
-                return $app->json($quadro);
-            })->bind('botQuadroSalvar');
+                if ($quadro->getId() > 0) {
+                    return new Response($app->json(array('id'=>$quadro->getId())), 201);
+                } else {
+                    return $app->abort(500, "Não consegui salvar o quadro de {$dados["crianca"]}");
+                }                
+            })->bind('botQuadroIncluir');
 
-            $ctrl->put('/botQuadroAtualizar', function (Request $req) use ($app) {
+            $ctrl->put('/botQuadroAlterar', function (Request $req) use ($app) {
                 $dados = $req->request->all();
                 $quadro = $app['quadro_service']->save($dados);
                 return $app->json($quadro);
-            })->bind('botQuadroAtualizar');
+            })->bind('botQuadroAlterar');
 
             $ctrl->delete('/botQuadroExcluir/{id}', function ($id) use ($app) {
-                $resultado = $app['quadro_service']->delete($id);
-                return $app->json($resultado);
+                if ($id) {
+                    $resultado = $app['quadro_service']->delete($id);
+                    return new Response($app->json(array('excluido'=>$resultado)), 201);
+                } else {
+                    return $app->abort(500, "Não foi possível excluir o quadro");
+                }
             })->bind('botQuadroExcluir');
 
             $ctrl->get('/botQuadroListar', function (Request $req) use ($app) {
                 $email = $req->request->get('email');
-                $quadros = $app['quadro_service']->findByEmail($email);
-                return $app->json($quadros);
+                if ($email) {
+                    $quadros = $app['quadro_service']->findByEmail($email);
+                    return new Response($app->json($quadros), 201);
+                } else {
+                    return $app->abort(500, "Não encontrei quadros para o email {$email}");
+                }
             })->bind('botQuadroListar');
 
             return $ctrl;
