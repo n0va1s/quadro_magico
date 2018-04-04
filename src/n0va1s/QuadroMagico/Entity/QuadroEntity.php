@@ -4,6 +4,7 @@ namespace n0va1s\QuadroMagico\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use n0va1s\QuadroMagico\Entity\AtividadeEntity;
 use n0va1s\QuadroMagico\Entity\TipoQuadroEntity;
 
@@ -80,6 +81,9 @@ class QuadroEntity
 
     public function setId($id)
     {
+        if (empty($id)) {
+            throw new \InvalidArgumentException('Id do quadro não gerado', 1);
+        }
         $this->id = $id;
         return $this;
     }
@@ -91,6 +95,9 @@ class QuadroEntity
 
     public function setTipo($tipo)
     {
+        if (empty($tipo)) {
+            throw new \InvalidArgumentException('Tipo de quadro não informado', 2);
+        }
         $this->tipo = $tipo;
         return $this;
     }
@@ -102,6 +109,9 @@ class QuadroEntity
 
     public function setGenero($genero)
     {
+        if (empty($genero)) {
+            throw new \InvalidArgumentException('Genero da crianca não informado', 3);
+        }
         $this->genero = $genero;
         return $this;
     }
@@ -113,6 +123,9 @@ class QuadroEntity
 
     public function setIdade($idade)
     {
+        if (empty($idade)) {
+            throw new \InvalidArgumentException('Idade da crianca não informada', 4);
+        }
         $this->idade = $idade;
         return $this;
     }
@@ -124,6 +137,9 @@ class QuadroEntity
 
     public function setCrianca($crianca)
     {
+        if (empty($crianca)) {
+            throw new \InvalidArgumentException('Nome da crianca não informado', 5);
+        }
         $this->crianca = $crianca;
         return $this;
     }
@@ -157,17 +173,18 @@ class QuadroEntity
 
     public function setResponsavel($responsavel)
     {
+        if (empty($responsavel)) {
+            throw new \InvalidArgumentException('Email do responsavel não informado', 6);
+        }
+
+        $emailValido = filter_var($responsavel, FILTER_VALIDATE_EMAIL);
+        if (!$emailValido) {
+            throw new \InvalidArgumentException('Email do responsavel é inválido', 7);
+        }
         $this->responsavel = $responsavel;
         return $this;
     }
-    /*
-    public function addAtividade(AtividadeEntity $atividade)
-    {
-        $this->atividades->add($atividade);
-        return $this;
-    }
-    */
-
+    
     public function getCodigo()
     {
         return $this->codigo;

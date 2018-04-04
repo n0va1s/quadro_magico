@@ -4,7 +4,7 @@ namespace n0va1s\QuadroMagico\Controller;
 
 use Silex\WebTestCase;
 
-class ProdutoControllerTest extends WebTestCase
+class SiteControllerTest extends WebTestCase
 {
     private $client;
     
@@ -21,128 +21,61 @@ class ProdutoControllerTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testIndexProdutoAPP()
+    /* Index */
+    public function testAPPIndex()
     {
-        $this->client->request('GET', '/produto/');
+        $this->client->request('GET', '/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertContains('Módulo Produto (API)', $this->client->getResponse()->getContent());
+        $this->assertContains('BrinqueCoin', $this->client->getResponse()->getContent());
     }
 
-    public function testIncluirProdutoAPP()
+    public function testAPPMenu()
     {
-        $this->client->request('GET', '/produto/incluir');
+        $this->client->request('GET', '/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertContains('Informe', $this->client->getResponse()->getContent());
+        $this->assertContains('Início', $this->client->getResponse()->getContent());
+        $this->assertContains('Quero criar um quadro', $this->client->getResponse()->getContent());
+        $this->assertContains('Meus quadros', $this->client->getResponse()->getContent());        
+        $this->assertContains('Dicas', $this->client->getResponse()->getContent());
+        $this->assertContains('Crie seu quadro', $this->client->getResponse()->getContent());
     }
 
-    public function testGravarProdutoAPP()
+    public function testAPPBlocosConteudo()
     {
-        $entrada = array('nomProduto'=>'Nome do Produto APP',
-            'desProduto'=>'Novo Produto APP', 'valProduto'=>'100.00');
-        $this->client->request('POST', '/produto/gravar', $entrada);
+        $this->client->request('GET', '/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $saida = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertGreaterThan(0, $saida['id']);
-        return $saida['id'];
-    }
-    /**
-     * @depends testGravarProdutoAPP
-     */
-    public function testAlterarProdutoAPP(int $id)
-    {
-        $this->client->request('GET', '/produto/alterar/'.$id);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $saida = json_decode($this->client->getResponse()->getContent(), true);
-        //O valor nao e alterado ainda, apenas monstrado na tela para alteracao
-        $this->assertContains('Novo Produto APP', $saida['descricao']);
-        $this->assertArrayHasKey('id', $saida);
-    }
-    /**
-     * @depends testGravarProdutoAPP
-     */
-    public function testExcluirProdutoAPP(int $id)
-    {
-        $this->client->request('GET', '/produto/excluir/'.$id);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue((boolean)$this->client->getResponse()->getContent());
+        $this->assertContains('Início', $this->client->getResponse()->getContent());
+        $this->assertContains('Regras do Jogo', $this->client->getResponse()->getContent());
+        $this->assertContains('Os idealizadores', $this->client->getResponse()->getContent());
+        $this->assertContains('brinquecoin@brinquecoin.com', $this->client->getResponse()->getContent());
     }
 
-    public function testListarProdutoAPP()
+    /* cadastro de quadro */
+    public function testAPPQuadroCadastro()
     {
-        $this->client->request('GET', '/produto/listar/html');
+        $this->client->request('GET', '/quadro/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertContains('Novo produto (+)', $this->client->getResponse()->getContent());
+        $this->assertContains('BrinqueCoin', $this->client->getResponse()->getContent());
+        $this->assertContains('Crie o seu quadro', $this->client->getResponse()->getContent());
     }
 
-    public function testInserirProdutoAPI()
+    /* meus quadros */
+    public function testAPPQuadroConsulta()
     {
-        $entrada = array('nomProduto'=>'Nome do Produto API',
-            'desProduto'=>'Descricao do Produto API', 'valProduto'=>'88.88');
-        $this->client->request('POST', '/produto/api/inserir', $entrada);
-
+        $this->client->request('GET', '/quadro/consultar');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
-        $saida = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertGreaterThan(0, $saida['id']);
-        return $saida['id'];
-    }
-    /**
-     * @depends testInserirProdutoAPI
-     */
-    public function testAtualizarProdutoAPI(int $id)
-    {
-        $entrada = array('nomProduto'=>'Nome do Produto API Atualizado',
-            'desProduto'=>'Descricao do Produto API Atualizado', 'valProduto'=>'77.77');
-        $this->client->request('PUT', '/produto/api/atualizar/'.$id, $entrada);
-
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
-        $saida = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertEquals(1, count($saida['id']));
-        $this->assertContains('Descricao do Produto API Atualizado', $saida['descricao']);
-    }
-    /**
-     * @depends testInserirProdutoAPI
-     */
-    public function testListarProdutoIdAPI(int $id)
-    {
-        $this->client->request('GET', '/produto/api/listar/'.$id);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
-        $saida = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertEquals(4, count($saida)); //retornam 4 campos no array
-        $this->assertArrayHasKey('id', $saida);
-        $this->assertArrayHasKey('descricao', $saida);
+        $this->assertContains('BrinqueCoin', $this->client->getResponse()->getContent());
+        $this->assertContains('Encontre o seu(s) quadro(s)', $this->client->getResponse()->getContent());
     }
 
-    public function testListarProdutoPaginadoAPI()
+    /* dicas */
+    public function testAPPDica()
     {
-        $this->client->request('GET', '/produto/api/listar/paginado/1');
+        $this->client->request('GET', '/dica');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
-    }
-
-    /**
-     * @depends testInserirProdutoAPI
-     */
-    public function testApagarProdutoAPI(int $id)
-    {
-        $this->client->request('DELETE', '/produto/api/apagar/'.$id, array('seqProduto'=>$id));
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
-        $this->assertTrue((boolean)$this->client->getResponse()->getContent());
-    }
-
-    public function testListarProdutoAPI()
-    {
-        $this->client->request('GET', '/produto/api/listar/json');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
-        $c = count(json_decode($this->client->getResponse()->getContent(), true));
-        if ($c > 0) {
-            $this->assertArrayHasKey('id', json_decode($this->client->getResponse()->getContent(), true)[$c-1]);
-            $this->assertArrayHasKey('descricao', json_decode($this->client->getResponse()->getContent(), true)[$c-1]);
-        }
+        $this->assertContains('BrinqueCoin', $this->client->getResponse()->getContent());
+        $this->assertContains('Higiene', $this->client->getResponse()->getContent());
+        $this->assertContains('Autonomia', $this->client->getResponse()->getContent());
     }
 
     public function tearDown()

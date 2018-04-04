@@ -2,44 +2,71 @@
 
 namespace n0va1s\QuadroMagico\Entity;
 
-class ProdutoEntityTest extends \PHPUnit_Framework_TestCase
+class QuadroEntityTest extends \PHPUnit_Framework_TestCase
 {
     public function testVerificaTipoClasse()
     {
-        $this->assertInstanceOf("n0va1s\QuadroMagico\Entity\ProdutoEntity", new \JP\Sistema\Entity\ProdutoEntity());
+        $this->assertInstanceOf("n0va1s\QuadroMagico\Entity\QuadroEntity", new \n0va1s\QuadroMagico\Entity\QuadroEntity());
     }
 
     public function testVerificaGetSet()
     {
-        $produto = $this->getMockBuilder('\n0va1s\QuadroMagico\Entity\ProdutoEntity')
-                        ->getMock();
+        $quadro = $this->getMockBuilder('n0va1s\QuadroMagico\Entity\QuadroEntity')->getMock();
+        $tipo = $this->getMockBuilder('n0va1s\QuadroMagico\Entity\TipoQuadroEntity')->getMock();
         
-        $produto->method('getNome')
-                ->willReturn('Nome do Produto 1');
-        $this->assertEquals('Nome do Produto 1', $produto->getNome());
+        $quadro->method('getId')->willReturn(1);
+        $this->assertEquals(1, $quadro->getId());
 
-        $produto->method('getDescricao')
-                ->willReturn('Descrição do produto 1');
-        $this->assertEquals('Descrição do produto 1', $produto->getDescricao());
+        $quadro->method('getResponsavel')->willReturn('jp.pessoal@gmail.com');
+        $this->assertEquals('jp.pessoal@gmail.com', $quadro->getResponsavel());
 
-        $produto->method('getValor')
-                ->willReturn(100.00);
-        $this->assertEquals(100.00, $produto->getValor());
+        $quadro->method('getTipo')->willReturn(new \n0va1s\QuadroMagico\Entity\TipoQuadroEntity() );
+        $this->assertEquals(new \n0va1s\QuadroMagico\Entity\TipoQuadroEntity(), $quadro->getTipo());
+ 
+        $quadro->method('getGenero')->willReturn('F');
+        $this->assertEquals('F', $quadro->getGenero());
 
-        $produto->method('getCategoria')
-                ->willReturn(1);
-        $this->assertEquals(1, $produto->getCategoria());
+        $quadro->method('getIdade')->willReturn(10);
+        $this->assertEquals(10, $quadro->getIdade());
+
+        $quadro->method('getCrianca')->willReturn('Helena');
+        $this->assertEquals('Helena', $quadro->getCrianca());
+
+        $quadro->method('getRecompensa')->willReturn('Ir ao clube');
+        $this->assertEquals('Ir ao clube', $quadro->getRecompensa());
+
+        $quadro->method('getCodigo')->willReturn('dbf8797e');
+        $this->assertEquals('dbf8797e', $quadro->getCodigo());
+        
+    }
+
+    /**
+    * @expectedException InvalidArgumentException
+    */
+    public function testCamposObrigatorios()
+    {
+        $quadro = $this->getMockBuilder('n0va1s\QuadroMagico\Entity\QuadroEntity')->getMock();
+        $quadro->method('setId')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->setId(null);
+        $quadro->method('setTipo')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->setTipo(null);
+        $quadro->method('setGenero')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->setGenero(null);
+        $quadro->method('setIdade')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->setIdade(null);
+        $quadro->method('setCriacao')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->setCrianca(null);
+        $quadro->method('setResponsavel')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->setResponsavel(null);
     }
     
     /**
     * @expectedException InvalidArgumentException
     */
-    public function testVerificaValorInvalido()
+    public function testEmailInvalido()
     {
-        $produto = $this->getMockBuilder('\n0va1s\QuadroMagico\Entity\ProdutoEntity')
-                    ->getMock();
-        $produto->method('setValor')
-                ->will($this->throwException(new \InvalidArgumentException));
-        $produto->setValor('ABC');
+        $quadro = $this->getMockBuilder('n0va1s\QuadroMagico\Entity\QuadroEntity')->getMock();
+        $quadro->method('setResponsavel')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->setResponsavel('Teste');
     }
 }
