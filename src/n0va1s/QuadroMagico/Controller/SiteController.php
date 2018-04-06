@@ -1,5 +1,4 @@
 <?php
-
 namespace n0va1s\QuadroMagico\Controller;
 
 use Silex\Application;
@@ -33,27 +32,49 @@ class SiteController implements ControllerProviderInterface
             ));
         })->bind('indexLogin');
         */
-        $app->get('/dica', function () use ($app) {
-            return $app['twig']->render('dica.twig');
-        })->bind('indexDica');
-
-        $app->get('/contato', function () use ($app) {
-            return $app['twig']->render('contato.twig');
-        })->bind('indexContato');
-
-        $app->post('/contato/enviar', function (Request $req) use ($app) {
-            $dados = $req->request->all();
-            $message = (new \Swift_Message('[BrinqueCoin] Contato'))
-              ->setFrom([$dados['email'] => $dados['nome']])
-              ->setTo(['contato@brinquecoin.com'])
-              ->setBody($dados['mensagem']);
-            $result = $app['mailer']->send($message);
-            if ($result) {
-                return $app['twig']->render('contato.twig', array('mensagem'=>'Obrigado! Sua mensagem foi enviada.'));
-            } else {
-                return $app['twig']->render('contato.twig', array('mensagem'=>'Erro ao enviar a mensagem :-('));
+        $app->get(
+            '/dica', function () use ($app) {
+                return $app['twig']->render(
+                    'dica.twig',
+                    array(),
+                    new Response('OK', 200)
+                );
             }
-        })->bind('contatoEnviar');
+        )->bind('indexDica');
+
+        $app->get(
+            '/contato', function () use ($app) {
+                return $app['twig']->render(
+                    'contato.twig',
+                    array(),
+                    new Response('OK', 200)
+                );
+            }
+        )->bind('indexContato');
+
+        $app->post(
+            '/contato/enviar', function (Request $req) use ($app) {
+                $dados = $req->request->all();
+                $message = (new \Swift_Message('[BrinqueCoin] Contato'))
+                ->setFrom([$dados['email'] => $dados['nome']])
+                ->setTo(['contato@brinquecoin.com'])
+                ->setBody($dados['mensagem']);
+                $result = $app['mailer']->send($message);
+                if ($result) {
+                    return $app['twig']->render(
+                        'contato.twig', 
+                        array('mensagem'=>'Obrigado! Sua mensagem foi enviada.'),
+                        new Response('OK', 200)
+                    );
+                } else {
+                    return $app->abort(
+                        404, 
+                        "Ops... não enviamos a menssagem. Tente novamente."
+                    ); 
+                }
+            }
+        )->bind('contatoEnviar');
+
         return $ctrl;
     }
 }

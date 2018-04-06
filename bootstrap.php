@@ -128,6 +128,21 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     )
 ));
 */
+//Para tratar os erros comuns da aplicacao
+$app->error(function (\Exception $e, Request $request, $code) use ($app) {
+    if ($app['debug']) {
+        return;
+    }
+    switch ($code) {
+        case 404:
+            $message = 'Ops... essa página não existe';
+            break;
+        default:
+            $message = 'Hum... estamos passando por problemas técnicos. Tente mais tarde.';
+    }
+    return new Response($message);
+});
+
 //Menu
 $app->get('/', function () use ($app) {
     return $app['twig']->render('inicio.twig');

@@ -2,7 +2,7 @@
 
 namespace n0va1s\QuadroMagico\Entity;
 
-class QuadroEntityTest extends \PHPUnit_Framework_TestCase
+class QuadroEntityTest extends \PHPUnit\Framework\TestCase
 {
     public function testVerificaTipoClasse()
     {
