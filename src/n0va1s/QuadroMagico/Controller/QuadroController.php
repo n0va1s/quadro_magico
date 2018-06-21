@@ -228,7 +228,7 @@ class QuadroController implements ControllerProviderInterface
             }
         )->bind('quadroDuplicar');
 
-        $ctrl->get(
+        $ctrl->delete(
             '/excluir/{codigo}', function ($codigo) use ($app) {
                 $quadro = $app['quadro_service']->findByCodigo($codigo);
                 if ($quadro) {
@@ -248,8 +248,29 @@ class QuadroController implements ControllerProviderInterface
                     ); 
                 }
             }
-        )->bind('quadroExcluir')
-        ->assert('id', '\d+');
+        )->bind('quadroExcluir');
+
+        $ctrl->get(
+            '/desativar/{codigo}', function ($codigo) use ($app) {
+                $quadro = $app['quadro_service']->findByCodigo($codigo);
+                if ($quadro) {
+                    $fechou = $app['quadro_service']->close($quadro->getId());
+                    $quadros = $app['quadro_service']->findByEmail(
+                        $app['session']->get('email')
+                    );
+                    return $app['twig']->render(
+                        'listaQuadro.twig', 
+                        array('quadros'=>$quadros), 
+                        new Response('Ok', 200)
+                    );
+                } else {
+                    return $app->abort(
+                        404, 
+                        "O quadro que vc escolheu não existe. Tente novamente."
+                    ); 
+                }
+            }
+        )->bind('quadroDesativar');
 
         $app['atividade_service'] = function () {
             return new AtividadeService($this->_em);

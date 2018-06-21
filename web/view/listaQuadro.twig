@@ -50,7 +50,7 @@
                                             <th><center>Abrir quadro</center></th>
                                             <th><center>Alterar atividades</center></th>
                                              <th><center>Nova semana</center></th>
-                                            <th><center>Excluir quadro</center></th>
+                                            <th><center>Fechar quadro</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -61,7 +61,7 @@
                                             <td><center><a href={{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}><span class="glyphicon glyphicon-folder-open"></span></a></center></td>
                                             <td><center><a href="{{ path('atividadeCadastrar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-pencil"></span></a></center></td>
                                             <td><center><a href="{{ path('quadroDuplicar', {codigo:quadro.codigo})}}"><span class="glyphicon glyphicon-plus"></span></a></center></td>
-                                            <td><center><a href="{{ path('quadroExcluir',{'codigo':quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a></center></td>
+                                            <td><center><a href="{{ path('quadroDesativar',{'codigo':quadro.codigo})}}"><span class="glyphicon glyphicon-remove"></span></a></center></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

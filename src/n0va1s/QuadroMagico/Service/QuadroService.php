@@ -70,6 +70,17 @@ class QuadroService
         return true;
     }
 
+    public function close(int $id)
+    {
+        $quadro = $this->em->getReference(
+            '\n0va1s\QuadroMagico\Entity\QuadroEntity', 
+            $id
+        );
+        $quadro->setInativo();
+        $this->em->flush();
+        return true;
+    }
+
     public function fetchAll()
     {
         //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
@@ -123,9 +134,11 @@ class QuadroService
             q.recompensa, q.codigo, t.descricao as tipo 
             from \n0va1s\QuadroMagico\Entity\QuadroEntity q 
             join q.tipo t where q.responsavel = :email 
-            order by t.codigo, q.crianca, q.cadastro'
+            and q.inativo = :inativo
+            order by q.cadastro desc'
         )
             ->setParameter('email', $email)
+            ->setParameter('inativo', 'N')
             ->getArrayResult();
         return $quadros;
     }

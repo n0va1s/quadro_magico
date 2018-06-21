@@ -202,7 +202,7 @@ class QuadroEntity
 
     public function setInativo()
     {
-        $this->mesada = 'S';
+        $this->inativo = 'S';
         return $this;
     }
 }
