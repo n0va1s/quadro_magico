@@ -9,11 +9,11 @@ use Doctrine\ORM\EntityManager;
 
 class SiteController implements ControllerProviderInterface
 {
-    private $em;
+    private $_em;
 
     public function __construct(EntityManager $em)
     {
-        $this->em = $em;
+        $this->_em = $em;
     }
 
     public function connect(Application $app)
@@ -21,7 +21,7 @@ class SiteController implements ControllerProviderInterface
         $ctrl = $app['controllers_factory'];
 
         $app['email_service'] = function () {
-            return new EmailService($this->em);
+            return new EmailService($this->_em);
         };
         //Login
         /*

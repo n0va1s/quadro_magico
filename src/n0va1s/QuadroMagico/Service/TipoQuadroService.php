@@ -6,7 +6,7 @@ use \Doctrine\ORM\EntityManager;
 use \Doctrine\ORM\Query;
 use n0va1s\QuadroMagico\Entity\TipoQuadroEntity;
 
-class DominioService
+class TipoQuadroService
 {
     private $em;
 
@@ -20,28 +20,35 @@ class DominioService
     * val_tipo_quadro VARCHAR(1), des_tipo_quadro VARCHAR(50),
     * PRIMARY KEY(seq_tipo_quadro)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
     */
-    public function insertTipoQuadro()
+    public function insert()
     {
         $qb = $this->em->createQueryBuilder();
         $qb->insert('tipo_quadro')
-           ->values(
-               array('val_tipo_quadro' => 'T','des_tipo_quadro' => 'Tarefa'),
-               array('val_tipo_quadro' => 'F','des_tipo_quadro' => 'Férias'),
-               array('val_tipo_quadro' => 'M','des_tipo_quadro' => 'Mesada')
-           );
+            ->values(
+                array('val_tipo_quadro' => 'T','des_tipo_quadro' => 'Tarefa'),
+                array('val_tipo_quadro' => 'F','des_tipo_quadro' => 'Férias'),
+                array('val_tipo_quadro' => 'M','des_tipo_quadro' => 'Mesada')
+            );
         $qb->getQuery();
         return true;
     }
 
     public function fetchAll()
     {
-        $tipos = $this->em->createQuery('select t from \n0va1s\QuadroMagico\Entity\TipoQuadroEntity t')->getArrayResult();
+        $tipos = $this->em->createQuery(
+            'select t 
+            from \n0va1s\QuadroMagico\Entity\TipoQuadroEntity t'
+        )->getArrayResult();
         return $tipos;
     }
 
     public function findById(string $tipo)
     {
-        $tipo = $this->em->createQuery('select t from \n0va1s\QuadroMagico\Entity\TipoQuadroEntity t where t.id = :id')->setParameter('id', $tipo)->getSingleResult();
+        $tipo = $this->em->createQuery(
+            'select t 
+            from \n0va1s\QuadroMagico\Entity\TipoQuadroEntity t 
+            where t.id = :id'
+        )->setParameter('id', $tipo)->getSingleResult();
         return $this->toArray($tipo);
     }
 

@@ -11,11 +11,11 @@ use n0va1s\QuadroMagico\Service\QuadroService;
 
 class BotController implements ControllerProviderInterface
 {
-    private $em;
+    private $_em;
 
     public function __construct(EntityManager $em)
     {
-        $this->em = $em;
+        $this->_em = $em;
     }
 
     public function connect(Application $app)
@@ -25,7 +25,11 @@ class BotController implements ControllerProviderInterface
             $ctrl = $app['controllers_factory'];
 
             $app['quadro_service'] = function () {
-                return new \n0va1s\QuadroMagico\Service\QuadroService($this->em);
+                return new \n0va1s\QuadroMagico\Service\QuadroService($this->_em);
+            };
+
+            $app['bot_service'] = function () {
+                return new \n0va1s\QuadroMagico\Service\BotService($this->_em);
             };
 
             $app->before(
@@ -74,7 +78,14 @@ class BotController implements ControllerProviderInterface
                 '/botQuadroExcluir/{id}', function ($id) use ($app) {
                     if ($id) {
                         $resultado = $app['quadro_service']->delete($id);
-                        return new Response($app->json(array('excluido'=>$resultado)), 201);
+                        return new Response(
+                            $app->json(
+                                array(
+                                'excluido'=>$resultado
+                                )
+                            ), 
+                            201
+                        );
                     } else {
                         return $app->abort(500, "Não foi possível excluir o quadro");
                     }
@@ -83,7 +94,11 @@ class BotController implements ControllerProviderInterface
 
             $ctrl->get(
                 '/botQuadroListar', function (Request $req) use ($app) {
-                    if ($validator->isValid($req->request->get('email'), new RFCValidation())) {
+                    if ($validator->isValid(
+                        $req->request->get('email'), 
+                        new RFCValidation()
+                    )
+                    ) {
                         $quadros = $app['quadro_service']->findByEmail(
                             $req->request->get('email')
                         );
@@ -103,6 +118,20 @@ class BotController implements ControllerProviderInterface
                     }
                 }
             )->bind('botQuadroListar');
+
+            $ctrl->get(
+                '/botSugerirAtividade', function () use ($app) {
+                    $atividades = $app['bot_service']->sugerirAtividade();
+                    if ($atividades) {
+                        return new Response($app->json($atividades), 201);
+                    } else {
+                        return $app->abort(
+                            500, 
+                            "Nenhum tipo de atividade cadastrado."
+                        );
+                    }
+                }
+            )->bind('botSugerirAtividade');
 
             return $ctrl;
     }

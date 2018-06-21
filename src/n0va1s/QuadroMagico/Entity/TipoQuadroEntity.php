@@ -19,7 +19,7 @@ class TipoQuadroEntity
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=1, name="val_tipo_quadro")
+     * @ORM\Column(type="string", name="val_tipo_quadro", columnDefinition="CHAR(1) NOT NULL")
      */
     private $codigo;
 

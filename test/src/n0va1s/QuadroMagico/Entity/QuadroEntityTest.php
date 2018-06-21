@@ -6,13 +6,22 @@ class QuadroEntityTest extends \PHPUnit\Framework\TestCase
 {
     public function testVerificaTipoClasse()
     {
-        $this->assertInstanceOf("n0va1s\QuadroMagico\Entity\QuadroEntity", new \n0va1s\QuadroMagico\Entity\QuadroEntity());
+        $this->assertInstanceOf(
+            "n0va1s\QuadroMagico\Entity\QuadroEntity", 
+            new \n0va1s\QuadroMagico\Entity\QuadroEntity()
+        );
     }
 
     public function testVerificaGetSet()
     {
-        $quadro = $this->getMockBuilder('n0va1s\QuadroMagico\Entity\QuadroEntity')->getMock();
-        $tipo = $this->getMockBuilder('n0va1s\QuadroMagico\Entity\TipoQuadroEntity')->getMock();
+        $quadro = $this->getMockBuilder(
+            'n0va1s\QuadroMagico\Entity\QuadroEntity'
+        )
+            ->getMock();
+        $tipo = $this->getMockBuilder(
+            'n0va1s\QuadroMagico\Entity\TipoQuadroEntity'
+        )
+            ->getMock();
         
         $quadro->method('getId')->willReturn(1);
         $this->assertEquals(1, $quadro->getId());
@@ -20,9 +29,13 @@ class QuadroEntityTest extends \PHPUnit\Framework\TestCase
         $quadro->method('getResponsavel')->willReturn('jp.pessoal@gmail.com');
         $this->assertEquals('jp.pessoal@gmail.com', $quadro->getResponsavel());
 
-        $quadro->method('getTipo')->willReturn(new \n0va1s\QuadroMagico\Entity\TipoQuadroEntity() );
-        $this->assertEquals(new \n0va1s\QuadroMagico\Entity\TipoQuadroEntity(), $quadro->getTipo());
- 
+        $quadro->method('getTipo')->willReturn(
+            new \n0va1s\QuadroMagico\Entity\TipoQuadroEntity()
+        );
+        $this->assertEquals(
+            new \n0va1s\QuadroMagico\Entity\TipoQuadroEntity(), 
+            $quadro->getTipo()
+        );
         $quadro->method('getGenero')->willReturn('F');
         $this->assertEquals('F', $quadro->getGenero());
 
@@ -45,18 +58,33 @@ class QuadroEntityTest extends \PHPUnit\Framework\TestCase
     */
     public function testCamposObrigatorios()
     {
-        $quadro = $this->getMockBuilder('n0va1s\QuadroMagico\Entity\QuadroEntity')->getMock();
-        $quadro->method('setId')->will($this->throwException(new \InvalidArgumentException));
+        $quadro = $this->getMockBuilder(
+            'n0va1s\QuadroMagico\Entity\QuadroEntity'
+        )
+            ->getMock();
+        $quadro->method('setId')->will(
+            $this->throwException(new \InvalidArgumentException)
+        );
         $quadro->setId(null);
-        $quadro->method('setTipo')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->method('setTipo')->will(
+            $this->throwException(new \InvalidArgumentException)
+        );
         $quadro->setTipo(null);
-        $quadro->method('setGenero')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->method('setGenero')->will(
+            $this->throwException(new \InvalidArgumentException)
+        );
         $quadro->setGenero(null);
-        $quadro->method('setIdade')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->method('setIdade')->will(
+            $this->throwException(new \InvalidArgumentException)
+        );
         $quadro->setIdade(null);
-        $quadro->method('setCriacao')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->method('setCriacao')->will(
+            $this->throwException(new \InvalidArgumentException)
+        );
         $quadro->setCrianca(null);
-        $quadro->method('setResponsavel')->will($this->throwException(new \InvalidArgumentException));
+        $quadro->method('setResponsavel')->will(
+            $this->throwException(new \InvalidArgumentException)
+        );
         $quadro->setResponsavel(null);
     }
     
@@ -65,8 +93,13 @@ class QuadroEntityTest extends \PHPUnit\Framework\TestCase
     */
     public function testEmailInvalido()
     {
-        $quadro = $this->getMockBuilder('n0va1s\QuadroMagico\Entity\QuadroEntity')->getMock();
-        $quadro->method('setResponsavel')->will($this->throwException(new \InvalidArgumentException));
+        $quadro = $this->getMockBuilder(
+            'n0va1s\QuadroMagico\Entity\QuadroEntity'
+        )
+            ->getMock();
+        $quadro->method('setResponsavel')->will(
+            $this->throwException(new \InvalidArgumentException)
+        );
         $quadro->setResponsavel('Teste');
     }
 }

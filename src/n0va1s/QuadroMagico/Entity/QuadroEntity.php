@@ -33,7 +33,7 @@ class QuadroEntity
     private $tipo;
 
     /**
-     * @ORM\Column(type="string", length=1, name="tip_genero")
+     * @ORM\Column(type="string", name="tip_genero", columnDefinition="CHAR(1) NOT NULL")
      */
     private $genero;
 
@@ -62,6 +62,9 @@ class QuadroEntity
      */
     private $codigo;
 
+    /** @ORM\Column(type="string", name="ind_inativo", columnDefinition="CHAR(1) NOT NULL", options={"default":"N"}) */
+    private $inativo;
+
     /**
      * @ORM\OneToMany(targetEntity="AtividadeEntity", mappedBy="quadro")
      */
@@ -81,9 +84,6 @@ class QuadroEntity
 
     public function setId($id)
     {
-        if (empty($id)) {
-            throw new \InvalidArgumentException('Id do quadro não gerado', 1);
-        }
         $this->id = $id;
         return $this;
     }
@@ -193,5 +193,16 @@ class QuadroEntity
     public function getAtividades()
     {
         return $this->atividades;
+    }
+
+    public function getInativo()
+    {
+        return $this->inativo;
+    }
+
+    public function setInativo()
+    {
+        $this->mesada = 'S';
+        return $this;
     }
 }

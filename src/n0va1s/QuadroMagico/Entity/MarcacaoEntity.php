@@ -20,37 +20,37 @@ class MarcacaoEntity
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=1, name="ind_segunda", nullable=true)
+     * @ORM\Column(type="string", name="ind_segunda", nullable=true, columnDefinition="CHAR(1)")
      */
     private $segunda;
 
     /**
-     * @ORM\Column(type="string", length=1, name="ind_terca", nullable=true)
+     * @ORM\Column(type="string", name="ind_terca", nullable=true, columnDefinition="CHAR(1)")
      */
     private $terca;
 
     /**
-     * @ORM\Column(type="string", length=1, name="ind_quarta", nullable=true)
+     * @ORM\Column(type="string", name="ind_quarta", nullable=true, columnDefinition="CHAR(1)")
      */
     private $quarta;
 
     /**
-     * @ORM\Column(type="string", length=1, name="ind_quinta", nullable=true)
+     * @ORM\Column(type="string", name="ind_quinta", nullable=true, columnDefinition="CHAR(1)")
      */
     private $quinta;
 
     /**
-     * @ORM\Column(type="string", length=1, name="ind_sexta", nullable=true)
+     * @ORM\Column(type="string", name="ind_sexta", nullable=true, columnDefinition="CHAR(1)")
      */
     private $sexta;
 
     /**
-     * @ORM\Column(type="string", length=1, name="ind_sabado", nullable=true)
+     * @ORM\Column(type="string", name="ind_sabado", nullable=true, columnDefinition="CHAR(1)")
      */
     private $sabado;
 
     /**
-     * @ORM\Column(type="string", length=1, name="ind_domingo", nullable=true)
+     * @ORM\Column(type="string", name="ind_domingo", nullable=true, columnDefinition="CHAR(1)")
      */
     private $domingo;
 

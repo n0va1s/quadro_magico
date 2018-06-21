@@ -23,24 +23,46 @@ class CategoriaControllerTest extends WebTestCase
 
     public function testAPISalvarQuadroTarefa()
     {
-        $this->client->request('POST', '/quadro/salvar', 
-                               array('id'=>null,'tipo'=>'3','email'=> 'jp.pessoal@gmail.com',
-                                     'genero'=>'M','idade'=>'10','crianca'=>'Meu Filho da Silva',
-                                     'recompensa'=>null));
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        //$this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
-        $dados = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertGreaterThan(0, $dados['id']);
-        return $dados['id'];
+        $this->client->request(
+            'POST', '/quadro/salvar', 
+            array('tipo'=>'3','email'=> 'jp.pessoal@gmail.com',
+            'genero'=>'M','idade'=>'10','crianca'=>'Meu Filho da Silva')
+        );
+
+        $this->assertEquals(
+            200, 
+            $this->client->getResponse()->getStatusCode(), 
+            "HTTP status code nao confere"
+        );
+        /*
+        $this->assertTrue(
+            $this->client->getResponse()->isRedirect('/demo/contact')
+            // if the redirection URL was generated as an absolute URL
+            // $client->getResponse()->isRedirect('http://localhost/demo/contact')
+        );
+        // ...or simply check that the response is a redirect to any URL
+        //$this->assertTrue($client->getResponse()->isRedirect());
+        
+        $this->assertTrue(
+            $this->client->getResponse()->headers->contains(
+                'Content-Type', 'application/json'
+            )
+        );*/
+        //$dados = json_decode($this->client->getResponse()->getContent(), true);
+        //$this->assertGreaterThan(0, $dados['id']);
+        //return $dados['id'];
     }
 
     public function testAPISalvarQuadroMesada()
     {
-        $this->client->request('POST', '/quadro/salvar', array('id'=>null,'tipo'=>'2',
-                                                               'email'=> 'jp.pessoal@gmail.com',
-                                                               'genero'=>'M','idade'=>'10',
-                                                               'crianca'=>'Meu Filho da Silva',
-                                                               'recompensa'=>null));
+        $this->client->request(
+            'POST', 
+            '/quadro/salvar', 
+            array('id'=>null,'tipo'=>'2','email'=> 'jp.pessoal@gmail.com',
+            'genero'=>'M','idade'=>'10','crianca'=>'Meu Filho da Silva',
+            'recompensa'=>null
+            )
+        );
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
         $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
         $dados = json_decode($this->client->getResponse()->getContent(), true);
@@ -50,11 +72,14 @@ class CategoriaControllerTest extends WebTestCase
 
     public function testAPISalvarQuadroFerias()
     {
-        $this->client->request('POST', '/quadro/salvar', array('id'=>null,'tipo'=>'1',
-                                                               'email'=> 'jp.pessoal@gmail.com',
-                                                               'genero'=>'M','idade'=>'10',
-                                                               'crianca'=>'Meu Filho da Silva',
-                                                               'recompensa'=>null));
+        $this->client->request(
+            'POST', 
+            '/quadro/salvar', 
+            array('id'=>null,'tipo'=>'1','email'=> 'jp.pessoal@gmail.com',
+            'genero'=>'M','idade'=>'10','crianca'=>'Meu Filho da Silva',
+            'recompensa'=>null
+            )
+        );
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
         $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
         $dados = json_decode($this->client->getResponse()->getContent(), true);
@@ -66,13 +91,24 @@ class CategoriaControllerTest extends WebTestCase
      */
     public function testAPIAtualizarQuadro(int $id)
     {
-        $this->client->request('POST', '/quadro/salvar', array('id'=>$id,'tipo'=>'3',
-                                                               'email'=> 'jp.pessoal@gmail.com',
-                                                               'genero'=>'M','idade'=>'10',
-                                                               'crianca'=>'Meu Filho da Silva',
-                                                               'recompensa'=>'atualizado'));
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
+        $this->client->request(
+            'POST', 
+            '/quadro/salvar', 
+            array('id'=>$id,'tipo'=>'3','email'=> 'jp.pessoal@gmail.com',
+            'genero'=>'M','idade'=>'10','crianca'=>'Meu Filho da Silva',
+            'recompensa'=>'atualizado'
+            )
+        );
+        $this->assertEquals(
+            200, 
+            $this->client->getResponse()->getStatusCode(), 
+            "HTTP status code nao confere"
+        );
+        $this->assertTrue(
+            $this->client->getResponse()->headers->contains(
+                'Content-Type', 'application/json'
+            )
+        );
         $dados = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals(1, count($dados['id']));
         $this->assertContains('atualizado', $dados['recompensa']);
@@ -82,9 +118,22 @@ class CategoriaControllerTest extends WebTestCase
      */
     public function testAPIQuadroListar(int $id)
     {
-        $this->client->request('GET', '/quadro/listar', array('email'=>'jp.pessoal@gmail.com'));
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
+        $this->client->request(
+            'GET', 
+            '/quadro/listar', 
+            array('email'=>'jp.pessoal@gmail.com'
+            )
+        );
+        $this->assertEquals(
+            200, 
+            $this->client->getResponse()->getStatusCode(), 
+            "HTTP status code nao confere"
+        );
+        $this->assertTrue(
+            $this->client->getResponse()->headers->contains(
+                'Content-Type', 'application/json'
+            )
+        );
         $dados = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals(1, count($dados));
         $this->assertArrayHasKey('id', $dados[0]);
@@ -96,8 +145,16 @@ class CategoriaControllerTest extends WebTestCase
     public function testAPIQuadroDeletar(int $codigo)
     {
         $this->client->request('DELETE', '/quadro/'.$codigo);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "HTTP status code nao confere");
-        $this->assertTrue($this->client->getResponse()->headers->contains('Content-Type', 'application/json'));
+        $this->assertEquals(
+            200, 
+            $this->client->getResponse()->getStatusCode(), 
+            "HTTP status code nao confere"
+        );
+        $this->assertTrue(
+            $this->client->getResponse()->headers->contains(
+                'Content-Type', 'application/json'
+            )
+        );
         $this->assertTrue((boolean)$this->client->getResponse()->getContent());
     }
 

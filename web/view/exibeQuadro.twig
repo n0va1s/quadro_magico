@@ -93,13 +93,13 @@
                             {% if tipo.codigo == 'M' %}
                             <td>R$ {{ atividade.valor}}</td>
                             {% endif %}
-                            <td class="emoji" id="seg_{{ atividade.id }}"><span class="{{ atividade.emoji_segunda }}"></span></td>
-                            <td class="emoji" id="ter_{{ atividade.id }}"><span class="{{ atividade.emoji_terca }}"></span></td>
-                            <td class="emoji" id="qua_{{ atividade.id }}"><span class="{{ atividade.emoji_quarta }}"></span></td>
-                            <td class="emoji" id="qui_{{ atividade.id }}"><span class="{{ atividade.emoji_quinta }}"></span></td>
-                            <td class="emoji" id="sex_{{ atividade.id }}"><span class="{{ atividade.emoji_sexta }}"></span></td>
-                            <td class="emoji" id="sab_{{ atividade.id }}"><span class="{{ atividade.emoji_sabado }}"></span></td>
-                            <td class="emoji" id="dom_{{ atividade.id }}"><span class="{{ atividade.emoji_domingo }}"></span></td>
+                            <td class="emoji" id="seg_{{ atividade.id }}"><center><span class="{{ atividade.emoji_segunda }}"></span></center></td>
+                            <td class="emoji" id="ter_{{ atividade.id }}"><center><span class="{{ atividade.emoji_terca }}"></span></center></td>
+                            <td class="emoji" id="qua_{{ atividade.id }}"><center><span class="{{ atividade.emoji_quarta }}"></span></center></td>
+                            <td class="emoji" id="qui_{{ atividade.id }}"><center><span class="{{ atividade.emoji_quinta }}"></span></center></td>
+                            <td class="emoji" id="sex_{{ atividade.id }}"><center><span class="{{ atividade.emoji_sexta }}"></span></center></td>
+                            <td class="emoji" id="sab_{{ atividade.id }}"><center><span class="{{ atividade.emoji_sabado }}"></span></center></td>
+                            <td class="emoji" id="dom_{{ atividade.id }}"><center><span class="{{ atividade.emoji_domingo }}"></span></center></td>
                         </tr>
                         {% endfor %}
                     </tbody>

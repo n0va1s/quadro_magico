@@ -18,17 +18,26 @@ class AtividadeService
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->semana = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado", "domingo"];
+        $this->semana = ["segunda", "terca", "quarta", 
+        "quinta", "sexta", "sabado", "domingo"];
     }
 
     public function save(array $dados, File $imagem = null)
     {
-        $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $dados['quadro']);
+        $quadro = $this->em->getReference(
+            '\n0va1s\QuadroMagico\Entity\QuadroEntity', 
+            $dados['quadro']
+        );
+        $descricao  = isset($dados['descricao']) ? $dados['descricao'] : $dados['atividade'];
+        $valor      = isset($dados['valor']) ? $dados['valor'] : 0.1;
+        $proposito  = isset($dados['proposito']) ? $dados['proposito'] : NULL;
+
         if (empty($dados['id'])) {
             $atividade = new AtividadeEntity();
-            $atividade->setAtividade($dados['atividade']);
-            $atividade->setValor($dados['valor']);
-            $atividade->setProposito($dados['proposito']);
+            $atividade->setAtividade($descricao);
+            $atividade->setValor($valor);
+            $atividade->setProposito($proposito);
+
             if (!empty($imagem)) {
                 $atividade->setImagem($imagem);
             }
@@ -37,10 +46,14 @@ class AtividadeService
             $atividade->setQuadro($quadro);
         } else {
             //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
-            $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['id']);
-            $atividade->setAtividade($dados['atividade']);
-            $atividade->setValor($dados['valor']);
-            $atividade->setProposito($dados['proposito']);
+            $atividade = $this->em->getReference(
+                '\n0va1s\QuadroMagico\Entity\AtividadeEntity', 
+                $dados['id']
+            );
+            $atividade->setAtividade($descricao);
+            $atividade->setValor($valor);
+            $atividade->setProposito($proposito);
+            
             if (!empty($imagem)) {
                 $atividade->setImagem($imagem);
             }
@@ -48,7 +61,7 @@ class AtividadeService
         $this->em->flush();
         return $this->toArray($atividade);
     }
-    /**
+    /*
      * @param int atividade //seq_atividade
      * @param char(3) dia //seg, ter,qua,qui,sex,sab,dom
      * @param char(1) valor //S ou N ou nulo
@@ -63,58 +76,64 @@ class AtividadeService
         //Estava setando branco
         $dados['valor'] = (empty($dados['valor'])) ? null : $dados['valor'];
         if (!$temMarcacao) { //nao possui marcacao
-            $atividade = $this->em->getReference('\n0va1s\QuadroMagico\Entity\AtividadeEntity', $dados['atividade']);
+            $atividade = $this->em->getReference(
+                '\n0va1s\QuadroMagico\Entity\AtividadeEntity', 
+                $dados['atividade']
+            );
             $marcacao = new MarcacaoEntity();
             switch ($dados['dia']) {
-                case 'seg':
-                    $marcacao->setSegunda($dados['valor']);
-                    break;
-                case 'ter':
-                    $marcacao->setTerca($dados['valor']);
-                    break;
-                case 'qua':
-                    $marcacao->setQuarta($dados['valor']);
-                    break;
-                case 'qui':
-                    $marcacao->setQuinta($dados['valor']);
-                    break;
-                case 'sex':
-                    $marcacao->setSexta($dados['valor']);
-                    break;
-                case 'sab':
-                    $marcacao->setSabado($dados['valor']);
-                    break;
-                case 'dom':
-                    $marcacao->setDomingo($dados['valor']);
-                    break;
+            case 'seg':
+                $marcacao->setSegunda($dados['valor']);
+                break;
+            case 'ter':
+                $marcacao->setTerca($dados['valor']);
+                break;
+            case 'qua':
+                $marcacao->setQuarta($dados['valor']);
+                break;
+            case 'qui':
+                $marcacao->setQuinta($dados['valor']);
+                break;
+            case 'sex':
+                $marcacao->setSexta($dados['valor']);
+                break;
+            case 'sab':
+                $marcacao->setSabado($dados['valor']);
+                break;
+            case 'dom':
+                $marcacao->setDomingo($dados['valor']);
+                break;
             }
             $this->em->persist($marcacao);
             //Uma marcacao pertence a uma atividade
             $marcacao->setAtividade($atividade);
         } else { // possui marcacao
-            $marcacao = $this->em->getReference('\n0va1s\QuadroMagico\Entity\MarcacaoEntity', $temMarcacao->getId());
+            $marcacao = $this->em->getReference(
+                '\n0va1s\QuadroMagico\Entity\MarcacaoEntity', 
+                $temMarcacao->getId()
+            );
             switch ($dados['dia']) {
-                case 'seg':
-                    $marcacao->setSegunda($dados['valor']);
-                    break;
-                case 'ter':
-                    $marcacao->setTerca($dados['valor']);
-                    break;
-                case 'qua':
-                    $marcacao->setQuarta($dados['valor']);
-                    break;
-                case 'qui':
-                    $marcacao->setQuinta($dados['valor']);
-                    break;
-                case 'sex':
-                    $marcacao->setSexta($dados['valor']);
-                    break;
-                case 'sab':
-                    $marcacao->setSabado($dados['valor']);
-                    break;
-                case 'dom':
-                    $marcacao->setDomingo($dados['valor']);
-                    break;
+            case 'seg':
+                $marcacao->setSegunda($dados['valor']);
+                break;
+            case 'ter':
+                $marcacao->setTerca($dados['valor']);
+                break;
+            case 'qua':
+                $marcacao->setQuarta($dados['valor']);
+                break;
+            case 'qui':
+                $marcacao->setQuinta($dados['valor']);
+                break;
+            case 'sex':
+                $marcacao->setSexta($dados['valor']);
+                break;
+            case 'sab':
+                $marcacao->setSabado($dados['valor']);
+                break;
+            case 'dom':
+                $marcacao->setDomingo($dados['valor']);
+                break;
             }
         }
         $this->em->flush();
@@ -137,28 +156,69 @@ class AtividadeService
     public function findByQuadro($quadro)
     {
         if ($quadro->getTipo()->getCodigo() == 'F') {
-            $dados = $this->em->createQuery("select a.id, a.imagem, a.atividade, a.valor, a.proposito,
-                m.segunda as mark_segunda, case m.segunda when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_segunda,
-                m.terca as mark_terca, case m.terca when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_terca, 
-                m.quarta as mark_quarta, case m.quarta when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_quarta,
-                m.quinta as mark_quinta, case m.quinta when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_quinta,
-                m.sexta as mark_sexta, case m.sexta when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_sexta,
-                m.sabado as mark_sabado, case m.sabado when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_sabado,
-                m.domingo as mark_domingo, case m.domingo when 1 then 'pessimo' when 2 then 'ruim' when 3 then 'bom' when 4 then 'otimo' else 'duvida' end as emoji_domingo
-                from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a left join a.marcacoes m 
-                where q.id = :id")
+            $dados = $this->em->createQuery(
+                "select a.id, a.imagem, a.atividade, a.valor, a.proposito, 
+                m.segunda as mark_segunda, case m.segunda 
+                when 1 then 'pessimo' when 2 then 'ruim' 
+                when 3 then 'bom' when 4 then 'otimo' 
+                else 'duvida' end as emoji_segunda,
+                m.terca as mark_terca, case m.terca 
+                when 1 then 'pessimo' when 2 then 'ruim' 
+                when 3 then 'bom' when 4 then 'otimo' 
+                else 'duvida' end as emoji_terca, 
+                m.quarta as mark_quarta, case m.quarta 
+                when 1 then 'pessimo' when 2 then 'ruim' 
+                when 3 then 'bom' when 4 then 'otimo' 
+                else 'duvida' end as emoji_quarta,
+                m.quinta as mark_quinta, case m.quinta 
+                when 1 then 'pessimo' when 2 then 'ruim' 
+                when 3 then 'bom' when 4 then 'otimo' 
+                else 'duvida' end as emoji_quinta,
+                m.sexta as mark_sexta, case m.sexta 
+                when 1 then 'pessimo' when 2 then 'ruim' 
+                when 3 then 'bom' when 4 then 'otimo' 
+                else 'duvida' end as emoji_sexta,
+                m.sabado as mark_sabado, case m.sabado 
+                when 1 then 'pessimo' when 2 then 'ruim' 
+                when 3 then 'bom' when 4 then 'otimo' 
+                else 'duvida' end as emoji_sabado,
+                m.domingo as mark_domingo, case m.domingo 
+                when 1 then 'pessimo' when 2 then 'ruim' 
+                when 3 then 'bom' when 4 then 'otimo' 
+                else 'duvida' end as emoji_domingo
+                from n0va1s\QuadroMagico\Entity\QuadroEntity q 
+                join q.atividades a left join a.marcacoes m 
+                where q.id = :id"
+            )
                 ->setParameter(':id', $quadro->getId())
                 ->getArrayResult();
         } else {
-            $dados = $this->em->createQuery("select a.id, a.imagem, a.atividade, a.valor, a.proposito,
-                m.segunda as mark_segunda, case m.segunda when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_segunda,
-                m.terca as mark_terca, case m.terca when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_terca,
-                m.quarta as mark_quarta, case m.quarta when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_quarta,
-                m.quinta as mark_quinta, case m.quinta when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_quinta,
-                m.sexta as mark_sexta, case m.sexta when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_sexta,
-                m.sabado as mark_sabado, case m.sabado when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_sabado,
-                m.domingo as mark_domingo, case m.domingo when 1 then 'pessimo' when 2 then 'otimo' else 'duvida' end as emoji_domingo
-                from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a left join a.marcacoes m where q.id = :id")
+            $dados = $this->em->createQuery(
+                "select a.id, a.imagem, a.atividade, a.valor, a.proposito,
+                m.segunda as mark_segunda, case m.segunda 
+                when 1 then 'pessimo' when 2 then 'otimo' 
+                else 'duvida' end as emoji_segunda,
+                m.terca as mark_terca, case m.terca 
+                when 1 then 'pessimo' when 2 then 'otimo' 
+                else 'duvida' end as emoji_terca,
+                m.quarta as mark_quarta, case m.quarta 
+                when 1 then 'pessimo' when 2 then 'otimo' 
+                else 'duvida' end as emoji_quarta,
+                m.quinta as mark_quinta, case m.quinta 
+                when 1 then 'pessimo' when 2 then 'otimo' 
+                else 'duvida' end as emoji_quinta,
+                m.sexta as mark_sexta, case m.sexta 
+                when 1 then 'pessimo' when 2 then 'otimo' 
+                else 'duvida' end as emoji_sexta,
+                m.sabado as mark_sabado, case m.sabado 
+                when 1 then 'pessimo' when 2 then 'otimo' 
+                else 'duvida' end as emoji_sabado,
+                m.domingo as mark_domingo, case m.domingo 
+                when 1 then 'pessimo' when 2 then 'otimo' 
+                else 'duvida' end as emoji_domingo
+                from n0va1s\QuadroMagico\Entity\QuadroEntity q 
+                join q.atividades a left join a.marcacoes m where q.id = :id"
+            )
                 ->setParameter(':id', $quadro->getId())
                 ->getArrayResult();
         }
@@ -167,7 +227,10 @@ class AtividadeService
 
     public function findById(int $id)
     {
-        $dados = $this->em->createQuery('select q, a, m from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a left join a.marcacoes m where a.id = :id')
+        $dados = $this->em->createQuery(
+            'select q, a, m from \n0va1s\QuadroMagico\Entity\QuadroEntity q 
+            join q.atividades a left join a.marcacoes m where a.id = :id'
+        )
             ->setParameter('id', $id)
             ->getOneOrNullResult();
         return $dados;
@@ -175,7 +238,10 @@ class AtividadeService
 
     public function hasMarcacao(int $id)
     {
-        $marcacao = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c where c.atividade = :id')
+        $marcacao = $this->em->createQuery(
+            'select c from \n0va1s\QuadroMagico\Entity\MarcacaoEntity c 
+            where c.atividade = :id'
+        )
             ->setParameter('id', $id)
             ->getOneOrNullResult();
         return $marcacao;
@@ -183,102 +249,22 @@ class AtividadeService
     //Cria um array com exemplos de atividades durante a criacao do quadro
     public function loadExamples($quadro)
     {
-        if ($quadro->getTipo()->getCodigo() == 'T') {
-            $dados[] = array('atividade'=>'Arrumar a cama','valor'=>1,'proposito'=>'A');
-            $dados[] = array('atividade'=>'Preparar seu café da manhã','valor'=>1,'proposito'=>'A');
-            $dados[] = array('atividade'=>'Estudar ou fazer a tarefa','valor'=>1,'proposito'=>'E');
-            $dados[] = array('atividade'=>'Comer ao menos 4 tipos de alimentos','valor'=>1,'proposito'=>'R');
-            $dados[] = array('atividade'=>'Fazer a oração antes das refeições ou antes de dormir','valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Fazer uma tarefa doméstica','valor'=>1,'proposito'=>'D');
-            $dados[] = array('atividade'=>'Não brigar, responder ou falar palavrão','valor'=>1,'proposito'=>'C');
-            $dados[] = array('atividade'=>'Não deixar suas coisas espalhadas pela casa','valor'=>1,'proposito'=>'A');
-        } elseif ($quadro->getTipo()->getCodigo() == 'M') {
-            $dados[] = array('atividade'=>'Arrumar a cama','valor'=>0.5,'proposito'=>'A');
-            $dados[] = array('atividade'=>'Fazer a tarefa','valor'=>0.5,'proposito'=>'E');
-            $dados[] = array('atividade'=>'Lavar a louça','valor'=>0.5,'proposito'=>'D');
-            $dados[] = array('atividade'=>'Comer ao menos 4 tipos de alimentos','valor'=>1.5,'proposito'=>'R');
-            $dados[] = array('atividade'=>'Cortar a grama','valor'=>0.5,'proposito'=>'D');
-            $dados[] = array('atividade'=>'Varrer a casa','valor'=>1,'proposito'=>'D');
-            $dados[] = array('atividade'=>'Cuidar do bicho de estimação','valor'=>0.5,'proposito'=>'I');
-        } elseif ($quadro->getTipo()->getCodigo() == 'F') {
-            $dados[] = array('atividade'=>'Refeição','valor'=>3,'proposito'=>'R');
-            $dados[] = array('atividade'=>'Comportamento','valor'=>3,'proposito'=>'C');
-            $dados[] = array('atividade'=>'Higiene','valor'=>1,'proposito'=>'H');
-            $dados[] = array('atividade'=>'Obrigações','valor'=>2,'proposito'=>'A');
-            $dados[] = array('atividade'=>'Espiritualidade','valor'=>2,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Atividade física','valor'=>2,'proposito'=>'F');
-        } elseif ($quadro->getTipo()->getCodigo() == 'E') { //meu momento
-            $dados[] = array('atividade'=>'Ler um livro', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Estudar', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Brincar', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Meditar', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Escrever', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Voluntariado', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Cuidado pessoal', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Jogar', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Usar celular/tablet', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Exercícios', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Ouvir música', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Sair com os amigos', 'valor'=>1,'proposito'=>'I');
-            $dados[] = array('atividade'=>'Cuidar das plantas', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Fazer dever de casa', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Limpar casa', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Fazer compras', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Lavar roupas', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Arrumar casa', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Tirar lixo', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Cuidar do animal', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Cuidar do bebê', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Lavar carro', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Fazer extra-classe', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Consertar casa', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Organizar orçamento doméstico', 'valor'=>1,'proposito'=>'T');
-            $dados[] = array('atividade'=>'Fazer refeição', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Levar/buscar de festa', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Ir à escola', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Fazer higiene pessoal', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Ver TV', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Dormir', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Comer', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Ir ao trabalho', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Ir ao médico', 'valor'=>1,'proposito'=>'G');
-        } elseif ($quadro->getTipo()->getCodigo() == 'N') { //nosso momento
-            $dados[] = array('atividade'=>'Viajar', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Conversar', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Passear', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Ver filme', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Jogar', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Ir a um evento', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Construir algo', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Cuidar das plantas', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Fazer dever de casa', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Limpar casa', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Fazer compras', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Lavar roupas', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Arrumar casa', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Tirar lixo', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Cuidar do animal', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Cuidar do bebê', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Lavar carro', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Fazer extra-classe', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Consertar casa', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Organizar orçamento doméstico', 'valor'=>1,'proposito'=>'W');
-            $dados[] = array('atividade'=>'Fazer refeição', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Levar/buscar de festa', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Ir à escola', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Fazer higiene pessoal', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Ver TV', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Dormir', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Comer', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Ir ao trabalho', 'valor'=>1,'proposito'=>'G');
-            $dados[] = array('atividade'=>'Ir ao médico', 'valor'=>1,'proposito'=>'G');
-        } 
-
-        foreach ($dados as $atividade) {
-            $atividade['quadro'] = $quadro->getId();
-            $this->save($atividade);
-        }
-        return true;
+        if ($quadro->getTipo()->getCodigo()) {
+            $atividades = $this->em->createQuery(
+                'select a.tipo, a.proposito, a.descricao 
+                from \n0va1s\QuadroMagico\Entity\TipoAtividadeEntity a 
+                where a.tipo = :tipo'
+            )
+                ->setParameter('tipo', $quadro->getTipo()->getCodigo())
+                ->getArrayResult();
+            foreach ($atividades as $atividade) {
+                $atividade['quadro'] = $quadro->getId();
+                $this->save($atividade);
+            }
+            return true;
+        } else {
+            return false;
+        }        
     }
     //Copia as atividades do quadro antigo no quadro novo (duplicado)
     public function loadActivities($quadroOLD, $quadroNEW)
@@ -308,7 +294,9 @@ class AtividadeService
             } elseif ($quadro->getTipo()->getCodigo() == 'M') {
                 $resultado[] = $this->calcDayMoney($quadro, $dia);
             } elseif ($quadro->getTipo()->getCodigo() == 'T') {
-                $resultado['resultado'][$dia] = $this->loadSpecialGift($quadro, $dia);
+                $resultado['resultado'][$dia] = $this->loadSpecialGift(
+                    $quadro, $dia
+                );
             }
         }
         return $resultado;
@@ -319,10 +307,16 @@ class AtividadeService
     public function loadSpecialGift($quadro, string $dia)
     {
         try {
-            $mark = $this->em->createQuery("select distinct m.$dia from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id")
-            ->setParameter(':id', $quadro->getId())
-            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
-            $specialGift = ($mark == 2) ? 'glyphicon glyphicon-heart' : 'glyphicon glyphicon-heart-empty';
+            $mark = $this->em->createQuery(
+                "select distinct m.$dia 
+                from n0va1s\QuadroMagico\Entity\QuadroEntity q 
+                join q.atividades a join a.marcacoes m where q.id = :id"
+            )
+                ->setParameter(':id', $quadro->getId())
+                ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+            $specialGift = ($mark == 2) ? 
+                'glyphicon glyphicon-heart' : 
+                'glyphicon glyphicon-heart-empty';
         } catch (\Doctrine\ORM\NonUniqueResultException $e) {
             $specialGift = 'glyphicon glyphicon-heart-empty';
         }
@@ -335,15 +329,20 @@ class AtividadeService
         //Calcula os pontos das atividades realizadas (otimo) no quadro
         //Nao soma o valor registrado no quadro, mas o valor da atividade
         foreach ($this->semana as $dia) {
-            $real += $this->em->createQuery("select sum(a.valor) as val 
-                from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
+            $real += $this->em->createQuery(
+                "select sum(a.valor) as val 
+                from n0va1s\QuadroMagico\Entity\QuadroEntity q 
+                join q.atividades a join a.marcacoes m 
                 where q.id=:id and m.$dia = :feito group by q.id")
                 ->setParameter(':id', $quadro->getId())
                 ->setParameter(':feito', '2')
                 ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
         }
         //Calcula a quantidade de atividades do quadro e a soma dos pesos
-        $prev =  $this->em->createQuery('select sum(a.valor) as val, count(a.id) as qtd from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id
+        $prev =  $this->em->createQuery(
+            'select sum(a.valor) as val, count(a.id) as qtd 
+            from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a 
+            join a.marcacoes m where q.id = :id
             group by q.id')
             ->setParameter(':id', $quadro->getId())
             ->getOneOrNullResult();
@@ -357,9 +356,12 @@ class AtividadeService
     public function calcDayMoney($quadro, $dia)
     {
         //Calcula a quantia com base no valor atribuido a atividade e nao ao valor da marcacao
-        $valor = $this->em->createQuery("select sum(a.valor) as val 
-            from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
-            where q.id=:id and m.$dia=:otimo group by q.id")
+        $valor = $this->em->createQuery(
+            "select sum(a.valor) as val 
+            from n0va1s\QuadroMagico\Entity\QuadroEntity q 
+            join q.atividades a join a.marcacoes m 
+            where q.id=:id and m.$dia=:otimo group by q.id"
+        )
             ->setParameter(':id', $quadro->getId())
             ->setParameter(":otimo", '2')
             ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
@@ -370,9 +372,12 @@ class AtividadeService
     {
         //Calcula os pontos das atividades realizadas no quadro
         foreach ($this->semana as $dia) {
-            $total += $this->em->createQuery("select sum(a.valor) as val 
-                from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m 
-                where q.id=:id and m.$dia=:otimo group by q.id")
+            $total += $this->em->createQuery(
+                "select sum(a.valor) as val 
+                from n0va1s\QuadroMagico\Entity\QuadroEntity q 
+                join q.atividades a join a.marcacoes m 
+                where q.id=:id and m.$dia=:otimo group by q.id"
+            )
                 ->setParameter(':id', $quadro->getId())
                 ->setParameter(':otimo', '2')
                 ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
@@ -387,10 +392,18 @@ class AtividadeService
     //4 - OTIMO
     public function sumResult($quadro, string $dia)
     {
-        $peso = $this->em->createQuery('select sum(a.valor) as peso from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a where q.id = :id')
+        $peso = $this->em->createQuery(
+            'select sum(a.valor) as peso 
+            from n0va1s\QuadroMagico\Entity\QuadroEntity q 
+            join q.atividades a where q.id = :id'
+        )
             ->setParameter(':id', $quadro->getId())
             ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR) ?? 1;//retorna 1 caso o valor seja nulo PHP7
-        $nota = $this->em->createQuery("select sum(a.valor * m.$dia) as nota from n0va1s\QuadroMagico\Entity\QuadroEntity q join q.atividades a join a.marcacoes m where q.id = :id group by q.id")
+        $nota = $this->em->createQuery(
+            "select sum(a.valor * m.$dia) as nota 
+            from n0va1s\QuadroMagico\Entity\QuadroEntity q 
+            join q.atividades a join a.marcacoes m where q.id = :id group by q.id"
+        )
             ->setParameter(':id', $quadro->getId())
             ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR) ?? 0;//retorna 0 caso o valor seja nulo PHP7
         $quali = ["Péssimo", "Ruim", "Bom", "Ótimo"];

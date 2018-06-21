@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Doctrine\ORM\EntityManager;
 use n0va1s\QuadroMagico\Service\AtividadeService;
-use n0va1s\QuadroMagico\Service\DominioService;
+use n0va1s\QuadroMagico\Service\TipoQuadroService;
 use n0va1s\QuadroMagico\Service\QuadroService;
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
@@ -39,21 +39,23 @@ class QuadroController implements ControllerProviderInterface
         $ctrl = $app['controllers_factory'];
 
         $app['quadro_service'] = function () {
-            return new QuadroService($this->em);
+            return new QuadroService($this->_em);
         };
 
-        $app['dominio_service'] = function () {
-            return new DominioService($this->em);
+        $app['tipo_quadro_service'] = function () {
+            return new TipoQuadroService($this->_em);
         };
 
         $ctrl->get(
             '/', function () use ($app) {
-                $tipos = $app['dominio_service']->fetchAll();
-                return $app['twig']->render(
+                $tipos = $app['tipo_quadro_service']->fetchAll();
+                $conteudo = $app['twig']->render(
                     'cadastroQuadro.twig', 
-                    array('tipos'=>$tipos), 
-                    new Response('Ok', 200)
+                    array('tipos'=>$tipos)
                 );
+                $resposta = new Response($conteudo, 200);
+                $resposta->headers->set('Content-Type', 'text/html');
+                return $resposta;
             }
         )->bind('indexQuadro');
 
@@ -66,7 +68,13 @@ class QuadroController implements ControllerProviderInterface
                 //Se for um quadro novo
                 if (empty($dados['id'])) {
                     //Carregar atividades de exemplo
-                    $atividades = $app['atividade_service']->loadExamples($quadro);
+                    $ok = $app['atividade_service']->loadExamples($quadro);
+                    if (!$ok){
+                        return $app->abort(
+                            500, 
+                            "Ops... não foi carregaram as atividades de exemplo"
+                        ); 
+                    }
                 }
                 //Envia os dados do quadro para o responsavel
                 $descricao = $quadro->getTipo()->getDescricao();
@@ -97,7 +105,7 @@ class QuadroController implements ControllerProviderInterface
                 }
                 if ($quadro) {
                     //Cria um novo request para o cadastro de atividades
-                    $tipo = $app['dominio_service']->findById(
+                    $tipo = $app['tipo_quadro_service']->findById(
                         $quadro->getTipo()->getId()
                     );
                     $dados = array('quadro'=>$quadro, 'tipo'=>$tipo);
@@ -110,7 +118,7 @@ class QuadroController implements ControllerProviderInterface
                     return $response;
                 } else {
                     return $app->abort(
-                        404, 
+                        500, 
                         "Ops... não foi possível criar o quadro"
                     ); 
                 }
@@ -158,7 +166,7 @@ class QuadroController implements ControllerProviderInterface
             '/exibir/{codigo}', function ($codigo) use ($app) {
                 $quadro = $app['quadro_service']->findByCodigo($codigo);
                 if ($quadro) {
-                    $tipo = $app['dominio_service']->findById(
+                    $tipo = $app['tipo_quadro_service']->findById(
                         $quadro->getTipo()->getId()
                     );
                     $atividades = $app['atividade_service']->findByQuadro($quadro);
@@ -196,9 +204,9 @@ class QuadroController implements ControllerProviderInterface
                     //Cria um novo quadro com os dados do quadro anterior
                     $quadroNEW = $app['quadro_service']->save($quadroOLD);
                     //Recoloca o id do quadro para carregar as atividades antigas
-                    $quadroOLD->setid($id);
+                    $quadroOLD->setId($id);
                     //Lista de tipos de quadro
-                    $tipos = $app['dominio_service']->fetchAll();
+                    $tipos = $app['tipo_quadro_service']->fetchAll();
                     //Carregar atividades do quadro anterior
                     $atividades = $app['atividade_service']->loadActivities(
                         $quadroOLD, 
@@ -244,7 +252,7 @@ class QuadroController implements ControllerProviderInterface
         ->assert('id', '\d+');
 
         $app['atividade_service'] = function () {
-            return new AtividadeService($this->em);
+            return new AtividadeService($this->_em);
         };
 
         $ctrl->get(

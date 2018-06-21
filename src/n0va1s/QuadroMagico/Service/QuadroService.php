@@ -29,7 +29,10 @@ class QuadroService
         $crianca = is_array($dados) ? $dados['crianca'] : $dados->getCrianca();
         $recompensa = is_array($dados) ? $dados['recompensa'] : $dados->getRecompensa();
         //Tipo e um objeto, nao somente um atributo de quadro
-        $tipo = $this->em->getReference('\n0va1s\QuadroMagico\Entity\TipoQuadroEntity', $tipo);
+        $tipo = $this->em->getReference(
+            '\n0va1s\QuadroMagico\Entity\TipoQuadroEntity', 
+            $tipo
+        );
         if (empty($id)) {
             $quadro = new QuadroEntity();
             $quadro->setResponsavel($responsavel);
@@ -40,7 +43,10 @@ class QuadroService
             $this->em->persist($quadro);
             $quadro->setTipo($tipo);
         } else {
-            $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $id);
+            $quadro = $this->em->getReference(
+                '\n0va1s\QuadroMagico\Entity\QuadroEntity', 
+                $id
+            );
             $quadro->setResponsavel($responsavel);
             $quadro->setGenero($genero);
             $quadro->setIdade($idade);
@@ -55,7 +61,10 @@ class QuadroService
 
     public function delete(int $id)
     {
-        $quadro = $this->em->getReference('\n0va1s\QuadroMagico\Entity\QuadroEntity', $id);
+        $quadro = $this->em->getReference(
+            '\n0va1s\QuadroMagico\Entity\QuadroEntity', 
+            $id
+        );
         $this->em->remove($quadro);
         $this->em->flush();
         return true;
@@ -64,14 +73,20 @@ class QuadroService
     public function fetchAll()
     {
         //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
-        $quadros = $this->em->createQuery('select q from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t')
-                           ->getArrayResult();
+        $quadros = $this->em->createQuery(
+            'select q 
+            from \n0va1s\QuadroMagico\Entity\QuadroEntity q 
+            join q.tipo t'
+        )->getArrayResult();
         return $quadros;
     }
 
     public function fetchLimit(int $qtd)
     {
-        $quadros = $this->em->createQuery('select c from \n0va1s\QuadroMagico\Entity\QuadroEntity c')
+        $quadros = $this->em->createQuery(
+            'select c 
+            from \n0va1s\QuadroMagico\Entity\QuadroEntity c'
+        )
             ->setMaxResults($qtd)
             ->getArrayResult();
         return $quadros;
@@ -79,7 +94,11 @@ class QuadroService
 
     public function findById(int $id)
     {
-        $quadro = $this->em->createQuery('select q from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t where q.id = :id')
+        $quadro = $this->em->createQuery(
+            'select q 
+            from \n0va1s\QuadroMagico\Entity\QuadroEntity q 
+            join q.tipo t where q.id = :id'
+        )
             ->setParameter('id', $id)
             ->getSingleResult();
         return $quadro;
@@ -87,7 +106,11 @@ class QuadroService
 
     public function findByCodigo($codigo)
     {
-        $quadro = $this->em->createQuery('select q from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t where q.codigo = :codigo')
+        $quadro = $this->em->createQuery(
+            'select q 
+            from \n0va1s\QuadroMagico\Entity\QuadroEntity q 
+            join q.tipo t where q.codigo = :codigo'
+        )
             ->setParameter('codigo', $codigo)
             ->getSingleResult();
         return $quadro;
@@ -95,7 +118,13 @@ class QuadroService
 
     public function findByEmail($email)
     {
-        $quadros = $this->em->createQuery('select q.id, q.responsavel, q.genero, q.idade, q.crianca, q.recompensa, q.codigo, t.descricao as tipo from \n0va1s\QuadroMagico\Entity\QuadroEntity q join q.tipo t where q.responsavel = :email order by t.codigo, q.crianca, q.cadastro')
+        $quadros = $this->em->createQuery(
+            'select q.id, q.responsavel, q.genero, q.idade, q.crianca, 
+            q.recompensa, q.codigo, t.descricao as tipo 
+            from \n0va1s\QuadroMagico\Entity\QuadroEntity q 
+            join q.tipo t where q.responsavel = :email 
+            order by t.codigo, q.crianca, q.cadastro'
+        )
             ->setParameter('email', $email)
             ->getArrayResult();
         return $quadros;

@@ -27,7 +27,8 @@ class ArquivoService
             // Verifica se a extensao da imagem e valida
             $ext = array("gif", "jpeg", "jpg", "png", "bmp");
             if (!in_array($check[1], $ext)) {
-                echo "Erro. São permitidos somente imagens: BMP, JPG, JPEG, PNG e GIF.";
+                echo "Erro. São permitidos somente imagens: 
+                BMP, JPG, JPEG, PNG e GIF.";
                 $uploadOk = 0;
             }
         } else {

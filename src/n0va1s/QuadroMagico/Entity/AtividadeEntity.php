@@ -31,7 +31,7 @@ class AtividadeEntity
     private $valor;
 
     /**
-     * @ORM\Column(type="string", length=1, name="ind_proposito")
+     * @ORM\Column(type="string", name="ind_proposito", columnDefinition="CHAR(1) NOT NULL")
      */
     private $proposito;
 
