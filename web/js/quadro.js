@@ -8,19 +8,20 @@ $(document).ready(function() {
             //Para quadros de comportamento e mesada
             //a regra e fez (1), nao fez (0) ou nao teve oportunidade de fazer (0)
             switch ($(this).children().attr('class')) {
-              case 'duvida': //duvida para pessimo
-                valor = 1;
-                $(this).children().removeClass("duvida").addClass("pessimo");
-                break;
-              case 'pessimo': //pessimo para otimo
-                valor = 2;
-                $(this).children().removeClass("pessimo").addClass("otimo");
-                break;
-              default: //otimo para duvida
-                valor = null;
-                $(this).children().removeClass("otimo").addClass("duvida");
-                break;
-            }
+                case 'duvida': //duvida para pessimo
+                    valor = 1;
+                    $(this).children().removeClass("duvida").addClass("pessimo");
+                    break;
+                case 'pessimo': //pessimo para otimo
+                    valor = 2;
+                    $(this).children().removeClass("pessimo").addClass("otimo");
+                    break;
+                default: //otimo para duvida
+                    valor = null;
+                    $(this).children().removeClass("otimo").addClass("duvida");
+                    break;
+                }
+            
         } else {
             //Para quadros de ferias
             //a regra e otimo (4), bom(3), ruim (2), pessimo (1)

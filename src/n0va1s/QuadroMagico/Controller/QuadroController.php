@@ -148,15 +148,18 @@ class QuadroController implements ControllerProviderInterface
                                 new Response('Consulta Ok', 200)
                             );
                     } else {
-                        return $app->abort(
-                            404, 
-                            "Não encontramos quadros para {$dados['email']}"
+                        return $app['twig']->render(
+                            'listaQuadro.twig',
+                            array('quadros'=>$quadros,
+                        'mensagem'=>'Nenhum quadro encontrado'),
+                            new Response('Nenhum quadro encontrado', 500)
                         ); 
                     }            
                 } else {
-                    return $app->abort(
-                        404, 
-                        "O email {$dados['email']} é inválido. Corrija por favor."
+                    return $app['twig']->render(
+                        'listaQuadro.twig',
+                        array('mensagem'=>'O email não é válido'),
+                        new Response('Email invalido', 500)
                     ); 
                 }          
             }
