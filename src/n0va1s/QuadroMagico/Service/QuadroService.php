@@ -28,6 +28,7 @@ class QuadroService
         $idade = is_array($dados) ? $dados['idade'] : $dados->getIdade();
         $crianca = is_array($dados) ? $dados['crianca'] : $dados->getCrianca();
         $recompensa = is_array($dados) ? $dados['recompensa'] : $dados->getRecompensa();
+        
         //Tipo e um objeto, nao somente um atributo de quadro
         $tipo = $this->em->getReference(
             '\n0va1s\QuadroMagico\Entity\TipoQuadroEntity', 

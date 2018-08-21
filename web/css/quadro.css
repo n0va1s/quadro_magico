@@ -44,6 +44,7 @@
   display: inline-block;
 }
 .emoji {
+  text-align: center;  
 }
 
 .imagem {
@@ -53,4 +54,8 @@
 
 .imagem img {
   width: inherit; 
+}
+
+th {
+  text-align: center;
 }

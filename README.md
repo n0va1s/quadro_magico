@@ -12,3 +12,14 @@ Conheça [brinquecoin.com](http://brinquecoin.com)
 # Idealizadores
 Isabela Araújo
 João Paulo Novais
+
+# Instalação
+* Baixar arquivos
+> git clone
+* Vá para a pasta da aplicação
+> cd quadro_magico
+* Criar o banco de dados (MySQL)
+> sudo php bin/doctrine-silex orm:schema-tool:create
+* Executar os scripts disponíveis em /src/../SQL
+* Executar o servidor de aplicação
+> php -S localhost:1234 -t web/

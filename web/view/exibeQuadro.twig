@@ -40,13 +40,13 @@
                             {% if tipo.codigo == 'M' %}
                             <th>Valor</th>
                             {% endif %}
-                            <th><center>Seg</center></th>
-                            <th><center>Ter</center></th>
-                            <th><center>Qua</center></th>
-                            <th><center>Qui</center></th>
-                            <th><center>Sex</center></th>
-                            <th><center>Sab</center></th>
-                            <th><center>Dom</center></th>
+                            <th>Seg</th>
+                            <th>Ter</th>
+                            <th>Qua</th>
+                            <th>Qui</th>
+                            <th>Sex</th>
+                            <th>Sab</th>
+                            <th>Dom</th>
                         </tr>
                     </thead>
                     {% if resultados is defined %}
@@ -57,7 +57,7 @@
                             <th>Pedido especial</th>
                             {% for resultado in resultados %}
                                 {% for dia in resultado %}
-                            <th><center><span class="{{ dia }}"></span></center></th>
+                            <th><span class="{{ dia }}"></span></th>
                                 {% endfor %}
                             {% endfor %}
                         </tr>
@@ -93,13 +93,13 @@
                             {% if tipo.codigo == 'M' %}
                             <td>R$ {{ atividade.valor}}</td>
                             {% endif %}
-                            <td class="emoji" id="seg_{{ atividade.id }}"><center><span class="{{ atividade.emoji_segunda }}"></span></center></td>
-                            <td class="emoji" id="ter_{{ atividade.id }}"><center><span class="{{ atividade.emoji_terca }}"></span></center></td>
-                            <td class="emoji" id="qua_{{ atividade.id }}"><center><span class="{{ atividade.emoji_quarta }}"></span></center></td>
-                            <td class="emoji" id="qui_{{ atividade.id }}"><center><span class="{{ atividade.emoji_quinta }}"></span></center></td>
-                            <td class="emoji" id="sex_{{ atividade.id }}"><center><span class="{{ atividade.emoji_sexta }}"></span></center></td>
-                            <td class="emoji" id="sab_{{ atividade.id }}"><center><span class="{{ atividade.emoji_sabado }}"></span></center></td>
-                            <td class="emoji" id="dom_{{ atividade.id }}"><center><span class="{{ atividade.emoji_domingo }}"></span></center></td>
+                            <td class="emoji" id="seg_{{ atividade.id }}"><span class="{{ atividade.emoji_segunda }}"></span></td>
+                            <td class="emoji" id="ter_{{ atividade.id }}"><span class="{{ atividade.emoji_terca }}"></span></td>
+                            <td class="emoji" id="qua_{{ atividade.id }}"><span class="{{ atividade.emoji_quarta }}"></span></td>
+                            <td class="emoji" id="qui_{{ atividade.id }}"><span class="{{ atividade.emoji_quinta }}"></span></td>
+                            <td class="emoji" id="sex_{{ atividade.id }}"><span class="{{ atividade.emoji_sexta }}"></span></td>
+                            <td class="emoji" id="sab_{{ atividade.id }}"><span class="{{ atividade.emoji_sabado }}"></span></td>
+                            <td class="emoji" id="dom_{{ atividade.id }}"><span class="{{ atividade.emoji_domingo }}"></span></td>
                         </tr>
                         {% endfor %}
                     </tbody>

@@ -75,6 +75,7 @@ class QuadroEntity
         $this->cadastro = new \Datetime();
         $this->atividades = new ArrayCollection();
         $this->codigo = hash('crc32b', rand()); //gera um codigo unico com 8 caracteres
+        $this->inativo = 'N'; // quadro ativo
     }
 
     public function getId()

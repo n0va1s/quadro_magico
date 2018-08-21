@@ -70,7 +70,7 @@ $app['debug'] = $file_config['log.enabled'];
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/web/view',
-    'twig.options' => array('cache' => __DIR__.'/web/view/cache'),
+    'twig.options' => array('cache' => __DIR__.'/web/cache'),
 ));
 
 $app->register(new Silex\Provider\AssetServiceProvider(), array(
