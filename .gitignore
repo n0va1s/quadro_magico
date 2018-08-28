@@ -4,7 +4,7 @@ composer.lock
 Procfile
 /vendor/
 /web/file/
-/web/view/cache/
+/web/cache/
 /test/log/
 *.~
 .env

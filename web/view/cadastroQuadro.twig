@@ -29,7 +29,7 @@
             <form name="frmQuadro" action="{{ path('quadroSalvar')}}" method="POST">
                 <div class="form-group col-sm-2">
                     <label for="tipo">Quadro</label>
-                    <select name="tipo" class="form-control" required data-validation-required-message="Que tipo de quadro vc quer?" autofocus>
+                    <select name="tipo" class="form-control" autofocus required data-validation-required-message="Que tipo de quadro vc quer?">
                         <option value="" disabled selected>Um quadro de</option>
                         {% for tipo in tipos %}
                             <option value="{{ tipo.id }}" {% if quadro is defined and quadro.tipo.id == tipo.id %} selected {% endif %}>{{ tipo.descricao }}</option>

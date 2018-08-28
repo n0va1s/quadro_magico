@@ -80,6 +80,9 @@ class AtividadeEntity
 
     public function setAtividade($atividade)
     {
+        if (empty($atividade)) {
+            throw new \InvalidArgumentException('Atividade não informada', 1);
+        }
         $this->atividade = $atividade;
         return $this;
     }
@@ -91,7 +94,7 @@ class AtividadeEntity
 
     public function setValor($valor)
     {
-        $this->valor = $valor;
+        $this->valor = str_replace(",", ".", $valor, $i);
         return $this;
     }
 
@@ -102,6 +105,9 @@ class AtividadeEntity
 
     public function setProposito($proposito)
     {
+        if (empty($proposito)) {
+            throw new \InvalidArgumentException('Propósito não informado', 2);
+        }
         $this->proposito = $proposito;
         return $this;
     }
@@ -121,12 +127,6 @@ class AtividadeEntity
     public function getCadastro()
     {
         return $this->cadastro;
-    }
-
-    public function setCadastro($cadastro)
-    {
-        $this->cadastro = $cadastro;
-        return $this;
     }
 
     public function getQuadro()

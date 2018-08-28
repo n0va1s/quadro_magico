@@ -82,7 +82,7 @@ class QuadroController implements ControllerProviderInterface
                 $codigo = $quadro->getCodigo();
                 
                 //so envia email se estiver configurado no config.ini
-                if ($file_config['mail.enabled']) {
+                if (isset($file_config['mail.enabled'])) {
                     $validator = new EmailValidator();
                     if ($validator->isValid($dados['email'], new RFCValidation())) {
                         $message = (new \Swift_Message())->setCharset('utf-8');

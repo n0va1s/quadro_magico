@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group col-sm-2">
                     <label for="valor">Valor</label>
-                    <input type="text" name="valor" class="form-control" placeholder="Pontos ou $?">
+                    <input type="text" name="valor" class="form-control" placeholder="00.00">
                 </div>
                 <div class="form-group col-sm-2">
                     <label for="proposito">Propósito</label>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="form-group col-sm-4">
                     <label for="imagem">Imagem</label>
-                    <input type="file" name="imagem" id="imagem" class="form-control col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                    <input type="file" name="imagem" id="imagem" class="form-control">
                 </div>
                 <input type="hidden" name="quadro" value="{{ quadro.id }}">
                 <input type="hidden" name="codigo" value="{{ quadro.codigo }}">
@@ -69,7 +69,7 @@
                         <i class="glyphicon glyphicon-remove"> Limpar</i>
                     </button>
                     <a href="{{app.url_generator.generate('quadroExibir', {'codigo':quadro.codigo})}}">
-                    <button type="submit" class="btn btn-warning">
+                    <button type="button" class="btn btn-warning">
                         <i class="glyphicon glyphicon-folder-open"></i>&nbsp;Ver o quadro
                     </button>
                     </a>
