@@ -21,5 +21,7 @@ João Paulo Novais
 * Criar o banco de dados (MySQL)
 > sudo php bin/doctrine-silex orm:schema-tool:create
 * Executar os scripts disponíveis em /src/../SQL
+* Definir o ambiente
+> export APPLICATION_ENV=development (ou production)
 * Executar o servidor de aplicação
 > php -S localhost:1234 -t web/
